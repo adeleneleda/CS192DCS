@@ -13,8 +13,6 @@ class Coursestatistics extends Main_Controller {
 	
    public function index()
 	{
-	error_reporting(E_ALL);
-	echo "aaa";
 	$this->Model->search();
     $this->load_view('frontpage');
 	}
@@ -22,6 +20,10 @@ class Coursestatistics extends Main_Controller {
 	public function search() {
 	
 	
+	
+	}
+	
+	public function view_Statistics() {
 	
 	}
    
