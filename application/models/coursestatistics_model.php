@@ -4,37 +4,90 @@ class Coursestatistics_model extends CI_Model {
    {
       parent::__construct();
    }
-
-  public function search() {
-	$coursename = '';
-	$starttermid = '';
-	$endtermid = '';
-	$instructorid = 'select instructorid from instructors';
-	$section = '';
+   
+  public function dropdown_info() {
   
-	$query = 'SELECT classid, courseid, coursename 
-			FROM courses JOIN classes USING (courseid) 
-			JOIN instructorclasses USING (classid) 
-			JOIN instructors USING (instructorid) 
-			JOIN terms USING (termid)  
-			WHERE coursename ILIKE "%'.$coursename.'%" 
-			AND termid <= '.$endtermid.' 
-			AND termid >= '. $starttermid.'AND instructorid in ('.$instructorid.') and section ilike "%'.$section.'%;"';
-	echo $query;
+	$query = "select coursename, courseid from courses;";
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
-			return $temp[0];
+			return $temp;
 		}
 	return false;
   
   }
   
-  public function results_graph() {
-	$courseid = '';
-	$classid = '';
+   public function term_info() {
+  
+	$query = "select termid, name from terms;";
+	$results = $this->db->query($query);
+		
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;
+  
+  }
+  
+  
+     public function instructor_info() {
+  
+	$query = "select firstname, lastname, instructorid from persons join instructors using (personid);";
+	$results = $this->db->query($query);
+		
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;
+  
+  }
+  
+  
+     public function section_info() {
+  
+	$query = "select distinct section from classes;";
+	$results = $this->db->query($query);
+		
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;
+  
+  }
+
+  
+  
+
+  public function search($courseid,$starttermid, $endtermid,  $instructorid, $section) {
+  
+	$query = "SELECT classid, courseid, coursename 
+			FROM courses JOIN classes USING (courseid) 
+			JOIN instructorclasses USING (classid) 
+			JOIN instructors USING (instructorid) 
+			JOIN terms USING (termid)  
+			WHERE courseid = ".$courseid." 
+			AND termid <= ".$endtermid." 
+			 AND termid >= ". $starttermid." AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
+	// echo $query;
+	$results = $this->db->query($query);
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;
+  
+  }
+  
+  public function results_graph($classid, $courseid) {
   
 	$query = 'SELECT gradename, count(*) from studentclasses
 			join classes using (classid) 
@@ -42,7 +95,7 @@ class Coursestatistics_model extends CI_Model {
 			join grades using (gradeid) 
 			where courseid in ('.$courseid.') and classid in ('.$classid.') group by gradename;';
 			
-	echo $query;
+	//echo $query;
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
@@ -76,7 +129,7 @@ class Coursestatistics_model extends CI_Model {
 	where courseid in ('.$courseid.') and classid in ('.$classid.')
 	) t;';
 			
-	echo $query;
+	//echo $query;
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)

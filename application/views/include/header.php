@@ -8,7 +8,7 @@
    <meta name="author" content="">
 
   <title>UP DCS Student Profiling System</title>
-
+	<link class="include" rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.jqplot.min.css') ?>" />
    <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
    <link href="<?= base_url('assets/css/bootstrap-responsive.min.css') ?>" rel="stylesheet">
 	<link href="<?= base_url('assets/css/font-awesome.css') ?>" rel="stylesheet">
@@ -21,6 +21,17 @@
     <link href="../default/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="../css/docs.css" rel="stylesheet">
 
+	<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.0.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-1.8.23.custom.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-timepicker-addon.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-sliderAccess.js') ?>"></script>
+	
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jqplot.barRenderer.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jqplot.categoryAxisRenderer.min.js') ?>"></script>
+	<script type="text/javascript" src="<?= base_url('assets/js/jqplot.pointLabels.min.js') ?>"></script>
+	
    <script type="text/javascript">
 
      var _gaq = _gaq || [];
@@ -67,8 +78,8 @@
 	  <a href="index.html"><img src="http://localhost/cs192dcs/images/logo.png" align="middle" alt="Logo" /></a>
 	  </span>
 	  <span>
-	  <h1>UP DCS Sudent Profiling System</h1> 
-	  <p class="lead">Department of Coumputer Science, UP Diliman</p>
+	  <h1>UP DCS Student Profiling System</h1> 
+	  <p class="lead">Department of Computer Science, UP Diliman</p>
 	  </span>
 		</div>
     
@@ -82,14 +93,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand active" href="#">Welcome!</a>
+        <a class="brand active" href="http://localhost/CS192DCS">Welcome!</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><a href="#">Student Rankings</a></li>
-            <li><a href="#">Course Statistics</a></li>
-            <li><a href="#">Eligibility Checking</a></li>
-            <li><a href="#">Update Statistics</a></li>
-			<li><a href="#">About</a></li>
+            <li><a href="http://localhost/CS192DCS/studentrankings">Student Rankings</a></li>
+            <li><a href="http://localhost/CS192DCS/coursestatistics">Course Statistics</a></li>
+            <li><a href="http://localhost/CS192DCS/eligibilitytesting">Eligibility Checking</a></li>
+            <li><a href="http://localhost/CS192DCS/updatestatistics">Update Statistics</a></li>
+			<li><a href="http://localhost/CS192DCS/about">About</a></li>
           </ul>
         </div><!-- /.nav-collapse -->
       </div>

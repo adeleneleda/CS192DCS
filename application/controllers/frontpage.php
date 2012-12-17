@@ -3,7 +3,7 @@ class Frontpage extends Main_Controller {
 
    public function index()
 	{
-    $this->load_view('frontpage');
+    $this->load_view('frontpage_view');
 	}
    
 }
