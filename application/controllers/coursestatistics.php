@@ -57,13 +57,14 @@ class Coursestatistics extends Main_Controller {
 	
 	public function stat() {
 	
-	$stat = $this->Model->results_graph($_POST['classid'], $_POST['courseid']);
+	//$stat = $this->Model->results_graph($_POST['classid'], $_POST['courseid']);
+	$stat = $this->Model->results_graph(1, 1);
 	//print_r($stat);
 	$dropdown = $this->Model->dropdown_info();
 	$section_info = $this->Model->section_info();
 	$term_info = $this->Model->term_info();
 	$instructor_info = $this->Model->instructor_info();
-    $this->load_view('stat', compact('stat', 'dropdown','section_info', 'term_info', 'instructor_info'));
+    $this->load_view('stat_view', compact('stat', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
    
 }

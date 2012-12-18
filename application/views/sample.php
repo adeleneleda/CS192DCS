@@ -1,23 +1,6 @@
+<script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-	
-	<title>Bar Charts</title>
-
-    <link class="include" rel="stylesheet" type="text/css" href="../jquery.jqplot.min.css" />
-    <link rel="stylesheet" type="text/css" href="examples.min.css" />
-    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shCoreDefault.min.css" />
-    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shThemejqPlot.min.css" />
-  
-  <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="../excanvas.js"></script><![endif]-->
-    <script class="include" type="text/javascript" src="../jquery.min.js"></script>
-    
-   
-</head>
-<body>
-    <div class="logo">
+<div class="logo">
    <div class="nav">
    <a class="nav" href="../../../index.php"><span>&gt;</span>Home</a>
    <a class="nav"  href="../../../docs/"><span>&gt;</span>Docs</a>
@@ -276,25 +259,19 @@
 <!-- Don't touch this! -->
 
 
-    <script class="include" type="text/javascript" src="../jquery.jqplot.min.js"></script>
+    <script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
     <script type="text/javascript" src="syntaxhighlighter/scripts/shCore.min.js"></script>
     <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushJScript.min.js"></script>
     <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushXml.min.js"></script>
 <!-- Additional plugins go here -->
 
-  <script class="include" type="text/javascript" src="../jquery.jqplot.min.js"></script>
-  <script class="include" type="text/javascript" src="../plugins/jqplot.barRenderer.min.js"></script>
-  <script class="include" type="text/javascript" src="../plugins/jqplot.pieRenderer.min.js"></script>
-  <script class="include" type="text/javascript" src="../plugins/jqplot.categoryAxisRenderer.min.js"></script>
-  <script class="include" type="text/javascript" src="../plugins/jqplot.pointLabels.min.js"></script>
+  <script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
+  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.barRenderer.min.js') ?>"></script>
+  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pieRenderer.min.js') ?>"></script>
+  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.categoryAxisRenderer.min.js') ?>"></script>
+  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pointLabels.min.js') ?>"></script>
 
 <!-- End additional plugins -->
 
 
 	</div>	
-	<script type="text/javascript" src="example.min.js"></script>
-
-</body>
-
-
-</html>

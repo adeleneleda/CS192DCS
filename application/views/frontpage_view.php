@@ -1,6 +1,12 @@
-
-
-
+<script>	
+$(document).ready(function() { 
+	$('#sr').removeClass('active');
+	$('#cs').removeClass('active');
+	$('#et').removeClass('active');
+	$('#us').removeClass('active');
+	$('#ab').removeClass('active');
+}); 
+</script>
 
 <!-- Typography
 ================================================== -->
