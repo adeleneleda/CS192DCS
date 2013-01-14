@@ -109,7 +109,7 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 .icon-signal:before               { content: "\f012"; }
 .icon-cog:before                  { content: "\f013"; }
 .icon-trash:before                { content: "\f014"; }
-.icon-home:before                 { content: "\f015"; }
+.icon-home2:before                 { content: "\f015"; }
 .icon-file:before                 { content: "\f016"; }
 .icon-time:before                 { content: "\f017"; }
 .icon-road:before                 { content: "\f018"; }

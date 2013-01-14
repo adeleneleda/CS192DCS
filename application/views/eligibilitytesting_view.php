@@ -1,41 +1,46 @@
-<script>
+<script>	
 $(document).ready(function() { 
 	$('#sr').removeClass('active');
 	$('#cs').removeClass('active');
 	$('#et').addClass('active');
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
-    $("#students").tablesorter( {sortList: [[0,0]]} ); 
 }); 
 </script>
+  
+<script src="http://localhost/cs192dcs/assets/js/jquery-1.8.3.js"></script> 
+<script src="http://localhost/cs192dcs/assets/js/jquery.tablesorter.js"></script>
+
 
 <style>
-	.students
-	{
-	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	width:1000;
-	border-collapse:collapse;
-	color:#FFFFFF;
-	}
-	.students td, #students th 
-	{
-	font-size:1.2em;
-	color:#FFFFFF;
-	border:1px solid #006600;
-	padding:3px 7px 2px 7px;
-	}
-	.students th 
-	{
-	font-size:1.4em;
-	text-align:left;
-	padding-top:3px;
-	padding-bottom:2px;
-	color:#000;
-	}
-	tr:nth-child(even) {background: #F5F0EB}
-	tr:nth-child(odd) {background: #FFF}
+.students
+{
+font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+width:1000;
+border-collapse:collapse;
+color:#FFFFFF;
+}
+.students td, #students th 
+{
+font-size:1.2em;
+color:#FFFFFF;
+border:1px solid #006600;
+padding:3px 7px 2px 7px;
+}
+.students th 
+{
+font-size:1.4em;
+text-align:left;
+padding-top:3px;
+padding-bottom:2px;
+color:#000;
+}
+tr:nth-child(even) {background: #F5F0EB}
+tr:nth-child(odd) {background: #FFF}
 
-	table thead tr .header {
+</style>
+<style type="text/css">
+    table thead tr .header {
         background-image: url(http://localhost/cs192dcs/images/bg.gif);
         background-repeat: no-repeat;
         background-position: center right;
@@ -50,6 +55,16 @@ $(document).ready(function() {
         background-color:#336600;
     }
 </style>
+</head>
+
+<body>
+<script>
+$(document).ready(function() 
+    { 
+        $("#students").tablesorter( {sortList: [[0,0]]} ); 
+    } 
+); 
+</script>
   
 <div class="page-header">
     <h1>Eligibility Testing</h1>

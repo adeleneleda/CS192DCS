@@ -8,54 +8,24 @@
 		<meta name="author" content="">
 
 		<title>UP DCS Student Profiling System</title>
-		<link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-		<link href="<?= base_url('assets/css/bootstrap-responsive.min.css') ?>" rel="stylesheet">
-		<link href="<?= base_url('assets/css/font-awesome.css') ?>" rel="stylesheet">
-		<link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
-		<link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
-	   
-		<link href="bootstrap.min.css" rel="stylesheet">
-		<link href="../default/bootstrap-responsive.min.css" rel="stylesheet">
-		<link href="../css/docs.css" rel="stylesheet">
 
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.0.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-1.8.23.custom.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-timepicker-addon.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-sliderAccess.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.js') ?>"></script>
 		
-		<script type="text/javascript">
-
-		 var _gaq = _gaq || [];
-		  _gaq.push(['_setAccount', 'UA-23019901-1']);
-		  _gaq.push(['_setDomainName', "bootswatch.com"]);
-			_gaq.push(['_setAllowLinker', true]);
-		  _gaq.push(['_trackPageview']);
-
-		 (function() {
-		   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		 })();
-
-		</script>
-		
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+		<link href="<?= base_url('assets/css/font-awesome.css') ?>" rel="stylesheet">
+		<link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
+		<link href="<?= base_url('assets/css/bootstrap-responsive.min.css') ?>" rel="stylesheet">
+		<link href="<?= base_url('assets/css/style.css') ?>" rel="stylesheet">
+		<link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
 		<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 		<script src="<?= base_url('assets/js/custom.js') ?>"></script>
-		
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.js') ?>"></script>
 	</head>
 	<body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
-		<script src="../js/bsa.js"></script>
-		  <!-- Navbar
-			================================================== -->
-			
 		<div class="container">
-		<!-- Masthead
-		================================================== -->
-
 		<br/>
 		<header class="jumbotron subhead" id="overview">
 			<div class="row">   
@@ -77,13 +47,13 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 							</a>
-							<a class="brand" href="<?= base_url('')?>">Welcome!</a>
+							<a class="brand" href="<?= base_url('')?>"><i class="icon-home2" style="padding:4px; padding-right:8px"></i>Welcome!</a>
 							<div class="nav-collapse">
 								<ul class="nav">
-									<li id="sr"><a href="<?= base_url('studentrankings')?>">Student Rankings</a></li>
-									<li id="cs"><a href="<?= base_url('coursestatistics')?>">Course Statistics</a></li>
-									<li id="et"><a href="<?= base_url('eligibilitytesting')?>">Eligibility Checking</a></li>
-									<li id="us"><a href="<?= base_url('updatestatistics')?>">Update Statistics</a></li>
+									<li id="sr"><a href="<?= base_url('studentrankings')?>" style="height:23px;">Student Rankings</a></li>
+									<li id="cs"><a href="<?= base_url('coursestatistics')?>" style="height:23px;">Course Statistics</a></li>
+									<li id="et"><a href="<?= base_url('eligibilitytesting')?>" style="height:23px;">Eligibility Checking</a></li>
+									<li id="us"><a href="<?= base_url('updatestatistics')?>" style="height:23px;">Update Statistics</a></li>
 									<li id="ab"><a href="<?= base_url('about')?>">About</a></li>
 								</ul>
 							</div><!-- /.nav-collapse -->

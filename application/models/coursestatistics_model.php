@@ -76,7 +76,8 @@ class Coursestatistics_model extends CI_Model {
 			WHERE courseid = ".$courseid." 
 			AND termid <= ".$endtermid." 
 			 AND termid >= ". $starttermid." AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
-	// echo $query;
+			 
+ 
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
@@ -84,7 +85,6 @@ class Coursestatistics_model extends CI_Model {
 			return $temp;
 		}
 	return false;
-  
   }
   
   public function results_graph($classid, $courseid) {
