@@ -68,16 +68,17 @@ class Coursestatistics_model extends CI_Model {
 
   public function search($courseid,$starttermid, $endtermid,  $instructorid, $section) {
   
-	$query = "SELECT classid, courseid, coursename 
+	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section, lastname || ', ' || firstname as instructorname
 			FROM courses JOIN classes USING (courseid) 
 			JOIN instructorclasses USING (classid) 
 			JOIN instructors USING (instructorid) 
+			JOIN persons using (personid)
 			JOIN terms USING (termid)  
 			WHERE courseid = ".$courseid." 
 			AND termid <= ".$endtermid." 
 			 AND termid >= ". $starttermid." AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
 			 
- 
+	echo $query;
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
