@@ -45,7 +45,7 @@ gradevalue	numeric(3,2)
 CREATE TABLE courses (
 courseid	SERIAL		PRIMARY KEY,
 coursename	varchar(45),
-credits		integer,
+credits		numeric(3,2),
 domain		varchar(4),
 commtype	varchar(2)
 );
