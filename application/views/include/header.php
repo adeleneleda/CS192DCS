@@ -54,7 +54,7 @@
 									<li id="cs"><a href="<?= base_url('coursestatistics')?>" style="height:23px;">Course Statistics</a></li>
 									<li id="et"><a href="<?= base_url('eligibilitytesting')?>" style="height:23px;">Eligibility Checking</a></li>
 									<li id="us"><a href="<?= base_url('updatestatistics')?>" style="height:23px;">Update Statistics</a></li>
-									<li id="ab"><a href="<?= base_url('about')?>">About</a></li>
+									<li id="ab"><a href="<?= base_url('about')?>" style="height:23px;">About</a></li>
 								</ul>
 							</div><!-- /.nav-collapse -->
 						</div>

@@ -171,9 +171,9 @@
 			<tr>
 			<?foreach($search_results as $subject){?>
 			<td><?= $subject['coursename']?></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><?= $subject['section']?></td>
+			<td><?= $subject['instructorname']?></td>
+			<td><?= $subject['ayterm']?></td>
 			<td></td>
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
 				<input type="hidden" name="classid" value="<?= $subject['classid']?>">
