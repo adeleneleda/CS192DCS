@@ -129,8 +129,8 @@
 		<a href="<?= base_url('coursestatistics')?>" class="btn btn-primary">Back to search results</a>
 		<br>
 		<br>
-		<div><span>You Clicked: </span><span id="info1">Nothing yet</span></div>
-        <div id="chart1" style="margin-top:20px; margin-left:20px; width:100%; height:300px;"></div>
+        <div id="chart1" style="margin-top:20px; margin-left:20px; width:98%; height:400px;"></div>
+		<br/>
 		<strong>Total Number of Students: 97</strong>
 		<br>
 		<br>
@@ -217,25 +217,43 @@
 	</div>
 </div>
 
-<script class="code" type="text/javascript">$(document).ready(function(){
+<script class="code" type="text/javascript">
+	$(document).ready(function(){
         $.jqplot.config.enablePlugins = true;
         var s1 = [5, 6, 7, 8 , 9, 10, 11, 12, 11, 10, 9];
         var ticks = ['1.00', '1.25', '1.50', '1.75', '2.00', '2.25', '2.50', '2.75', '3.00', '4.00', '5.00', ];
         
-        plot1 = $.jqplot('chart1', [s1], {
+        var plot1 = $.jqplot('chart1', [s1], {
             // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
-            animate: !$.jqplot.use_excanvas,
+			animate: !$.jqplot.use_excanvas,
             seriesDefaults:{
                 renderer:$.jqplot.BarRenderer,
-                pointLabels: { show: true }
+                pointLabels: { show: true },
+				rendererOptions:{ 
+					fontSize: '20pt'
+				},
             },
             axes: {
                 xaxis: {
+					label:'Grades',
+					labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
                     renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks
-                }
+                    ticks: ticks,
+					tickOptions:{ 
+						fontSize: '10pt'
+					},
+					tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+                },
+				yaxis: {
+					label:'Number of Students',
+					labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+					tickOptions:{ 
+						fontSize: '10pt'
+					},
+					tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+                },
             },
-            highlighter: { show: false }
+            highlighter: { show: false },
         });
     
         $('#chart1').bind('jqplotDataClick', 
@@ -247,17 +265,15 @@
 	
 <!-- Don't touch this! -->
 
-
-    <script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
-    <script type="text/javascript" src="syntaxhighlighter/scripts/shCore.min.js"></script>
-    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushJScript.min.js"></script>
-    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushXml.min.js"></script>
 <!-- Additional plugins go here -->
-
-	  <script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
-	  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.barRenderer.min.js') ?>"></script>
-	  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pieRenderer.min.js') ?>"></script>
-	  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.categoryAxisRenderer.min.js') ?>"></script>
-	  <script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pointLabels.min.js') ?>"></script>
-
+	<script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.barRenderer.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pieRenderer.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.categoryAxisRenderer.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.pointLabels.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasTextRenderer.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasAxisLabelRenderer.min.js') ?>"></script>
+	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasAxisTickRenderer.min.js') ?>"></script>
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.jqplot.min.css') ?>"></link>
 <!-- End additional plugins -->

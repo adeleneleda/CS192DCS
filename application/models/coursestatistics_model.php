@@ -107,10 +107,10 @@ class Coursestatistics_model extends CI_Model {
   }
   
   
-  public function results_chart() {
+  public function results_chart($classid, $courseid) {
   
-  	$courseid = '';
-	$classid = 'select classid from classes';
+  	$courseid = $courseid;
+	$classid = $classid;
   
 	$query = 'SELECT	p.gradeid, p.gradename, p.total_qty, round(p.total_qty * 100.0 / t.total_qty, 2) || '%' as percentage
 	FROM(
