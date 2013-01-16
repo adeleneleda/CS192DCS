@@ -51,21 +51,20 @@ class Coursestatistics extends Main_Controller {
 			}
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['instructorid'],$selected['sectionid']);
 		}
-		
 		$this->load_view('coursestatistics_view', compact('selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 	
 	public function stat() {
-	
-	//$stat = $this->Model->results_graph($_POST['classid'], $_POST['courseid']);
-	$stat = $this->Model->results_graph(1, 1);
+	$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
+	//$stat = $this->Model->results_graph(1, 1);
 	//print_r($stat);
 	$dropdown = $this->Model->dropdown_info();
 	$section_info = $this->Model->section_info();
 	$term_info = $this->Model->term_info();
 	$instructor_info = $this->Model->instructor_info();
 	$selected = $this->session->userdata('coursestat');
-	
+	print_r($stat);
+	die();
 	$this->load_view('stat_view', compact('stat', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 }
