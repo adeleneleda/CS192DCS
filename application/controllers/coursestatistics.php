@@ -64,7 +64,6 @@ class Coursestatistics extends Main_Controller {
 	$instructor_info = $this->Model->instructor_info();
 	$selected = $this->session->userdata('coursestat');
 	print_r($stat);
-	die();
 	$this->load_view('stat_view', compact('stat', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 }

@@ -111,8 +111,17 @@ class Coursestatistics_model extends CI_Model {
   
   	$courseid = $courseid;
 	$classid = $classid;
+
   
-	$query = 'SELECT	p.gradeid, p.gradename, p.total_qty, round(p.total_qty * 100.0 / t.total_qty, 2) || '%' as percentage
+	$query = 'SELECT	p.gradeid, p.gradename, p.total_qty, 
+	
+		CASE WHEN t.total_qty = 0 then \'0\' 
+		else round(p.total_qty * 100.0 / t.total_qty, 2) || '.'\'%\''. 'end
+		
+		as percentage
+		
+		
+		
 	FROM(
 	SELECT 	gradeid, gradename, count(*) as total_qty 
 	from studentclasses join classes using (classid) 
@@ -127,15 +136,18 @@ class Coursestatistics_model extends CI_Model {
 	join courses using (courseid) 
 	join grades using (gradeid) 
 	where courseid in ('.$courseid.') and classid in ('.$classid.')
-	) t;';
+	)t;';
 			
-	//echo $query;
+	//print_r($query);
+
+//die();	
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
-			return $temp[0];
+			
+			return $temp;
 		}
 	return false;    
   }
