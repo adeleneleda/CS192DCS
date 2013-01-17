@@ -107,40 +107,22 @@ class Coursestatistics_model extends CI_Model {
   }
   
   
-  public function results_chart($classid, $courseid) {
-  
-  	$courseid = $courseid;
-	$classid = $classid;
-
-  
-	$query = 'SELECT	p.gradeid, p.gradename, p.total_qty, 
+  public function results_chart($classid = null, $courseid = null) {
+    
+	if($classid != null) {
+	$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
+	classid in ('.$classid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
+	classid in ('.$classid.')) from studentclasses a where a.gradeid = grades.gradeid and 
+	classid in ('.$classid.')),2) || \'%\' as percentage from grades;';
+	}
+	else {
+		$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
+	courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
+	courseid in ('.$courseid.')) from studentclasses a where a.gradeid = grades.gradeid and 
+	courseid in ('.$courseid.')),2) || \'%\' as percentage from grades;';
+	}
 	
-		CASE WHEN t.total_qty = 0 then \'0\' 
-		else round(p.total_qty * 100.0 / t.total_qty, 2) || '.'\'%\''. 'end
-		
-		as percentage
-		
-		
-		
-	FROM(
-	SELECT 	gradeid, gradename, count(*) as total_qty 
-	from studentclasses join classes using (classid) 
-	join courses using (courseid) 
-	join grades using (gradeid) 
-	where courseid in ('.$courseid.') and classid in ('.$classid.') group by gradename, gradeid
-	) p
-	CROSS JOIN
-	(
-	SELECT	count(*) as total_qty from studentclasses 
-	join classes using (classid) 
-	join courses using (courseid) 
-	join grades using (gradeid) 
-	where courseid in ('.$courseid.') and classid in ('.$classid.')
-	)t;';
-			
-	//print_r($query);
-
-//die();	
+	echo $query;
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)

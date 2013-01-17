@@ -56,6 +56,7 @@ class Coursestatistics extends Main_Controller {
 	
 	public function stat() {
 	$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
+	echo($_POST['classid']);
 	//$stat = $this->Model->results_graph(1, 1);
 	//print_r($stat);
 	$dropdown = $this->Model->dropdown_info();
