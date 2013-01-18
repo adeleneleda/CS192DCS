@@ -106,9 +106,32 @@ class Coursestatistics_model extends CI_Model {
 	return false;  
   }
   
+  public function get_total_and_percentage($classid = null, $courseid) {
+
+  if($classid != null) {
+	$query = 'select classid, (select count(*) from studentclasses where classid in ('.$classid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
+	classid in ('.$classid.')) from studentclasses where
+	classid in ('.$classid.')),2) || \'%\' as percentage from classes where classid in ('.$classid.');';
+  }
+  else {
+  $query = 'select (select count(*) from studentclasses join classes using (classid) where courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses join classes using (classid) where  
+	courseid in ('.$courseid.')) from studentclasses join classes using (classid) where
+	courseid in ('.$courseid.')),2) || \'%\' as percentage from classes where courseid in ('.$courseid.') limit 1;';
+  }
   
-  public function results_chart($classid = null, $courseid = null) {
-    
+  $results = $this->db->query($query);
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;    
+	
+  }
+  
+  
+  public function results_chart($classid = null, $courseid) {
+  
 	if($classid != null) {
 	$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
 	classid in ('.$classid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
@@ -116,13 +139,12 @@ class Coursestatistics_model extends CI_Model {
 	classid in ('.$classid.')),2) || \'%\' as percentage from grades;';
 	}
 	else {
-		$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
-	courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
-	courseid in ('.$courseid.')) from studentclasses a where a.gradeid = grades.gradeid and 
+		$query = 'select gradename, (select count(*) from studentclasses join classes using (classid) where studentclasses.gradeid = grades.gradeid and 
+	courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses join classes using (classid) where  
+	courseid in ('.$courseid.')) from studentclasses a join classes using (classid) where a.gradeid = grades.gradeid and 
 	courseid in ('.$courseid.')),2) || \'%\' as percentage from grades;';
 	}
 	
-	echo $query;
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
