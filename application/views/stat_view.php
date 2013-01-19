@@ -131,7 +131,7 @@
 		<br>
         <div id="chart1" style="margin-top:20px; margin-left:20px; width:98%; height:400px;"></div>
 		<br/>
-		<strong>Total Number of Students: 97</strong>
+		<strong>Total Number of Students: <?= $stat2['count']?></strong>
 		<br>
 		<br>
 		<div class="row">
@@ -145,61 +145,13 @@
 					</tr>
 				</thead>
 					<tbody>
-					<tr>
-						<td>1.00</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
+						<?foreach($stat as $grade){?>
 						<tr>
-						<td>1.25</td>
-						<td>10</td>
-						<td>5.00%</td>
+						<td><?= $grade['gradename']?></td>
+						<td><?= $grade['count']?></td>
+						<td><?= $grade['percentage']?></td>
 						</tr>
-						<tr>
-						<td>1.50</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>1.75</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>2.00</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>2.25</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>2.50</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>2.75</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>3.00</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>4.00</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
-						<tr>
-						<td>5.00</td>
-						<td>10</td>
-						<td>5.00%</td>
-						</tr>
+						<?}?>
 					</tbody>
 				</table>
 			</div>
@@ -209,7 +161,7 @@
 					<strong>Index of Discrimination</strong>
 					</br></br>##</br></br>
 					<strong>Passing Rate</strong>
-					</br></br>##%
+					</br></br><?= $stat2['percentage']?>
 				</div>
 			</div>
 		</div>
@@ -220,8 +172,15 @@
 <script class="code" type="text/javascript">
 	$(document).ready(function(){
         $.jqplot.config.enablePlugins = true;
-        var s1 = [5, 6, 7, 8 , 9, 10, 11, 12, 11, 10, 9];
-        var ticks = ['1.00', '1.25', '1.50', '1.75', '2.00', '2.25', '2.50', '2.75', '3.00', '4.00', '5.00', ];
+		<?
+		$grades = array();
+		$count = array();
+		foreach($stat as $grade){
+			array_push($grades, $grade['gradename']);
+			array_push($count, $grade['count']);
+		}?>
+        var s1 = <?echo json_encode($count)?>;
+        var ticks = <?echo json_encode($grades)?>;
         
         var plot1 = $.jqplot('chart1', [s1], {
             // Only animate if we're not using excanvas (not in IE 7 or IE 8)..
@@ -247,6 +206,13 @@
 				yaxis: {
 					label:'Number of Students',
 					labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+					max: <? if(max($count) % 5 == 0){
+					echo max($count)+5;
+					}else if(max($count)<5){
+					echo 5;
+					}else echo max($count)+ (max($count)%5);?>,
+					min: 0,
+					tickInterval: 5,
 					tickOptions:{ 
 						fontSize: '10pt'
 					},

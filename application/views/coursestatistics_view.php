@@ -142,7 +142,13 @@
 		<table style="width:100%">
 		<tr>
 			<td style="width:40%"><h3><?= $default_coursename?></h3></td>
-			<td align="right"><input class="btn btn-primary" type="submit" value="View Statistics"></input></td>
+			<td align="right">
+			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
+				<input type="hidden" name="classid" value="<?= null?>">
+				<input type="hidden" name="courseid" value="<?= $search_results[0]['courseid']?>">
+				<input class="btn btn-primary" type="submit" value="View Statistics"></input>
+			</form>
+			</td>
 		</tr>
 		<tr>
 			<td><h4>Computer Programming I</h4></td>

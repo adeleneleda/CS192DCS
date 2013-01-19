@@ -123,7 +123,7 @@ class Coursestatistics_model extends CI_Model {
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
-			return $temp;
+			return $temp[0];
 		}
 	return false;    
 	
