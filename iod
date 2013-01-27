@@ -1,0 +1,50 @@
+public function index_of_discrimination($sem, $courseid){
+    $semester = $sem%10;
+    $prevsem = $sem/10;
+    
+    if($semester == 1)
+    {
+        $prevsem = $prevsem - 1;
+        $prevsem = $prevsem*10;
+        $prevsem = $prevsem + 2;
+    }
+    else if($semester == 2)
+    {
+        $semester = $sem-1;
+    }
+    
+    $results = $this->db->query('SELECT grades.gradevalue, gwa(s.studentid, ' . $semester . ') as gwa
+            FROM students s
+            JOIN persons USING (personid)
+            JOIN studentterms USING (studentid)
+            JOIN studentclasses USING (studenttermid)
+            JOIN terms USING (termid)
+            JOIN grades USING (gradeid)
+            JOIN classes USING (classid)
+            JOIN courses USING (courseid)
+            WHERE courses.courseid = ' . $courseid . 'AND terms.termid = ' . $sem . '
+            ORDER BY gwa ASC;');
+    $results = $results->result_array();
+            
+            $ctr = 0;
+            for($ctr = 0; $ctr < 10; $ctr++)
+            {
+                if($results[$ctr] != "5.00")
+                {
+                    $pass1++;
+                }
+            }
+            for($ctr = $results.sizeof()-1; $ctr > $results.sizeof()-11; $ctr--)
+            {
+                if($results[$ctr] != "5.00")
+                {
+                    $pass2++;
+                }
+            }
+            
+            $iod = ($pass1 - $pass2)/10;
+            return $iod;
+}
+
+    
+    
