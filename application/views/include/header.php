@@ -31,7 +31,7 @@
 			<div class="row">   
 				<div class="well" align="center">
 					<span>
-						<a href="<?= base_url('')?>"><img src="<?= base_url('images/logo.png')?>" align="middle" alt="Logo" /></a>
+						<a href="<?= base_url('')?>"><img src="<?= base_url('images/logo3.gif')?>" align="middle" alt="Logo" /></a>
 					</span>
 					<span>
 						<h1>UP DCS Student Profiling System</h1> 

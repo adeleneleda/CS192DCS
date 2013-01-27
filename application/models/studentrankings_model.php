@@ -58,10 +58,11 @@ class StudentRankings_Model extends CI_Model {
     
     function get_gwa($sem)
     {
-        $results = $this->db->query('SELECT DISTINCT a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), cwaproto3(a.studentid), csgwa(a.studentid)
+		//$sem = 20101;
+        $results = $this->db->query('SELECT DISTINCT a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), cwaproto4(a.studentid), csgwa(a.studentid), mathgwa(a.studentid)
 FROM (SELECT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .') as a;');
         $results = $results->result_array();
-        return $results;
+		return $results;
     }
     //working
     /*function get_gwa($sem)

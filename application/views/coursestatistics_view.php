@@ -146,7 +146,11 @@
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
 				<input type="hidden" name="classid" value="<?= null?>">
 				<input type="hidden" name="courseid" value="<?= $search_results[0]['courseid']?>">
-				<input class="btn btn-primary" type="submit" value="View Statistics"></input>
+				<?if(empty($search_results)){
+					echo '<a class="btn btn-primary disabled">View Statistics</a>';
+				}else{
+					echo '<input class="btn btn-primary" type="submit" value="View Statistics"></input>';
+				}?>
 			</form>
 			</td>
 		</tr>
