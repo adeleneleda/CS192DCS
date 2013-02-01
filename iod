@@ -13,7 +13,7 @@ public function index_of_discrimination($sem, $courseid){
         $semester = $sem-1;
     }
     
-    $results = $this->db->query('SELECT grades.gradevalue, gwa(s.studentid, ' . $semester . ') as gwa
+    $results = $this->db->query('SELECT grades.gradevalue
             FROM students s
             JOIN persons USING (personid)
             JOIN studentterms USING (studentid)
@@ -23,7 +23,7 @@ public function index_of_discrimination($sem, $courseid){
             JOIN classes USING (classid)
             JOIN courses USING (courseid)
             WHERE courses.courseid = ' . $courseid . 'AND terms.termid = ' . $sem . '
-            ORDER BY gwa ASC;');
+            ORDER BY gwa(s.studentid, ' . $semester . ') ASC;');
     $results = $results->result_array();
             
             $ctr = 0;
@@ -45,6 +45,4 @@ public function index_of_discrimination($sem, $courseid){
             $iod = ($pass1 - $pass2)/10;
             return $iod;
 }
-
-    
     
