@@ -110,9 +110,9 @@ $(document).ready(function()
 							</tr>
 							<tr>
 								<th width="15%"><center>Twice Fail</center></th>
+								<th width="15%"><center>50% Passing</center></th>
 								<th width="15%"><center>Math/CS 50%</center></th>
 								<th width="15%"><center>24 units</center></th>
-								<th width="15%"><center>50% Passing</center></th>
 							</tr>
 						</thead>
 
@@ -120,17 +120,12 @@ $(document).ready(function()
 						<? if (!empty($students)) { ?>
 							<? foreach($students as $result) { ?>
 								<tr>
-									<td><center><? echo $result["studentno"]; ?></center></td>
-									<td><center><?  echo $result["name"];?></center></td>
-									<? for($i=0; $i<4; $i++) { ?>
-										<? if(rand(0, 3) == 0){ ?>
-											<td><center> X </center></td>
-										<? } else if (rand(0, 2) == 0) { ?>
-											<td><center>O (cleared)</center></td>
-										<? } else { ?>
-											<td><center></center></td>
-										<? } ?>
-									<? } ?>
+									<td><center><? echo $result['studentno']; ?></center></td>
+									<td><center><? echo $result['name'];?></center></td>
+									<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>
+									<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>
+									<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
+									<td><center><? echo empty($result['eTotal24']) ? '' : $result['eTotal24']; ?></center></td>
 								</tr>
 							<? } ?>
 						<? } else { ?>

@@ -13,9 +13,7 @@ class EligibilityTesting_Model extends CI_Model {
 	}
 
 	public function get_studentsofterm($termid, $year) {
-		// $results = $this->db->query('SELECT studentno, firstname || \' \' || middlename || \' \' || lastname as name FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) WHERE studentterms.termid = ' . $termid);
-		
-		$results = $this->db->query('SELECT studentno, firstname || \' \' || middlename || \' \' || lastname as name FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) WHERE studentterms.termid = ' . $termid . ' AND studentno ILIKE \'' . $year . '%\'');
+		$results = $this->db->query('SELECT studentid, studentno, firstname || \' \' || middlename || \' \' || lastname as name FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) WHERE studentterms.termid = ' . $termid . ' AND studentno ILIKE \'' . $year . '%\'');
 		
 		$final = $results->result_array();
 		//print_r($final);
@@ -24,6 +22,30 @@ class EligibilityTesting_Model extends CI_Model {
 	
 	public function get_terms() {
 		$results = $this->db->query('SELECT termid, name FROM terms');
+		$final = $results->result_array();
+		return $final;
+	}
+	
+	public function e_TwiceFail($termid) {
+		$results = $this->db->query('SELECT * FROM f_elig_twicefailsubjects(' . $termid . ')');
+		$final = $results->result_array();
+		return $final;
+	}
+	
+	public function e_PassHalf($termid) {
+		$results = $this->db->query('SELECT * FROM f_elig_passhalfpersem(' . $termid . ')');
+		$final = $results->result_array();
+		return $final;
+	}
+	
+	public function e_PassHalfMathCS($termid) {
+		$results = $this->db->query('SELECT * FROM f_elig_passhalf_mathcs_persem(' . $termid . ')');
+		$final = $results->result_array();
+		return $final;
+	}
+	
+	public function e_24UnitsPassed($termid) {
+		$results = $this->db->query('SELECT * FROM f_elig_24unitspassed(' . $termid . ')');
 		$final = $results->result_array();
 		return $final;
 	}
