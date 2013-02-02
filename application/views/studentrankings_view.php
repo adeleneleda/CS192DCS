@@ -77,13 +77,15 @@ $(document).ready(function()
 			<form action="<?= base_url('studentrankings/get_students')?>" method="post"> 
 			
 			<div class="control-group">
-				<label class="control-label" for="select01">Year Level</label>
+				<label class="control-label" for="select01">Year of Students</label>
 				<div class="controls">
 					<select name="year" id="select01" style="width:180px">
-					  <option value="1">First</option>
-					  <option value="2">Second</option>
-					  <option value="3">Third</option>
-					  <option value="4">Fourth</option>
+                    <?php $ctr = 0; 
+                    while($ctr < sizeof($year))
+                    {
+                    ?>
+					  <option value="<?php echo $year[$ctr]?>"><?php echo $year[$ctr]?></option>
+                      <?php $ctr++; }?>
 					</select>
 					<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
 				</div>
@@ -93,14 +95,18 @@ $(document).ready(function()
 				<label class="control-label" for="select02">Semester</label>
 				<div class="controls">
 					<select name="semester">
-						<option value="20091">1st Year, 1st Sem</option>
-						<option value="20092">1st Year, 2nd Sem</option>
-						<option value="20101">2nd Year, 1st Sem</option>
-						<option value="20102">2nd Year, 2nd Sem</option>
-						<option value="20111">3rd Year, 1st Sem</option>
-						<option value="20112">3rd Year, 2nd Sem</option>
-						<option value="20121">4th Year, 1st Sem</option>
-						<option value="20122">4th Year, 2nd Sem</option>
+						<option value="1">1st Year, 1st Sem</option>
+						<option value="2">1st Year, 2nd Sem</option>
+						<option value="3">1st Year, Summer</option>
+						<option value="11">2nd Year, 1st Sem</option>
+						<option value="12">2nd Year, 2nd Sem</option>
+                        <option value="13">2nd Year, Summer</option>
+						<option value="21">3rd Year, 1st Sem</option>
+						<option value="22">3rd Year, 2nd Sem</option>
+						<option value="23">3rd Year, Summer</option>
+						<option value="31">4th Year, 1st Sem</option>
+						<option value="32">4th Year, 2nd Sem</option>
+						<option value="33">4th Year, Summer</option>
 					</select> 
 				</div>
 			</div>
@@ -121,6 +127,8 @@ $(document).ready(function()
 			<tbody>
 		 <?php
 		 $ctr = 0;
+         if(!empty($name))
+         {
 		 while($ctr < sizeof($name))
 		 {?>
 			<tr>
@@ -133,6 +141,7 @@ $(document).ready(function()
 		 <?php
 		 $ctr++;
 		 }
+         }
 		 ?>
 			</tbody>
 		</table>
