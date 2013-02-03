@@ -155,5 +155,58 @@ class Coursestatistics_model extends CI_Model {
 		}
 	return false;    
   }
-
+	
+		public function index_of_discrimination($sem, $courseid, $instructorid){
+		$pass1 = 0;
+		$pass2 = 0;
+		$courseid = 4;
+		$sem = 20111;
+		$semester = $sem%10;
+		$prevsem = ($sem/10) - $semester/10;
+	
+		if($semester == 1)
+		{
+			$prevsem = $prevsem - 1;
+			$prevsem = $prevsem*10;
+			$prevsem = $prevsem + 2;
+		}
+		else if($semester == 2)
+		{
+			$prevsem = $sem-1;
+		}
+			$results = $this->db->query('SELECT grades.gradevalue
+				FROM students s
+				JOIN persons USING (personid)
+				JOIN studentterms USING (studentid)
+				JOIN studentclasses USING (studenttermid)
+				JOIN terms USING (termid)
+				JOIN grades USING (gradeid)
+				JOIN classes USING (classid)
+				JOIN courses USING (courseid)
+				WHERE courses.courseid = ' . $courseid . 'AND terms.termid = ' . $sem . '
+				ORDER BY gwa(s.studentid, ' . $prevsem . ') ASC;');
+			$results = $results->result_array();
+			
+            
+            $ctr = 0;
+            for($ctr = 0; $ctr < 10; $ctr++)
+            {
+                if($results[$ctr]['gradevalue'] != '5.00')
+                {
+                    $pass1++;
+                }
+            }
+            for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
+            {
+                if($results[$ctr]['gradevalue'] != '5.00')
+                {
+                    $pass2++;
+                }
+            }
+            
+            $iod = ($pass1 - $pass2)/10;
+			echo "iod " . $iod;
+            return $iod;
+	}
+  
 }

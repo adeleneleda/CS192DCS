@@ -23,6 +23,8 @@
 		<link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
 		<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 		<script src="<?= base_url('assets/js/custom.js') ?>"></script>
+		
+		<link rel="shortcut icon" href="<?= base_url('images/favicon.ico')?>" >
 	</head>
 	<body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
 		<div class="container">
