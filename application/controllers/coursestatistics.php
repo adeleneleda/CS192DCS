@@ -56,19 +56,19 @@ class Coursestatistics extends Main_Controller {
 	
 	public function stat() {
 	
-	$classid = $_POST['classid'];
-	$courseid = $_POST['courseid'];
-	$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
-	$stat2= $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
-	//$stat = $this->Model->results_graph(1, 1);
-	//print_r($stat);
-	$dropdown = $this->Model->dropdown_info();
-	$section_info = $this->Model->section_info();
-	$term_info = $this->Model->term_info();
-	$instructor_info = $this->Model->instructor_info();
-	$selected = $this->session->userdata('coursestat');
+		$classid = $_POST['classid'];
+		$courseid = $_POST['courseid'];
+		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
+		$stat2= $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
+		//$stat = $this->Model->results_graph(1, 1);
+		//print_r($stat);
+		$dropdown = $this->Model->dropdown_info();
+		$section_info = $this->Model->section_info();
+		$term_info = $this->Model->term_info();
+		$instructor_info = $this->Model->instructor_info();
+		$selected = $this->session->userdata('coursestat');
 
-	$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
+		$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 	
 	public function generate_csv() {
@@ -78,8 +78,7 @@ class Coursestatistics extends Main_Controller {
 		$this->Model->make_csv($temp2['coursename']."_".$temp2['section']."_".$temp2['termid'], $temp);
 		$stat = $this->Model->results_chart($_POST['csv_classid'], $_POST['csv_courseid']);
 		$stat2= $this->Model->get_total_and_percentage($_POST['csv_classid'], $_POST['csv_courseid']);
-	//$stat = $this->Model->results_graph(1, 1);
-	//print_r($stat);
+	
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$term_info = $this->Model->term_info();
@@ -88,9 +87,6 @@ class Coursestatistics extends Main_Controller {
 		$classid = $_POST['csv_classid'];
 		$courseid = $_POST['csv_courseid'];
 		$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
-
-	$this->load_view('stat_view', compact('stat', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
-
 	}
 	
 }
