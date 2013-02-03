@@ -55,11 +55,9 @@ class Coursestatistics extends Main_Controller {
 	}
 	
 	public function stat() {
-<<<<<<< HEAD
+	
 	$classid = $_POST['classid'];
 	$courseid = $_POST['courseid'];
-=======
->>>>>>> origin/master
 	$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
 	$stat2= $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
 	//$stat = $this->Model->results_graph(1, 1);
@@ -69,7 +67,7 @@ class Coursestatistics extends Main_Controller {
 	$term_info = $this->Model->term_info();
 	$instructor_info = $this->Model->instructor_info();
 	$selected = $this->session->userdata('coursestat');
-<<<<<<< HEAD
+
 	$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 	
@@ -90,9 +88,9 @@ class Coursestatistics extends Main_Controller {
 		$classid = $_POST['csv_classid'];
 		$courseid = $_POST['csv_courseid'];
 		$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
-=======
+
 	$this->load_view('stat_view', compact('stat', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
->>>>>>> origin/master
+
 	}
 	
 }
