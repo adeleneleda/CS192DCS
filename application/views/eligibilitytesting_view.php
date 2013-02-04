@@ -6,45 +6,55 @@ $(document).ready(function() {
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
 }); 
-</script>
-  
-<script src="http://localhost/cs192dcs/assets/js/jquery-1.8.3.js"></script> 
-<script src="http://localhost/cs192dcs/assets/js/jquery.tablesorter.js"></script>
 
-<style type="text/css">
-    table thead tr .header {
-        background-image: url(http://localhost/cs192dcs/images/bg.gif);
-        background-repeat: no-repeat;
-        background-position: center right;
-        background-color:#389400;
-		margin: 10px;
-		color:white;
-    }
-    table thead tr .headerSortUp {
-        background-image: url(http://localhost/cs192dcs/images/asc.gif);
-        background-color:#0c8800;
-		margin: 10px;
-		color:white;
-    }
-    table thead tr .headerSortDown {
-        background-image: url(http://localhost/cs192dcs/images/desc.gif);
-        background-color:#0c8800;
-		margin: 10px;
-		color:white;
-    }
-</style>
-</head>
+$(function() {
 
-<body>
-<script>
-$(document).ready(function() 
-    { 
-        $("#students").tablesorter( {sortList: [[0,0]]} ); 
-		$("#eligstudents").tablesorter( {sortList: [[0,0]]} ); 
-		$("#ineligstudents").tablesorter( {sortList: [[0,0]]} ); 
-    } 
-); 
+  $.extend($.tablesorter.themes.bootstrap, {
+    // these classes are added to the table. To see other table classes available,
+    // look here: http://twitter.github.com/bootstrap/base-css.html#tables
+    table      : 'table table-bordered',
+    header     : 'bootstrap-header', // give the header a gradient background
+    footerRow  : '',
+    footerCells: '',
+    icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
+    sortNone   : 'bootstrap-icon-unsorted',
+    sortAsc    : 'icon-chevron-up',
+    sortDesc   : 'icon-chevron-down',
+    active     : '', // applied when column is sorted
+    hover      : '', // use custom css here - bootstrap class may not override it
+    filterRow  : '', // filter row class
+    even       : '', // odd row zebra striping
+    odd        : ''  // even row zebra striping
+  });
+
+  // call the tablesorter plugin and apply the uitheme widget
+  $("table").tablesorter({
+    theme : "bootstrap", // this will 
+
+    widthFixed: true,
+
+    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+
+    // widget code contained in the jquery.tablesorter.widgets.js file
+    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+    widgets : [ "uitheme", "zebra" ],
+
+    widgetOptions : {
+      // using the default zebra striping class name, so it actually isn't included in the theme variable above
+      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+      zebra : ["even", "odd"],
+
+      // reset filters button
+      filter_reset : ".reset",
+
+      // set the uitheme widget to use the bootstrap theme class names
+      uitheme : "bootstrap"
+
+    }
+  });
+});
 </script>
+
   
 <div class="page-header">
     <h1><img src="<?= base_url('assets/img/glyphicons_152_check.png')?>"></img> Eligibility Checking</h1>
@@ -101,14 +111,11 @@ $(document).ready(function()
 		<div class="tabbable">
 			<div class="tab-content">
 				<div class="tab-pane active" id="A">
-					<table id="students" class="table table-bordered table-striped table-hover">
+					<table id="students" class="tablesorter">
 						<thead>
 							<tr>
-								<th rowspan="2" width="10%"><center>Student Number</center></th>
+								<th rowspan="2" width="13%"><center>Student #</center></th>
 								<th rowspan="2" width="30%"><center>Name</center></th>
-								<th colspan="4" width="60%"><center>Ineligibilities</center></th>
-							</tr>
-							<tr>
 								<th width="15%"><center>Twice Fail</center></th>
 								<th width="15%"><center>50% Passing</center></th>
 								<th width="15%"><center>Math/CS 50%</center></th>
@@ -137,14 +144,11 @@ $(document).ready(function()
 					</table>
 				</div>
 				<div class="tab-pane" id="B">
-					<table id="eligstudents" class="table table-bordered table-striped table-hover">
+					<table id="eligstudents" class="tablesorter">
 						<thead>
 							<tr>
-								<th rowspan="2" width="10%"><center>Student Number</center></th>
+								<th rowspan="2" width="13%"><center>Student #</center></th>
 								<th rowspan="2" width="30%"><center>Name</center></th>
-								<th colspan="4" width="60%"><center>Ineligibilities</center></th>
-							</tr>
-							<tr>
 								<th width="15%"><center>Twice Fail</center></th>
 								<th width="15%"><center>Math/CS 50%</center></th>
 								<th width="15%"><center>24 units</center></th>
@@ -178,14 +182,11 @@ $(document).ready(function()
 					</table>
 				</div>
 				<div class="tab-pane" id="C">
-					<table id="ineligstudents" class="table table-bordered table-striped table-hover">
+					<table id="ineligstudents" class="tablesorter">
 						<thead>
 							<tr>
-								<th rowspan="2" width="10%"><center>Student Number</center></th>
+								<th rowspan="2" width="13%"><center>Student #</center></th>
 								<th rowspan="2" width="30%"><center>Name</center></th>
-								<th colspan="4" width="60%"><center>Ineligibilities</center></th>
-							</tr>
-							<tr>
 								<th width="15%"><center>Twice Fail</center></th>
 								<th width="15%"><center>Math/CS 50%</center></th>
 								<th width="15%"><center>24 units</center></th>

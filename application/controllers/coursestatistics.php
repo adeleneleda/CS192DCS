@@ -37,10 +37,13 @@ class Coursestatistics extends Main_Controller {
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'],  $selected['instructorid'], $selected['sectionid']);
-			print_r($search_results);
-			die();
-			//meli
-			$iod = $this->Model->index_of_discrimination($selected['starttermid'], $selected['courseid'], $selected['instructorid']);
+			//print_r($search_results);
+			//die();
+			//meli adelen
+			$iod = array();
+			foreach($search_results as $indiv_search) {
+				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
+			}
 			//meli end
 		}else{
 			$temp = $this->session->userdata('coursestat');
@@ -55,42 +58,47 @@ class Coursestatistics extends Main_Controller {
 				$selected = $this->session->userdata('coursestat');
 			}
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['instructorid'],$selected['sectionid']);
-			//meli
-			$iod = $this->Model->index_of_discrimination($selected['starttermid'], $selected['courseid'], $selected['instructorid']);
+			//meli and adleen
+			$iod = array();
+			foreach($search_results as $indiv_search) {
+				//echo "HEREEEEEEEEEEEEEE";
+				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
+			}
 			//meli end
 		}
-		$this->load_view('coursestatistics_view', compact('selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
+		$this->load_view('coursestatistics_view', compact('iod','selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 	
 	public function stat() {
-	$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
-	$stat2= $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
-	//$stat = $this->Model->results_graph(1, 1);
-	//print_r($stat);
-	$dropdown = $this->Model->dropdown_info();
-	$section_info = $this->Model->section_info();
-	$term_info = $this->Model->term_info();
-	$instructor_info = $this->Model->instructor_info();
-	$selected = $this->session->userdata('coursestat');
-	$this->load_view('stat_view', compact('stat', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
-	}
-
-	public function generate_csv() {
-		$temp = $this->Model->results_chart($_POST['csv_classid'], $_POST['csv_courseid']);
-		$temp2 = $this->Model->get_classname($_POST['csv_classid']);
-			
-		$this->Model->make_csv($temp2['coursename']."_".$temp2['section']."_".$temp2['termid'], $temp);
-		$stat = $this->Model->results_chart($_POST['csv_classid'], $_POST['csv_courseid']);
-		$stat2= $this->Model->get_total_and_percentage($_POST['csv_classid'], $_POST['csv_courseid']);
-	
+		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
+		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
+		$iod = $_POST['iod'];
+		//$stat = $this->Model->results_graph(1, 1);
+		//print_r($stat);
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$term_info = $this->Model->term_info();
 		$instructor_info = $this->Model->instructor_info();
 		$selected = $this->session->userdata('coursestat');
-		$classid = $_POST['csv_classid'];
-		$courseid = $_POST['csv_courseid'];
-		$this->load_view('stat_view', compact('stat', 'classid', 'courseid', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
+		$classid = $_POST['classid'];
+		$courseid = $_POST['courseid'];
+		$this->load_view('stat_view', compact('classid','courseid','iod','stat', 'stat2', 'selected', 'dropdown','section_info', 'term_info', 'instructor_info'));
+	}
+
+	public function generate_csv() {
+		$temp = $this->Model->make_csv($_POST['csv_classid'], $_POST['csv_courseid']);
+		$temp2 = $this->Model->get_classname($_POST['csv_classid']);
+
+		$add = "\"Index of Discrimination\", ".$_POST['csv_iod'].",\n\"Passing Rate\",\"".$_POST['csv_passingrate']."\",\n\n";
+		//echo $add.$temp;
+		//die();
+		
+		header("Content-type: text/csv");
+		header("Content-length:". strlen($temp));
+		header("Content-Disposition: attachment; filename=".$temp2['coursename']."_".$temp2['section']."_".$temp2['termid'].".csv");
+		
+		echo $add.$temp;
+		exit;
 	}
 	
 }

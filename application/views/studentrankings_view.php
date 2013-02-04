@@ -6,64 +6,53 @@ $(document).ready(function() {
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
 }); 
-</script>
-  
-<script src="http://localhost/cs192dcs/assets/js/jquery-1.8.3.js"></script> 
-<script src="http://localhost/cs192dcs/assets/js/jquery.tablesorter.js"></script>
 
+$(function() {
 
-<style>
-.students
-{
-font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-width:1000;
-border-collapse:collapse;
-color:#FFFFFF;
-}
-.students td, #students th 
-{
-font-size:1.2em;
-color:#FFFFFF;
-border:1px solid #006600;
-padding:3px 7px 2px 7px;
-}
-.students th 
-{
-font-size:1.4em;
-text-align:left;
-padding-top:3px;
-padding-bottom:2px;
-color:#000;
-}
-tr:nth-child(even) {background: #F5F0EB}
-tr:nth-child(odd) {background: #FFF}
+  $.extend($.tablesorter.themes.bootstrap, {
+    // these classes are added to the table. To see other table classes available,
+    // look here: http://twitter.github.com/bootstrap/base-css.html#tables
+    table      : 'table table-bordered',
+    header     : 'bootstrap-header', // give the header a gradient background
+    footerRow  : '',
+    footerCells: '',
+    icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
+    sortNone   : 'bootstrap-icon-unsorted',
+    sortAsc    : 'icon-chevron-up',
+    sortDesc   : 'icon-chevron-down',
+    active     : '', // applied when column is sorted
+    hover      : '', // use custom css here - bootstrap class may not override it
+    filterRow  : '', // filter row class
+    even       : '', // odd row zebra striping
+    odd        : ''  // even row zebra striping
+  });
 
-</style>
-<style type="text/css">
-    table thead tr .header {
-        background-image: url(http://localhost/cs192dcs/images/bg.gif);
-        background-repeat: no-repeat;
-        background-position: center right;
-        background-color:#4D9900;
+  // call the tablesorter plugin and apply the uitheme widget
+  $("table").tablesorter({
+    theme : "bootstrap", // this will 
+
+    widthFixed: true,
+
+    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+
+    // widget code contained in the jquery.tablesorter.widgets.js file
+    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+    widgets : [ "uitheme", "zebra" ],
+
+    widgetOptions : {
+      // using the default zebra striping class name, so it actually isn't included in the theme variable above
+      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+      zebra : ["even", "odd"],
+
+      // reset filters button
+      filter_reset : ".reset",
+
+      // set the uitheme widget to use the bootstrap theme class names
+      uitheme : "bootstrap"
+
     }
-    table thead tr .headerSortUp {
-        background-image: url(http://localhost/cs192dcs/images/asc.gif);
-        background-color:#336600;
-    }
-    table thead tr .headerSortDown {
-        background-image: url(http://localhost/cs192dcs/images/desc.gif);
-        background-color:#336600;
-    }
-</style>
-</head>
-
-<body>
-<script>
-$(document).ready(function() 
-    { 
-        $("#students").tablesorter( {sortList: [[0,0]]} ); 
-    } 
-); 
+  });
+});
 </script>
   
 <div class="page-header">
@@ -114,7 +103,7 @@ $(document).ready(function()
 		</div>
 	</div>
 	<div class="span9">
-		<table id="students" class="table table-bordered table-striped table-hover">
+		<table id="students" class="tablesorter">
 			<thead>
 			  <tr>
 				<th>Name</th>

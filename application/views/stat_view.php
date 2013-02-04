@@ -131,9 +131,10 @@
 		<br>
         <div id="chart1" style="margin-top:20px; margin-left:20px; width:98%; height:400px;"></div>
 		<br/>
+		<br/>
 		<strong>Total Number of Students: <?= $stat2['count']?></strong>
-		<br>
-		<br>
+		<br/>
+		<br/>
 		<div class="row">
 			<div class="span6">
 				<table class="table table-bordered table-striped table-hover">
@@ -159,10 +160,17 @@
 			<div class="span3">
 				<div class="well">
 					<strong>Index of Discrimination</strong>
-					</br></br>##</br></br>
+					</br></br><?= $iod?></br></br>
 					<strong>Passing Rate</strong>
 					</br></br><?= $stat2['percentage']?>
 				</div>
+				<form method="post" action="<?= base_url('coursestatistics/generate_csv')?>">
+				<input type="hidden" name="csv_classid" value="<?= $classid?>">
+				<input type="hidden" name="csv_courseid" value="<?= $courseid?>">
+				<input type="hidden" name="csv_passingrate" value="<?= $stat2['percentage']?>">
+				<input type="hidden" name="csv_iod" value="<?= $iod?>">
+				<input class="btn btn-primary" type="submit" value="Download CSV"/>
+				</form>
 			</div>
 		</div>
 		<br/>

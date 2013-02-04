@@ -9,13 +9,7 @@
 
 		<title>UP DCS Student Profiling System</title>
 
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.0.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-1.8.23.custom.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-timepicker-addon.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui-sliderAccess.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.js') ?>"></script>
-		
 		<link href="<?= base_url('assets/css/font-awesome.css') ?>" rel="stylesheet">
 		<link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
 		<link href="<?= base_url('assets/css/bootstrap-responsive.min.css') ?>" rel="stylesheet">
@@ -23,6 +17,12 @@
 		<link href="<?= base_url('assets/css/custom.css') ?>" rel="stylesheet">
 		<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
 		<script src="<?= base_url('assets/js/custom.js') ?>"></script>
+		
+		
+		<link href="<?= base_url('assets/css/theme.bootstrap.css') ?>" rel="stylesheet">
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.widgets.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.pager.js') ?>"></script>
 		
 		<link rel="shortcut icon" href="<?= base_url('images/favicon.ico')?>" >
 	</head>

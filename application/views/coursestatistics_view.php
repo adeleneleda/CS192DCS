@@ -179,15 +179,16 @@
 		</thead>
 		<tbody>
 			<tr>
-			<?foreach($search_results as $subject){?>
+			<?foreach($search_results as $index=>$subject){?>
 			<td><?= $subject['coursename']?></td>
 			<td><?= $subject['section']?></td>
 			<td><?= $subject['instructorname']?></td>
 			<td><?= $subject['ayterm']?></td>
-			<td></td>
+			<td><?= $iod[$index]?></td>
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
 				<input type="hidden" name="classid" value="<?= $subject['classid']?>">
 				<input type="hidden" name="courseid" value="<?= $subject['courseid']?>">
+				<input type="hidden" name="iod" value="<?= $iod[$index]?>">
 				<td><input type="submit" value="View Statistics"></input></td>
 			</form>
 			</tr>
