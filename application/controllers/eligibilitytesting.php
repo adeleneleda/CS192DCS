@@ -30,6 +30,7 @@ class Eligibilitytesting extends Main_Controller {
 		$this->session->set_userdata('activetermid', $activetermid);
 		$this->session->set_userdata('activeyear', $activeyear);
 		
+		$show24Units = ($activetermid % 10 == 3) ? true : false;
 		
 		$students = $this->Model->get_studentsofterm($activetermid, $activeyear);
 		$twiceFail = $this->Model->e_TwiceFail($activetermid);
@@ -55,7 +56,7 @@ class Eligibilitytesting extends Main_Controller {
 		}
 		$terms = $this->Model->get_terms();
 		
-		$this->load_view('eligibilitytesting_view', compact('students', 'terms', 'activeyear', 'activetermid'));
+		$this->load_view('eligibilitytesting_view', compact('students', 'terms', 'activeyear', 'activetermid', 'show24Units'));
 	}
 }
 
