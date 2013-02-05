@@ -1,5 +1,6 @@
 <script>	
 $(document).ready(function() { 
+	document.getElementById('focus_here').focus()
 	$('#sr').addClass('active');
 	$('#cs').removeClass('active');
 	$('#et').removeClass('active');
@@ -83,7 +84,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="select02">Semester</label>
 				<div class="controls">
-					<select name="semester">
+					<select id = "focus_here" name="semester">
 						<option value="1">1st Year, 1st Sem</option>
 						<option value="2">1st Year, 2nd Sem</option>
 						<option value="3">1st Year, Summer</option>
