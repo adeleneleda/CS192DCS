@@ -8,6 +8,7 @@ $(document).ready(function() {
 }); 
 </script>
 
+
 <div class="row">
 	<div class="span6">
 		<div class="well">
