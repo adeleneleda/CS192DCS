@@ -10,7 +10,6 @@ $(document).ready(function() {
 
 
 <div class="row">
-	
 	<div class="well">
 	<h2> Overview </h2>
 	In line with the Department of Computer Science's goal to 

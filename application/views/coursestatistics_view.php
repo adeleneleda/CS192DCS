@@ -1,5 +1,6 @@
 <script type="text/javascript">
 		$(document).ready(function() {
+			document.getElementById('focus_here').focus()
 			$('#sr').removeClass('active');
 			$('#cs').addClass('active');
 			$('#et').removeClass('active');
@@ -107,7 +108,7 @@
 			<div class="control-group">
 				<label class="control-label" for="select01">Section</label>
 				<div class="controls">
-					<select name = 'section' id="select01">
+					<select name = 'section' id="focus_here">
 					<option value="">Any</option>
 					 <?	$default_section = "Any";
 						foreach ($section_info as $section) {
