@@ -158,6 +158,69 @@ class Coursestatistics_model extends CI_Model {
 		}
 	return false;    
   }
+  
+   public function whole_index_of_discrimination($sem, $courseid) {  
+		$pass1 = 0;
+		$pass2 = 0;
+        $currentsem = $this->db->query('SELECT termid FROM terms WHERE name = \'' . $sem . '\';');
+        $currentsem = $currentsem->result_array();
+        $thissem = $currentsem[0]['termid'];
+		$semester = $thissem%10;
+		$prevsem = ($thissem/10) - $semester/10;
+	
+		if($semester == 1)
+		{
+			$prevsem = $prevsem - 1;
+			$prevsem = $prevsem*10;
+			$prevsem = $prevsem + 2;
+		}
+		else if($semester == 2)
+		{
+			$prevsem = $thissem-1;
+		}
+			$results = $this->db->query('SELECT grades.gradevalue
+				FROM students s
+				JOIN persons USING (personid)
+				JOIN studentterms USING (studentid)
+				JOIN studentclasses USING (studenttermid)
+				JOIN terms USING (termid)
+				JOIN grades USING (gradeid)
+				JOIN classes USING (classid)
+				JOIN courses USING (courseid)
+				JOIN instructorclasses using (classid)
+				JOIN instructors using (instructorid)
+				WHERE courses.courseid = ' . $courseid . '
+				ORDER BY gwa(s.studentid, ' . $prevsem . ') ASC;');
+			$results = $results->result_array();				
+            $ctr = 0;
+            
+			if(sizeof($results) < 10) {
+				$iod = 0;
+			}
+			else {
+                for($ctr = 0; $ctr < 10; $ctr++)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass1++;
+                    }
+                }
+                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass2++;
+                    }
+                }
+			}
+            
+            $iod = ($pass1 - $pass2)/10;
+			//echo "ASDFGHJKL iod: ".$iod."\n";
+            return $iod;
+  
+  
+  
+  }
 	
 	public function index_of_discrimination($sem, $courseid, $instructorname){
 		$pass1 = 0;
