@@ -166,7 +166,7 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && ($show24Units && empty($result['eTotal24']))) { ?>
+								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && !($show24Units && empty($result['eTotal24']))) { ?>
 									<? $added = true; ?>
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
@@ -213,7 +213,7 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && ($show24Units && empty($result['eTotal24']))) { ?>
+								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && !($show24Units && empty($result['eTotal24']))) { ?>
 								<? } else { ?>
 									<? $added = true; ?>
 									<tr>
