@@ -111,13 +111,16 @@ class Coursestatistics_model extends CI_Model {
   if($classid != null) {
 	$query = 'select classid, (select count(*) from studentclasses where classid in ('.$classid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
 	classid in ('.$classid.')) from studentclasses where
-	classid in ('.$classid.')),2) || \'%\' as percentage from classes where classid in ('.$classid.');';
+	classid in ('.$classid.') and gradeid < 10),2) || \'%\' as percentage from classes where classid in ('.$classid.');';
   }
   else {
   $query = 'select (select count(*) from studentclasses join classes using (classid) where courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses join classes using (classid) where  
 	courseid in ('.$courseid.')) from studentclasses join classes using (classid) where
-	courseid in ('.$courseid.')),2) || \'%\' as percentage from classes where courseid in ('.$courseid.') limit 1;';
+	courseid in ('.$courseid.') and gradeid < 10),2) || \'%\' as percentage from classes where courseid in ('.$courseid.') limit 1;';
   }
+  
+  //echo $query;
+  //die();
   
   $results = $this->db->query($query);
 	if($results->num_rows() > 0)
@@ -155,5 +158,104 @@ class Coursestatistics_model extends CI_Model {
 		}
 	return false;    
   }
+	
+	public function index_of_discrimination($sem, $courseid, $instructorname){
+		$pass1 = 0;
+		$pass2 = 0;
+        $instructor = $this->db->query('SELECT instructorid FROM instructors JOIN persons using (personid) WHERE lastname || \', \' || firstname = \''.$instructorname.'\';');
+        $instructor = $instructor->result_array();
+        $instructorid = $instructor[0]['instructorid'];
+        $currentsem = $this->db->query('SELECT termid FROM terms WHERE name = \'' . $sem . '\';');
+        $currentsem = $currentsem->result_array();
+        $thissem = $currentsem[0]['termid'];
+		$semester = $thissem%10;
+		$prevsem = ($thissem/10) - $semester/10;
+	
+		if($semester == 1)
+		{
+			$prevsem = $prevsem - 1;
+			$prevsem = $prevsem*10;
+			$prevsem = $prevsem + 2;
+		}
+		else if($semester == 2)
+		{
+			$prevsem = $thissem-1;
+		}
+			$results = $this->db->query('SELECT grades.gradevalue
+				FROM students s
+				JOIN persons USING (personid)
+				JOIN studentterms USING (studentid)
+				JOIN studentclasses USING (studenttermid)
+				JOIN terms USING (termid)
+				JOIN grades USING (gradeid)
+				JOIN classes USING (classid)
+				JOIN courses USING (courseid)
+				JOIN instructorclasses using (classid)
+				JOIN instructors using (instructorid)
+				WHERE courses.courseid = ' . $courseid . ' AND terms.termid = ' . $thissem . ' AND instructors.instructorid = ' . $instructorid. '
+				ORDER BY gwa(s.studentid, ' . $prevsem . ') ASC;');
+			$results = $results->result_array();				
+            $ctr = 0;
+            
+			if(sizeof($results) < 10) {
+				$iod = 0;
+			}
+			else {
+                for($ctr = 0; $ctr < 10; $ctr++)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass1++;
+                    }
+                }
+                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass2++;
+                    }
+                }
+			}
+            
+            $iod = ($pass1 - $pass2)/10;
+			//echo "iod: ".$iod."\n";
+            return $iod;
+	}
+  
+	   public function make_csv($classid = null, $courseid) {
+  
+	if($classid != null) {
+	$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
+	classid in ('.$classid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses where  
+	classid in ('.$classid.')) from studentclasses a where a.gradeid = grades.gradeid and 
+	classid in ('.$classid.')),2) || \'%\' as percentage from grades;';
+	}
+	else {
+		$query = 'select gradename, (select count(*) from studentclasses join classes using (classid) where studentclasses.gradeid = grades.gradeid and 
+	courseid in ('.$courseid.')) as count, round((select count(*) * 100.00 / (select count(*) from studentclasses join classes using (classid) where  
+	courseid in ('.$courseid.')) from studentclasses a join classes using (classid) where a.gradeid = grades.gradeid and 
+	courseid in ('.$courseid.')),2) || \'%\' as percentage from grades;';
+	}
+	
+	$results = $this->db->query($query);
+		
+	if($results->num_rows() > 0)
+		{
+			$this->load->dbutil();
+			$delimiter = ",";
+			$newline = "\r\n";
+			$temp = $this->dbutil->csv_from_result($results, $delimiter, $newline);
+			
+			return $temp;
+		}
+	return false;    
+  }
 
+	 public function get_classname($classid){
+			$query = 'select coursename, section, termid from classes join courses using (courseid) where classid in ('.$classid.')';
+			$results = $this->db->query($query);
+			$result = $results->result_array();
+			return $result[0];
+		
+	 }
 }

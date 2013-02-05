@@ -10,15 +10,22 @@ class StudentRankings_Model extends CI_Model {
     function get_students() {
         $results = $this->db->query('SELECT lastname FROM persons JOIN students using (personid) where curriculumid = 1;');
 		$results = $results->result_array();
-        //$results = $this->db->query('select true');
         print_r($results);
 		return $results;
 	}
     
-    function get_true()
+    function get_years()
     {
-        $results = $this->db->query('select true;');
-        $results = $results->result_array();
+        $termresults = $this->db->query('SELECT termid FROM terms;');
+        $termresults = $termresults->result_array();
+        $results = array();
+        $ctr = 0;
+        $termctr = 0;
+        for($ctr = 0; $ctr < sizeof($termresults)/3; $ctr++)
+        {
+            $results[$ctr] = ($termresults[$termctr]['termid']/10) - (($termresults[$termctr]['termid']%10)/10);
+            $termctr = $termctr+3;
+        }
         return $results;
     }
     /*
@@ -56,11 +63,10 @@ class StudentRankings_Model extends CI_Model {
         return $results;
     }*/
     
-    function get_gwa($sem)
+    function get_gwa($sem, $year)
     {
-		//$sem = 20101;
         $results = $this->db->query('SELECT DISTINCT a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), cwaproto4(a.studentid), csgwa(a.studentid), mathgwa(a.studentid)
-FROM (SELECT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .') as a;');
+        FROM (SELECT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
         $results = $results->result_array();
 		return $results;
     }

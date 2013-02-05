@@ -1004,20 +1004,20 @@
 
 			// used when replacing accented characters during sorting
 			ts.characterEquivalents = {
-				"a" : "\u00e1\u00e0\u00e2\u00e3\u00e4\u0105\u00e5", // Ã¡Ã Ã¢Ã£Ã¤Ä…Ã¥
-				"A" : "\u00c1\u00c0\u00c2\u00c3\u00c4\u0104\u00c5", // ÃÃ€Ã‚ÃƒÃ„Ä„Ã…
-				"c" : "\u00e7\u0107\u010d", // Ã§Ä‡Ä
-				"C" : "\u00c7\u0106\u010c", // Ã‡Ä†ÄŒ
-				"e" : "\u00e9\u00e8\u00ea\u00eb\u011b\u0119", // Ã©Ã¨ÃªÃ«Ä›Ä™
-				"E" : "\u00c9\u00c8\u00ca\u00cb\u011a\u0118", // Ã‰ÃˆÃŠÃ‹ÄšÄ˜
-				"i" : "\u00ed\u00ec\u0130\u00ee\u00ef\u0131", // Ã­Ã¬Ä°Ã®Ã¯Ä±
-				"I" : "\u00cd\u00cc\u0130\u00ce\u00cf", // ÃÃŒÄ°ÃŽÃ
-				"o" : "\u00f3\u00f2\u00f4\u00f5\u00f6", // Ã³Ã²Ã´ÃµÃ¶
-				"O" : "\u00d3\u00d2\u00d4\u00d5\u00d6", // Ã“Ã’Ã”Ã•Ã–
-				"ss": "\u00df", // ÃŸ (s sharp)
-				"SS": "\u1e9e", // áºž (Capital sharp s)
-				"u" : "\u00fa\u00f9\u00fb\u00fc\u016f", // ÃºÃ¹Ã»Ã¼Å¯
-				"U" : "\u00da\u00d9\u00db\u00dc\u016e" // ÃšÃ™Ã›ÃœÅ®
+				"a" : "\u00e1\u00e0\u00e2\u00e3\u00e4\u0105\u00e5", // á� âãäąå
+				"A" : "\u00c1\u00c0\u00c2\u00c3\u00c4\u0104\u00c5", // ÁÀÂÃÄĄÅ
+				"c" : "\u00e7\u0107\u010d", // çćč
+				"C" : "\u00c7\u0106\u010c", // ÇĆČ
+				"e" : "\u00e9\u00e8\u00ea\u00eb\u011b\u0119", // éèêëěę
+				"E" : "\u00c9\u00c8\u00ca\u00cb\u011a\u0118", // ÉÈÊËĚĘ
+				"i" : "\u00ed\u00ec\u0130\u00ee\u00ef\u0131", // íìİîïı
+				"I" : "\u00cd\u00cc\u0130\u00ce\u00cf", // ÍÌİÎÏ
+				"o" : "\u00f3\u00f2\u00f4\u00f5\u00f6", // óòôõö
+				"O" : "\u00d3\u00d2\u00d4\u00d5\u00d6", // ÓÒÔÕÖ
+				"ss": "\u00df", // ß (s sharp)
+				"SS": "\u1e9e", // ẞ (Capital sharp s)
+				"u" : "\u00fa\u00f9\u00fb\u00fc\u016f", // úùûüů
+				"U" : "\u00da\u00d9\u00db\u00dc\u016e" // ÚÙÛÜŮ
 			};
 			ts.replaceAccents = function(s) {
 				var a, acc = '[', eq = ts.characterEquivalents;
@@ -1213,7 +1213,7 @@
 	ts.addParser({
 		id: "currency",
 		is: function(s) {
-			return (/^\(?\d+[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]|[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]\d+\)?$/).test(s); // Â£$â‚¬Â¤Â¥Â¢
+			return (/^\(?\d+[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]|[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]\d+\)?$/).test(s); // £$€¤¥¢
 		},
 		format: function(s, table) {
 			return ts.formatFloat(s.replace(/[^\w,. \-()]/g, ""), table);

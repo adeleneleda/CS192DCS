@@ -12,7 +12,5 @@ class About extends Main_Controller {
 	{	
     $this->load_view('about_view');
 	}
-
-   
 }
 
