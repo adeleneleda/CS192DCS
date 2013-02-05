@@ -44,6 +44,8 @@ class Coursestatistics extends Main_Controller {
 			foreach($search_results as $indiv_search) {
 				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
 			}
+			
+			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
 			//meli end
 		}else{
 			$temp = $this->session->userdata('coursestat');
@@ -64,6 +66,8 @@ class Coursestatistics extends Main_Controller {
 				//echo "HEREEEEEEEEEEEEEE";
 				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
 			}
+			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
+			
 			//meli end
 		}
 		$this->load_view('coursestatistics_view', compact('iod','selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
@@ -75,6 +79,7 @@ class Coursestatistics extends Main_Controller {
 		$iod = $_POST['iod'];
 		//$stat = $this->Model->results_graph(1, 1);
 		//print_r($stat);
+		
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$term_info = $this->Model->term_info();
