@@ -10,6 +10,20 @@ $(document).ready(function() {
 
 
 <div class="row">
+	
+	<div class="well">
+	<h2> Overview </h2>
+	In line with the Department of Computer Science's goal to 
+	effectively monitor their students and help them in 
+	the pursuit of academic excellence 
+	and also to provide the best classes and environment for learning, this UP DCS Student Profiling System was born.<br/>	
+	<br/>
+	Every module comes with its own functionalities. Each also comes with 'Download CSV' feature. <br/>CSVs are automatically saved in your Downloads folder.
+	</div>
+
+	</div>
+
+<div class="row">
 	<div class="span6">
 		<div class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_328_podium.png')?>"></img> Student Rankings</h3>
@@ -30,8 +44,10 @@ $(document).ready(function() {
 		<div class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_041_charts.png')?>"></img> Course Statistics</h3>
 			<hr/>
-			Description
-			<br/>
+			<strong>Description</strong> <br/><br/>
+			This module allows the user to see the course statistics. It comes with a Search and and an Advanced Search function which allows user to filter the results more.
+			The results of the Search will be a list of subjects satisfying the query.
+			Upon clicking View Statistics, user will be presented with a graph and a table containing the passing rate, grade statistics and the index of discrimination.
 			<br/>
 			<br/>
 			<br/>
@@ -41,6 +57,7 @@ $(document).ready(function() {
 			<br/>
 			<br/>
 		</div>
+	
 	</div>
 </div>
 
