@@ -132,6 +132,13 @@ $(function() {
 		 $ctr++;
 		 }
          }
+		 else {
+		 ?>
+		 <tr>
+			<td colspan = 5><center><em>No Search Results</em></center></td>
+			</tr>
+		 <?php
+		 }
 		 ?>
 			</tbody>
 		</table>
