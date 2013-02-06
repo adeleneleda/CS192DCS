@@ -19,12 +19,11 @@ $(document).ready(function() {
 	<br/>
 	Every module comes with its own functionalities. Each also comes with 'Download CSV' feature. <br/>CSVs are automatically saved in your Downloads folder.
 	</div>
-
-	</div>
+</div>
 
 <div class="row">
-	<div class="span6">
-		<div class="well">
+	<div style="margin-left:0px; margin-right:1%" class="span6">
+		<div style="width:95%" class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_328_podium.png')?>"></img> Student Rankings</h3>
 			<hr/>
 			Description
@@ -39,8 +38,8 @@ $(document).ready(function() {
 			<br/>
 		</div>
 	</div>
-	<div class="span6">
-		<div class="well">
+	<div style="margin-right:1%" class="span6">
+		<div style="width:95%;" class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_041_charts.png')?>"></img> Course Statistics</h3>
 			<hr/>
 			<strong>Description</strong> <br/><br/>
@@ -61,8 +60,8 @@ $(document).ready(function() {
 </div>
 
 <div class="row">
-	<div class="span6">
-		<div class="well">
+	<div style="margin:0px; margin-right:1%" class="span6">
+		<div style="width:95%" class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_152_check.png')?>"></img> Eligibility Checking</h3>
 			<hr/>
 			Description
@@ -77,8 +76,8 @@ $(document).ready(function() {
 			<br/>
 		</div>
 	</div>
-	<div class="span6">
-		<div class="well">
+	<div style="margin-right:1%" class="span6">
+		<div style="width:95%" class="well">
 			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_081_refresh.png')?>"></img> Update Statistics</h3>
 			<hr/>
 			Description

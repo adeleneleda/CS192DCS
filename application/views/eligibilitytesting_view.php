@@ -104,10 +104,17 @@ $(function() {
 	</div>
 	
 	<div class="span9">
+			<form id="csv" method="post" action="<?= base_url('eligibilitytesting/generate_csv')?>">
+			<input type="hidden" name="activetermid" value="<?= $activetermid?>">
+			<input type="hidden" name="activeyear" value="<?= $activeyear?>">
+			<button style="flush-right" type="submit" class="btn-primary btn">Generate CSV</button>
+			</form>
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#A" data-toggle="tab">All</a></li>
 			<li><a href="#B" data-toggle="tab">Eligible Only</a></li>
 			<li><a href="#C" data-toggle="tab">Ineligible Only</a></li>
+			<li>
+			</li>
 		</ul>
 		<div class="tabbable">
 			<div class="tab-content">
@@ -117,10 +124,16 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
+								<? if ($show['twiceFail']) { ?>
 								<th width="15%"><center>Twice Fail</center></th>
+								<? } ?>
+								<? if ($show['passHalf']) { ?>
 								<th width="15%"><center>50% Passing</center></th>
+								<? } ?>
+								<? if ($show['passHalfCSMath']) { ?>
 								<th width="15%"><center>Math/CS 50%</center></th>
-								<? if ($show24Units) { ?> 
+								<? } ?>
+								<? if ($show['24units']) { ?> 
 									<th width="15%"><center>24 units</center></th>
 								<? } ?>
 							</tr>
@@ -132,11 +145,17 @@ $(function() {
 								<tr>
 									<td><center><? echo $result['studentno']; ?></center></td>
 									<td><center><? echo $result['name'];?></center></td>
-									<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>
-									<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>
-									<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
-									<? if ($show24Units) { ?> 
-										<td><center><? echo empty($result['eTotal24']) ? '' : $result['eTotal24']; ?></center></td>
+									<? if ($show['twiceFail']) { ?>
+										<td><center><? echo empty($result['eTwiceFail']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
+									<? } ?>
+									<? if ($show['passHalf']) { ?>
+										<td><center><? echo empty($result['ePassHalf']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
+									<? } ?>
+									<? if ($show['passHalfCSMath']) { ?>
+										<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
+									<? } ?>
+									<? if ($show['24units']) { ?> 
+										<td><center><? echo empty($result['eTotal24']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
 									<? } ?>
 								</tr>
 							<? } ?>
@@ -154,10 +173,16 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
-								<th width="15%"><center>Twice Fail</center></th>
-								<th width="15%"><center>50% Passing</center></th>
-								<th width="15%"><center>Math/CS 50%</center></th>
-								<? if ($show24Units) { ?> 
+								<? if ($show['twiceFail']) { ?>
+									<th width="15%"><center>Twice Fail</center></th>
+								<? } ?>
+								<? if ($show['passHalf']) { ?>
+									<th width="15%"><center>50% Passing</center></th>
+								<? } ?>
+								<? if ($show['passHalfCSMath']) { ?>
+									<th width="15%"><center>Math/CS 50%</center></th>
+								<? } ?>
+								<? if ($show['24units']) { ?> 
 									<th width="15%"><center>24 units</center></th>
 								<? } ?>
 								</tr>
@@ -167,16 +192,24 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && !($show24Units && empty($result['eTotal24']))) { ?>
+								<? if (!($show['twiceFail'] && !empty($result['eTwiceFail'])) && 
+										!($show['passHalf'] && !empty($result['ePassHalf'])) && 
+										!($show['passHalfCSMath'] && !empty($result['ePassHalfMathCS'])) && 
+										!($show['24units'] && !empty($result['eTotal24']))) { ?>
 									<? $added = true; ?>
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
 										<td><center><? echo $result['name'];?></center></td>
-										<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>
-										<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>
-										<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
-										
-										<? if ($show24Units) { ?> 
+										<? if ($show['twiceFail']) { ?>
+											<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>									
+										<? } ?>
+										<? if ($show['passHalf']) { ?>
+											<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>									
+										<? } ?>
+										<? if ($show['passHalfCSMath']) { ?>
+											<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
+										<? } ?>
+										<? if ($show['24units']) { ?> 
 											<td><center><? echo empty($result['eTotal24']) ? '' : $result['eTotal24']; ?></center></td>
 										<? } ?>
 									</tr>
@@ -201,10 +234,16 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
+								<? if ($show['twiceFail']) { ?>
 								<th width="15%"><center>Twice Fail</center></th>
+								<? } ?>
+								<? if ($show['passHalf']) { ?>
 								<th width="15%"><center>50% Passing</center></th>
+								<? } ?>
+								<? if ($show['passHalfCSMath']) { ?>
 								<th width="15%"><center>Math/CS 50%</center></th>
-								<? if ($show24Units) { ?> 
+								<? } ?>
+								<? if ($show['24units']) { ?> 
 									<th width="15%"><center>24 units</center></th>
 								<? } ?>
 							</tr>
@@ -214,16 +253,25 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && !($show24Units && empty($result['eTotal24']))) { ?>
+								<? if (!($show['twiceFail'] && !empty($result['eTwiceFail'])) && 
+										!($show['passHalf'] && !empty($result['ePassHalf'])) && 
+										!($show['passHalfCSMath'] && !empty($result['ePassHalfMathCS'])) && 
+										!($show['24units'] && !empty($result['eTotal24']))) { ?>
 								<? } else { ?>
 									<? $added = true; ?>
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
 										<td><center><? echo $result['name'];?></center></td>
-										<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>
-										<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>
-										<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
-										<? if ($show24Units) { ?> 
+										<? if ($show['twiceFail']) { ?>
+											<td><center><? echo empty($result['eTwiceFail']) ? '' : $result['eTwiceFail']; ?></center></td>									
+										<? } ?>
+										<? if ($show['passHalf']) { ?>
+											<td><center><? echo empty($result['ePassHalf']) ? '' : $result['ePassHalf']; ?></center></td>									
+										<? } ?>
+										<? if ($show['passHalfCSMath']) { ?>
+											<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : $result['ePassHalfMathCS']; ?></center></td>
+										<? } ?>
+										<? if ($show['24units']) { ?> 
 											<td><center><? echo empty($result['eTotal24']) ? '' : $result['eTotal24']; ?></center></td>
 										<? } ?>
 									</tr>

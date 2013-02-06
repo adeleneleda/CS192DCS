@@ -158,8 +158,8 @@ class Coursestatistics_model extends CI_Model {
 		}
 	return false;    
   }
-  
-   public function whole_index_of_discrimination($sem, $courseid) {  
+	
+	public function whole_index_of_discrimination($sem, $courseid) {  
 		$pass1 = 0;
 		$pass2 = 0;
         $currentsem = $this->db->query('SELECT termid FROM terms WHERE name = \'' . $sem . '\';');
@@ -221,7 +221,7 @@ class Coursestatistics_model extends CI_Model {
   
   
   }
-	
+  
 	public function index_of_discrimination($sem, $courseid, $instructorname){
 		$pass1 = 0;
 		$pass2 = 0;
@@ -285,7 +285,7 @@ class Coursestatistics_model extends CI_Model {
             return $iod;
 	}
   
-	   public function make_csv($classid = null, $courseid) {
+	public function make_csv($classid = null, $courseid) {
   
 	if($classid != null) {
 	$query = 'select gradename, (select count(*) from studentclasses where studentclasses.gradeid = grades.gradeid and 
@@ -319,6 +319,14 @@ class Coursestatistics_model extends CI_Model {
 			$results = $this->db->query($query);
 			$result = $results->result_array();
 			return $result[0];
+		
+	 }
+	 
+	 public function get_coursename($courseid){
+			$query = 'select coursename from courses where courseid in ('.$courseid.')';
+			$results = $this->db->query($query);
+			$result = $results->result_array();
+			return $result[0]['coursename'];
 		
 	 }
 }

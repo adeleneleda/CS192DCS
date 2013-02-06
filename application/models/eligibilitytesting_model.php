@@ -16,7 +16,20 @@ class EligibilityTesting_Model extends CI_Model {
 		$results = $this->db->query('SELECT studentid, studentno, firstname || \' \' || middlename || \' \' || lastname as name FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) WHERE studentterms.termid = ' . $termid . ' AND studentno ILIKE \'' . $year . '%\'');
 		
 		$final = $results->result_array();
-		//print_r($final);
+		return $final;
+	}
+	
+	public function get_studentsofyear($termid, $year) {
+		$termid = (int) ($termid / 10);
+		$year1 = $termid * 10 + 1;
+		$year2 = $termid * 10 + 2;
+		$year3 = $termid * 10 + 3;
+		$results = $this->db->query('SELECT DISTINCT studentid, studentno, 
+			firstname || \' \' || middlename || \' \' || lastname as name 
+			FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) 
+			WHERE studentterms.termid IN (' . $year1 . ', ' . $year2 . ', ' . $year3 . ') AND studentno ILIKE \'' . $year . '%\'');
+		
+		$final = $results->result_array();
 		return $final;
 	}
 	
@@ -48,5 +61,11 @@ class EligibilityTesting_Model extends CI_Model {
 		$results = $this->db->query('SELECT * FROM f_elig_24unitspassed(' . $termid . ')');
 		$final = $results->result_array();
 		return $final;
+	}
+	
+	public function get_termname($termid) {
+		$results = $this->db->query('SELECT name FROM terms WHERE ('. $termid .') = termid');
+		$final = $results->result_array();
+		return $final[0];
 	}
 }

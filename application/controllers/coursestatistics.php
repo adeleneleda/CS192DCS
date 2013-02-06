@@ -70,7 +70,7 @@ class Coursestatistics extends Main_Controller {
 			
 			//meli end
 		}
-		$this->load_view('coursestatistics_view', compact('iod','selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
+		$this->load_view('coursestatistics_view', compact('overall_iod','iod','selected', 'search_results', 'dropdown','section_info', 'term_info', 'instructor_info'));
 	}
 	
 	public function stat() {
@@ -92,15 +92,21 @@ class Coursestatistics extends Main_Controller {
 
 	public function generate_csv() {
 		$temp = $this->Model->make_csv($_POST['csv_classid'], $_POST['csv_courseid']);
-		$temp2 = $this->Model->get_classname($_POST['csv_classid']);
-
+		
+		if($_POST['csv_classid'] != null) $temp2 = $this->Model->get_classname($_POST['csv_classid']);
+		else{ 
+			$temp2['coursename'] = $this->Model->get_coursename($_POST['csv_courseid']);
+			$temp2['section'] = "<>";
+			$temp2['termid'] = "<>";
+		}
+		
 		$add = "\"Index of Discrimination\", ".$_POST['csv_iod'].",\n\"Passing Rate\",\"".$_POST['csv_passingrate']."\",\n\n";
 		//echo $add.$temp;
 		//die();
-		
 		header("Content-type: text/csv");
+		$name = str_replace(' ', '', $temp2['coursename']);
+		header("Content-Disposition: attachment; filename=".$name."_".$temp2['section']."_".$temp2['termid'].".csv");
 		header("Content-length:". strlen($temp));
-		header("Content-Disposition: attachment; filename=".$temp2['coursename']."_".$temp2['section']."_".$temp2['termid'].".csv");
 		
 		echo $add.$temp;
 		exit;

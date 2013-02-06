@@ -74,7 +74,14 @@ $(function() {
                     while($ctr < sizeof($year))
                     {
                     ?>
-					  <option value="<?php echo $year[$ctr]?>"><?php echo $year[$ctr]?></option>
+					  <option value="<?php echo $year[$ctr]?>"
+					  <?php if($year[$ctr] == $currentyear)
+                                {   
+                                ?>
+                                selected = "selected"
+                                <?php
+                                }?>>
+                      <?php echo $year[$ctr]?></option>
                       <?php $ctr++; }?>
 					</select>
 					<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
@@ -85,18 +92,42 @@ $(function() {
 				<label class="control-label" for="select02">Semester</label>
 				<div class="controls">
 					<select id = "focus_here" name="semester">
-						<option value="1">1st Year, 1st Sem</option>
-						<option value="2">1st Year, 2nd Sem</option>
-						<option value="3">1st Year, Summer</option>
-						<option value="11">2nd Year, 1st Sem</option>
-						<option value="12">2nd Year, 2nd Sem</option>
-                        <option value="13">2nd Year, Summer</option>
-						<option value="21">3rd Year, 1st Sem</option>
-						<option value="22">3rd Year, 2nd Sem</option>
-						<option value="23">3rd Year, Summer</option>
-						<option value="31">4th Year, 1st Sem</option>
-						<option value="32">4th Year, 2nd Sem</option>
-						<option value="33">4th Year, Summer</option>
+						<option value="1" <?php if($currentsem == 1)
+                        {?>selected="selected" <?php
+                        }?>>1st Year, 1st Sem</option>
+						<option value="2" <?php if($currentsem == 2)
+                        {?>selected="selected" <?php
+                        }?>>1st Year, 2nd Sem</option>
+						<option value="3" <?php if($currentsem == 3)
+                        {?>selected="selected" <?php
+                        }?>>1st Year, Summer</option>
+						<option value="11" <?php if($currentsem == 11)
+                        {?>selected="selected" <?php
+                        }?>>2nd Year, 1st Sem</option>
+						<option value="12" <?php if($currentsem == 12)
+                        {?>selected="selected" <?php
+                        }?>>2nd Year, 2nd Sem</option>
+                        <option value="13" <?php if($currentsem == 13)
+                        {?>selected="selected" <?php
+                        }?>>2nd Year, Summer</option>
+						<option value="21" <?php if($currentsem == 21)
+                        {?>selected="selected" <?php
+                        }?>>3rd Year, 1st Sem</option>
+						<option value="22" <?php if($currentsem == 22)
+                        {?>selected="selected" <?php
+                        }?>>3rd Year, 2nd Sem</option>
+						<option value="23" <?php if($currentsem == 23)
+                        {?>selected="selected" <?php
+                        }?>>3rd Year, Summer</option>
+						<option value="31" <?php if($currentsem == 31)
+                        {?>selected="selected" <?php
+                        }?>>4th Year, 1st Sem</option>
+						<option value="32" <?php if($currentsem == 32)
+                        {?>selected="selected" <?php
+                        }?>>4th Year, 2nd Sem</option>
+						<option value="33" <?php if($currentsem == 33)
+                        {?>selected="selected" <?php
+                        }?>>4th Year, Summer</option>
 					</select> 
 				</div>
 			</div>
@@ -107,11 +138,11 @@ $(function() {
 		<table id="students" class="tablesorter">
 			<thead>
 			  <tr>
-				<th>Name</th>
-				<th>GWA</th>
-				<th>CWA</th>
-				<th>CS GWA</th>
-				<th>Math GWA</th>
+				<th style="width:30%">Name</th>
+				<th style="width:18%">GWA</th>
+				<th style="width:18%">CWA</th>
+				<th style="width:18%">CS GWA</th>
+				<th style="width:18%">Math GWA</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -135,12 +166,17 @@ $(function() {
 		 else {
 		 ?>
 		 <tr>
-			<td colspan = 5><center>No Students Found</center></td>
-			</tr>
+			<th colspan="5" style="text-decoration:none"><center>No Students Found</center></th>
+		</tr>
 		 <?php
 		 }
 		 ?>
 			</tbody>
 		</table>
+		<form method="post" action="<?= base_url('studentrankings/generate_csv')?>">
+				<input type="hidden" name="csv_year" value="<?= $this->input->post("year")?>">
+				<input type="hidden" name="csv_sem" value="<?= $this->input->post('semester')?>">
+				<input class="btn btn-primary" type="submit" value="Download CSV"/>
+		</form>
 	</div>
 </div>

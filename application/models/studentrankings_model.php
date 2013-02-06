@@ -70,6 +70,23 @@ class StudentRankings_Model extends CI_Model {
         $results = $results->result_array();
 		return $results;
     }
+	
+	function make_csv($sem, $year){
+	$results = $this->db->query('SELECT DISTINCT a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), cwaproto4(a.studentid), csgwa(a.studentid), mathgwa(a.studentid)
+        FROM (SELECT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
+
+		
+	if($results->num_rows() > 0)
+		{
+			$this->load->dbutil();
+			$delimiter = ",";
+			$newline = "\r\n";
+			$temp = $this->dbutil->csv_from_result($results, $delimiter, $newline);
+			
+			return $temp;
+		}
+	return false;    
+	}
     //working
     /*function get_gwa($sem)
     {
