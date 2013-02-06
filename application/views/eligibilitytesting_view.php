@@ -1,5 +1,6 @@
 <script>	
 $(document).ready(function() { 
+	document.getElementById('focus_here').focus()
 	$('#sr').removeClass('active');
 	$('#cs').removeClass('active');
 	$('#et').addClass('active');
@@ -88,7 +89,7 @@ $(function() {
 				<div class="control-group">
 				<label class="control-label" for="select02">Semester</label>
 				<div class="controls">
-				<select name="termid" id="select02">
+				<select name="termid" id="focus_here">
 					<? foreach($terms as $r) { ?>
 						<option value="<?=$r['termid']?>" 
 							<?=($r['termid'] == $activetermid) ? 'selected' : ''?>>
