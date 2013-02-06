@@ -135,7 +135,7 @@ $(function() {
 		 else {
 		 ?>
 		 <tr>
-			<td colspan = 5><center><em>No Search Results</em></center></td>
+			<td colspan = 5><center>No Students Found</center></td>
 			</tr>
 		 <?php
 		 }
