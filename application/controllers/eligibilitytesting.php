@@ -134,7 +134,7 @@ class Eligibilitytesting extends Main_Controller {
 		}*/
 		$terms = $this->Model->get_terms();
 		$temp2 = $this->Model->get_termname($activetermid);
-		
+		$name = str_replace(' ', '', $temp2['name']);
 		
 		$return = "\"student no.\",\"student name\",";
 		if($show['twiceFail']) $return = $return."\"twiceFail\",";
@@ -156,7 +156,7 @@ class Eligibilitytesting extends Main_Controller {
 		//$return =
 		header("Content-type: text/csv");
 		header("Content-length:". strlen($return));
-		header("Content-Disposition: attachment; filename=".$temp2['name']."_ineligibilities.csv");
+		header("Content-Disposition: attachment; filename=".$name."_ineligibilities.csv");
 		
 		echo $return;
 		exit;

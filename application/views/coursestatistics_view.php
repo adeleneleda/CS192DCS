@@ -151,7 +151,7 @@
 				<?if(empty($search_results)){
 					echo '<a class="btn btn-primary disabled">View Statistics</a>';
 				}else{
-					echo '<input class="btn btn-primary" type="submit" value="View Statistics"></input>';
+					echo '<input class="btn btn-primary" type="submit" value="View Course Statistics"></input>';
 				}?>
 			</form>
 			</td>
