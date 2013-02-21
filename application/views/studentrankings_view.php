@@ -88,46 +88,39 @@ $(function() {
 				</div>
 			</div>
 			</br>
+            <div class="control-group">
+				<label class="control-label" for="select02">Year</label>
+				<div class="controls">
+					<select id = "focus_here" name="cyear">
+						<option value="0" <?php if($yearlvl == 0)
+                        {?>selected="selected" <?php
+                        }?>>1st</option>
+						<option value="1" <?php if($yearlvl == 1)
+                        {?>selected="selected" <?php
+                        }?>>2nd</option>
+						<option value="2" <?php if($yearlvl == 2)
+                        {?>selected="selected" <?php
+                        }?>>3rd</option>
+                        <option value="3" <?php if($yearlvl == 3)
+                        {?>selected="selected" <?php
+                        }?>>4th</option>
+					</select> 
+				</div>
+			</div>
+            </br>
 			<div class="control-group">
-				<label class="control-label" for="select02">Semester</label>
+				<label class="control-label" for="select03">Semester</label>
 				<div class="controls">
 					<select id = "focus_here" name="semester">
 						<option value="1" <?php if($currentsem == 1)
                         {?>selected="selected" <?php
-                        }?>>1st Year, 1st Sem</option>
+                        }?>>1st Sem</option>
 						<option value="2" <?php if($currentsem == 2)
                         {?>selected="selected" <?php
-                        }?>>1st Year, 2nd Sem</option>
+                        }?>>2nd Sem</option>
 						<option value="3" <?php if($currentsem == 3)
                         {?>selected="selected" <?php
-                        }?>>1st Year, Summer</option>
-						<option value="11" <?php if($currentsem == 11)
-                        {?>selected="selected" <?php
-                        }?>>2nd Year, 1st Sem</option>
-						<option value="12" <?php if($currentsem == 12)
-                        {?>selected="selected" <?php
-                        }?>>2nd Year, 2nd Sem</option>
-                        <option value="13" <?php if($currentsem == 13)
-                        {?>selected="selected" <?php
-                        }?>>2nd Year, Summer</option>
-						<option value="21" <?php if($currentsem == 21)
-                        {?>selected="selected" <?php
-                        }?>>3rd Year, 1st Sem</option>
-						<option value="22" <?php if($currentsem == 22)
-                        {?>selected="selected" <?php
-                        }?>>3rd Year, 2nd Sem</option>
-						<option value="23" <?php if($currentsem == 23)
-                        {?>selected="selected" <?php
-                        }?>>3rd Year, Summer</option>
-						<option value="31" <?php if($currentsem == 31)
-                        {?>selected="selected" <?php
-                        }?>>4th Year, 1st Sem</option>
-						<option value="32" <?php if($currentsem == 32)
-                        {?>selected="selected" <?php
-                        }?>>4th Year, 2nd Sem</option>
-						<option value="33" <?php if($currentsem == 33)
-                        {?>selected="selected" <?php
-                        }?>>4th Year, Summer</option>
+                        }?>>Summer</option>
 					</select> 
 				</div>
 			</div>
@@ -138,6 +131,7 @@ $(function() {
 		<table id="students" class="tablesorter">
 			<thead>
 			  <tr>
+                <th style="width:18%">Student #</th>
 				<th style="width:30%">Name</th>
 				<th style="width:18%">GWA</th>
 				<th style="width:18%">CWA</th>
@@ -153,6 +147,7 @@ $(function() {
 		 while($ctr < sizeof($name))
 		 {?>
 			<tr>
+            <td> <?php echo $name[$ctr]['studentno']; ?> </td>
 			<td> <?php echo $name[$ctr]['lastname'] . ', ' . $name[$ctr]['firstname'] . ' ' . $name[$ctr]['middlename']; ?> </td>
 			<td> <?php echo $name[$ctr]['gwa']; ?> </td>
 			<td> <?php echo $name[$ctr]['cwaproto4']; ?> </td>
