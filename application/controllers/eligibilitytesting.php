@@ -17,7 +17,7 @@ class Eligibilitytesting extends Main_Controller {
 
 	public function load_students() {
 		if(!empty($_POST)){
-			$activetermid = $this->input->post('termid');
+			$activetermid = $this->input->post('yearid') * 10 + $this->input->post('semid');
 			$activeyear = $this->input->post('year');
 		} else {
 			$activetermid = $this->session->userdata('activetermid');
@@ -59,25 +59,16 @@ class Eligibilitytesting extends Main_Controller {
 				if ($oneStudent['studentid'] == $oneFail['studentid'])
 					$students[$studentKey]['eTotal24'] = 'X';
 		}
+		$studentyears = $this->Model->get_studentyears();
+		$temp = array(array('yearid' => '%', 'year' => 'All'));
+		$studentyears = array_merge($temp, $studentyears);
 		$years = $this->Model->get_years();
-		$terms = $this->Model->get_terms();
 		$sems = $this->Model->get_semesters();
 		
-		$this->load_view('eligibilitytesting_view', compact('students', 'years', 'terms', 'sems', 'activeyear', 'activetermid', 'show'));
+		$this->load_view('eligibilitytesting_view', compact('students', 'studentyears', 'years', 'sems', 'activeyear', 'activetermid', 'show'));
 	}
 	
 	public function generate_csv() {
-		/*if(!empty($_POST)){
-			$activetermid = $this->input->post('termid');
-			$activeyear = $this->input->post('year');
-		} else {
-			$activetermid = $this->session->userdata('activetermid');
-			$activeyear = $this->session->userdata('activeyear');
-		}
-		if (empty($activetermid))
-			$activetermid = 20091;
-		if (empty($activeyear))
-			$activeyear = '%';*/
 		$activetermid = $_POST['activetermid'];
 		$activeyear = $_POST['activeyear'];
 		$this->session->set_userdata('activetermid', $activetermid);
@@ -88,7 +79,6 @@ class Eligibilitytesting extends Main_Controller {
 		$show['passHalf'] = ($activetermid % 10 < 3) ? true : false;
 		$show['passHalfCSMath'] = ($activetermid % 10 < 3) ? true : false;
 		$show['24units'] = ($activetermid % 10 == 3) ? true : false;
-
 		
 		if ($activetermid % 10 == 3) {
 			$students = $this->Model->get_studentsofyear($activetermid, $activeyear);

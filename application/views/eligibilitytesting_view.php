@@ -66,48 +66,47 @@ $(function() {
 		<h3>Search Students</h3>
 		<div class="well form-search">
 			<form action="<?=base_url('eligibilitytesting/load_students')?>" method="post"> 
-
-			<? $yearhard = array(0 => array('value' => '%', 'str' => 'All'),
-			1 => array('value' => '2009', 'str' => '2009'),
-			2 => array('value' => '2010', 'str' => '2010'),
-			3 => array('value' => '2011', 'str' => '2011'),
-			4 => array('value' => '2012', 'str' => '2012'),) ?>
 				<div class="control-group">
 					<label class="control-label" for="select01">Year of Students</label>
 					<div class="controls">
 						<select name="year" id="select01" style="width:180px">
-							<? foreach($yearhard as $r) { ?>
-								<option value="<?=$r['value']?>" <?=($r['value'] == $activeyear) ? 'selected' : ''?>>
-									<? echo $r['str'] ?>
+							<? foreach($studentyears as $r) { ?>
+								<option value="<?=$r['yearid']?>" <?=($r['yearid'] == $activeyear) ? 'selected' : ''?>>
+									<? echo $r['year'] ?>
 								</option>
 							<? } ?>
 						</select>
-						<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
 					</div>
 				</div>
-				</br>
+				<br />
 				<div class="control-group">
 					<label class="control-label" for="select02">Academic Year</label>
 					<div class="controls">
-					<select name="termid" id="focus_here">
-						<? foreach($terms as $r) { ?>
-							<option value="<?=$r['termid']?>" 
-								<?=($r['termid'] == $activetermid) ? 'selected' : ''?>>
-								<? echo $r['name'] ?>
-							</option>
-						<? } ?>
-					</select>
+						<select name="yearid" id="focus_here">
+							<? foreach($years as $r) { ?>
+								<option value="<?=$r['yearid']?>" <?=($r['yearid'] == intval($activetermid / 10)) ? 'selected' : ''?>>
+									<? echo $r['year'] ?>
+								</option>
+							<? } ?>
+						</select>
 					</div>
 				</div>
 				<br />
 				<div class="control-group">
 					<label class="control-label" for="select02">Semester</label>
 					<div class="controls">
-					<select name="termid" id="focus_here">
-						
+					<select name="semid" id="focus_here">
+						<? foreach($sems as $id => $r) { ?>
+							<option value="<?=$id?>" 
+								<?=($id == $activetermid % 10) ? 'selected' : ''?>>
+								<? echo $r ?>
+							</option>
+						<? } ?>
 					</select>
 					</div>
 				</div>
+				<br />
+				<button type="submit" class="btn btn-primary">Search</button>
 			</form>
 		</div>
 	</div>

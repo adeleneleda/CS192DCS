@@ -18,6 +18,12 @@ class Base_Model extends CI_Model {
 		return $final;
 	}
 	
+	public function get_studentyears() {
+		$results = $this->db->query('select year as yearid, year from (select distinct left(studentno, 4) as year from students ORDER BY year) as temp');
+		$final = $results->result_array();
+		return $final;
+	}
+	
 	public function get_years() {
 		$results = $this->db->query('SELECT termid / 10 as yearid, year FROM terms GROUP BY yearid, year ORDER BY yearid');
 		$final = $results->result_array();
