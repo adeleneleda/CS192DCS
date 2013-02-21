@@ -36,7 +36,9 @@ class Coursestatistics extends Main_Controller {
 			}
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
-			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'],  $selected['instructorid'], $selected['sectionid']);
+			//$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'],  $selected['instructorid'], $selected['sectionid']);
+			$search_results = $this->Model->search($selected['courseid'],'2012-2013', '2012-2013', '1st', 'Sum',  $selected['instructorid'], $selected['sectionid']);
+			//public function search($courseid, $startyear, $endyear, $startsem, $endsem,  $instructorid, $section) {
 			//print_r($search_results);
 			//die();
 			//meli adelen
@@ -59,7 +61,9 @@ class Coursestatistics extends Main_Controller {
 			}else{
 				$selected = $this->session->userdata('coursestat');
 			}
-			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['instructorid'],$selected['sectionid']);
+			//$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['instructorid'],$selected['sectionid']);
+			$search_results = $this->Model->search($selected['courseid'],'2012-2013', '2012-2013', '1st', 'Sum',  $selected['instructorid'], $selected['sectionid']);
+			
 			//meli and adleen
 			$iod = array();
 			foreach($search_results as $indiv_search) {

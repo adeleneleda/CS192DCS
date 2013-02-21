@@ -20,7 +20,6 @@ class Coursestatistics_model extends CI_Model {
   }
   
    public function term_info() {
-  
 	$query = "select termid, name from terms;";
 	$results = $this->db->query($query);
 		
@@ -30,8 +29,21 @@ class Coursestatistics_model extends CI_Model {
 			return $temp;
 		}
 	return false;
-  
   }
+  
+  public function get_years() {
+  
+	$query = "select distinct year from terms;";
+	$results = $this->db->query($query);
+		
+	if($results->num_rows() > 0)
+		{
+			$temp = $results->result_array();
+			return $temp;
+		}
+	return false;
+  }
+  
   
   
      public function instructor_info() {
