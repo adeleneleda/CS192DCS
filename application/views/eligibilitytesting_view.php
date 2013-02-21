@@ -73,31 +73,40 @@ $(function() {
 			3 => array('value' => '2011', 'str' => '2011'),
 			4 => array('value' => '2012', 'str' => '2012'),) ?>
 				<div class="control-group">
-				<label class="control-label" for="select01">Year of Students</label>
-				<div class="controls">
-				<select name="year" id="select01" style="width:180px">
-					<? foreach($yearhard as $r) { ?>
-						<option value="<?=$r['value']?>" <?=($r['value'] == $activeyear) ? 'selected' : ''?>>
-							<? echo $r['str'] ?>
-						</option>
-					<? } ?>
-				</select>
-				<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
-				</div>
+					<label class="control-label" for="select01">Year of Students</label>
+					<div class="controls">
+						<select name="year" id="select01" style="width:180px">
+							<? foreach($yearhard as $r) { ?>
+								<option value="<?=$r['value']?>" <?=($r['value'] == $activeyear) ? 'selected' : ''?>>
+									<? echo $r['str'] ?>
+								</option>
+							<? } ?>
+						</select>
+						<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
+					</div>
 				</div>
 				</br>
 				<div class="control-group">
-				<label class="control-label" for="select02">Semester</label>
-				<div class="controls">
-				<select name="termid" id="focus_here">
-					<? foreach($terms as $r) { ?>
-						<option value="<?=$r['termid']?>" 
-							<?=($r['termid'] == $activetermid) ? 'selected' : ''?>>
-							<? echo $r['name'] ?>
-						</option>
-					<? } ?>
-				</select>
+					<label class="control-label" for="select02">Academic Year</label>
+					<div class="controls">
+					<select name="termid" id="focus_here">
+						<? foreach($terms as $r) { ?>
+							<option value="<?=$r['termid']?>" 
+								<?=($r['termid'] == $activetermid) ? 'selected' : ''?>>
+								<? echo $r['name'] ?>
+							</option>
+						<? } ?>
+					</select>
+					</div>
 				</div>
+				<br />
+				<div class="control-group">
+					<label class="control-label" for="select02">Semester</label>
+					<div class="controls">
+					<select name="termid" id="focus_here">
+						
+					</select>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -34,7 +34,7 @@ class EligibilityTesting_Model extends CI_Model {
 	}
 	
 	public function get_terms() {
-		$results = $this->db->query('SELECT termid, name FROM terms');
+		$results = $this->db->query('SELECT termid, name FROM terms ORDER BY termid');
 		$final = $results->result_array();
 		return $final;
 	}
