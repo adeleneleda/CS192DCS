@@ -88,9 +88,9 @@ class Coursestatistics_model extends Base_Model {
 			JOIN persons using (personid)
 			JOIN terms USING (termid)  
 			WHERE courseid = ".$courseid." 
-			AND termid <= (select termid from terms where year ilike '".$endyear."' and sem ilike '".$endsem."') 
-			 AND termid >= (select termid from terms where year ilike '".$startyear."' and sem ilike '".$startsem."') AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
-			 
+			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
+			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
+
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
