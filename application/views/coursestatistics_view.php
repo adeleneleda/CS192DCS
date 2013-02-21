@@ -49,47 +49,79 @@
 		<div id="advanced_search_div" class="well" >
 			<legend>Advanced Search</legend>
 			<div class="control-group">
-				<label class="control-label" for="select01">Start Academic Term</label>
-				<div class="controls">
-					<select name = 'starttermid' id="select01">
-					<?/*<option>Beginning of Time</option>
-					<option>2010 1st Sem</option>
-					<option>2010 2nd Sem</option>
-					<option>2010 Summer</option>
-					<option>2011 1st Sem</option>*/?>
-					<option value="0">Beginning of time</option>
-					<? 	$default_startterm = "Beginning of time";
-						foreach ($term_info as $term) {
-						if($selected['starttermid'] == $term['termid']){
-							echo "<option selected=\"selected\" value = ".$term['termid'].">".$term['name']."</option>";
-							$default_startterm = $term['name'];
-						}else{
-							echo "<option value = ".$term['termid'].">".$term['name']."</option>";
-						}	
-					}?>
-					
-					</select>
-				</div>
+				<label class="control-label" for="select01"><b>Start Academic Term</b></label>
+				<table width="100%">
+				<tr>
+					<td width="50%">Semester</td>
+					<td width="50%">Year</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="controls">
+							<select style="width:90%" name = 'startsem' id="select01">
+							<option <? if($selected['startsem'] == '1st')  echo 'selected="selected"';?> value="1st">1st</option>
+							<option <? if($selected['startsem'] == '2nd')  echo 'selected="selected"';?> value="2nd">2nd</option>
+							<option <? if($selected['startsem'] == 'sum')  echo 'selected="selected"';?> value="sum">Summer</option>
+							</select>
+						</div>
+					</td>
+					<td>
+						<div class="controls">
+							<select style="width:100%" name = 'starttermid' id="select01">
+							<option value="2008-2009">2007-2008</option>
+							<? 	$default_startterm = "Beginning of time";
+								foreach ($year_info as $term) {
+								if($selected['starttermid'] == $term['year']){
+									echo "<option selected=\"selected\" value = ".$term['year'].">".$term['year']."</option>";
+									$default_startterm = $term['year'];
+								}else{
+									echo "<option value = ".$term['year'].">".$term['year']."</option>";
+								}	
+							}?>
+							</select>
+						</div>
+					</td>
+				</tr>
+				</table>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="select01">End Academic Term</label>
-				<div class="controls">
-					<select name = 'endtermid' id="select01">
-					<option value="-1">Current</option>
-					<?	$default_endterm = "Current";
-						foreach ($term_info as $term) {
-						if($selected['endtermid'] == $term['termid']){
-							echo "<option selected=\"selected\" value = ".$term['termid'].">".$term['name']."</option>";
-							$default_endterm = $term['name'];
-						}else{
-							echo "<option value = ".$term['termid'].">".$term['name']."</option>";
-						}
-					}?>
-					</select>
-				</div>
+				<label class="control-label" for="select01"><b>End Academic Term</b></label>
+				<table width="100%">
+				<tr>
+					<td width="50%">Semester</td>
+					<td width="50%">Year</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="controls">
+							<select style="width:90%" name = 'endsem' id="select01">
+							<option <? if($selected['endsem'] == '1st')  echo 'selected="selected"';?> value="1st">1st</option>
+							<option <? if($selected['endsem'] == '2nd')  echo 'selected="selected"';?> value="2nd">2nd</option>
+							<option <? if($selected['endsem'] == 'sum')  echo 'selected="selected"';?> value="sum">Summer</option>
+							</select>
+						</div>
+					</td>
+					<td>
+						<div class="controls">
+							<select style="width:100%" name = 'endtermid' id="select01">
+							<option value="2012-2013">2013-2014</option>
+							<?	$default_endterm = "Current";
+								foreach ($year_info as $term) {
+								if($selected['endtermid'] == $term['year']){
+									echo "<option selected=\"selected\" value = ".$term['year'].">".$term['year']."</option>";
+									$default_endterm = $term['year'];
+								}else{
+									echo "<option value = ".$term['year'].">".$term['year']."</option>";
+								}
+							}?>
+							</select>
+						</div>
+					</td>
+				</tr>
+			</table>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="select01">Instructor</label>
+				<label class="control-label" for="select01"><b>Instructor</b></label>
 				<div class="controls">
 					<select name = 'instructor' id="select01">
 					<option value="-1">Any</option>
@@ -106,7 +138,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="select01">Section</label>
+				<label class="control-label" for="select01"><b>Section</b></label>
 				<div class="controls">
 					<select name = 'section' id="focus_here">
 					<option value="">Any</option>
