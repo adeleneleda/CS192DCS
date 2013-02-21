@@ -1,5 +1,6 @@
 <?
-class StudentRankings_Model extends CI_Model {
+require_once('base_model.php');
+class StudentRankings_Model extends Base_Model {
 
     function __construct()
     {

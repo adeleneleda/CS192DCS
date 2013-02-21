@@ -1,5 +1,6 @@
 <?php
-class Coursestatistics_model extends CI_Model {
+require_once('base_model.php');
+class Coursestatistics_model extends Base_Model {
    public function __construct()
    {
       parent::__construct();

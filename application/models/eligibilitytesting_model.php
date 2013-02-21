@@ -1,4 +1,5 @@
 <?php
+require_once('base_model.php');
 /*
  * Unit_model
  * An easier way to construct your unit testing
@@ -6,7 +7,7 @@
  *
  * @author sjlu
  */
-class EligibilityTesting_Model extends CI_Model {
+class EligibilityTesting_Model extends Base_Model {
 
 	public function __construct() {
 		parent::__construct();

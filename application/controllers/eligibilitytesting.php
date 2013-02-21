@@ -59,10 +59,11 @@ class Eligibilitytesting extends Main_Controller {
 				if ($oneStudent['studentid'] == $oneFail['studentid'])
 					$students[$studentKey]['eTotal24'] = 'X';
 		}
+		$years = $this->Model->get_years();
 		$terms = $this->Model->get_terms();
+		$sems = $this->Model->get_semesters();
 		
-		//print_r($students);
-		$this->load_view('eligibilitytesting_view', compact('students', 'terms', 'activeyear', 'activetermid', 'show'));
+		$this->load_view('eligibilitytesting_view', compact('students', 'years', 'terms', 'sems', 'activeyear', 'activetermid', 'show'));
 	}
 	
 	public function generate_csv() {
