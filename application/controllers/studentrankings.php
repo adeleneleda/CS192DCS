@@ -9,22 +9,24 @@ class StudentRankings extends CI_Controller {
     public function get_students()
     {
         $yearlevel = $this->input->post("year");
-        $year = $this->Model->get_years();
+        $year = $this->Model->get_studentyears();
         $semester = $this->input->post('semester');
         $yearlvl = $this->input->post('cyear');
-        $sem = ($yearlevel + $yearlvl)*10 + $semester; 
+        $sem = ($yearlvl)*10 + $semester; 
         $name = $this->Model->get_gwa($sem, $yearlevel);
         $this->session->set_userdata('thisyear', $yearlevel);
         $this->session->set_userdata('thissem', $semester);
         $currentyear = $this->session->userdata('thisyear');
         $currentsem = $this->session->userdata('thissem');
-        $this->load_view('studentrankings_view', compact('name', 'year', 'sem', 'currentyear', 'currentsem', 'yearlvl'));
+        $semarray = $this->Model->get_semesters();
+        $y = $this->Model->get_years();
+        $this->load_view('studentrankings_view', compact('name', 'year', 'sem', 'currentyear', 'currentsem', 'yearlvl', 'semarray', 'y'));
     }
     
     
     public function index()
     {
-        $year = $this->Model->get_years();
+        $year = $this->Model->get_studentyears();
 		$currentyear = $this->session->userdata('thisyear');
 		$currentsem = $this->session->userdata('thissem');
         $yearlvl = 0;
@@ -34,7 +36,9 @@ class StudentRankings extends CI_Controller {
 		$semester = $currentsem;
 		$sem = $yearlevel*10 + $semester; 
 		$name = $this->Model->get_gwa($sem, $yearlevel);
-        $this->load_view('studentrankings_view', compact('name', 'year', 'sem', 'currentyear', 'currentsem', 'yearlvl'));
+        $semarray = $this->Model->get_semesters();
+        $y = $this->Model->get_years();
+        $this->load_view('studentrankings_view', compact('name', 'year', 'sem', 'currentyear', 'currentsem', 'yearlvl', 'semarray', 'y'));
     }   
 	
 	public function generate_csv()
