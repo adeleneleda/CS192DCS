@@ -117,12 +117,7 @@ class Eligibilitytesting extends Main_Controller {
 			
 			array_push($temp_students, $temp);
 		}
-		/*
-		foreach($temp_students as $index=>$l){
-			if(empty($l['eTwiceFail'])) $temp_students[$index]['eTwiceFail'] = " ";
-			if(empty($l['ePassHalf'])) $temp_students[$index]['ePassHalf'] = " ";
-			if(empty($l['ePassHalfMathCS'])) $temp_students[$index]['ePassHalfMathCS'] = " ";
-		}*/
+		
 		$terms = $this->Model->get_terms();
 		$temp2 = $this->Model->get_termname($activetermid);
 		$name = str_replace(' ', '', $temp2['name']);
@@ -136,35 +131,13 @@ class Eligibilitytesting extends Main_Controller {
 		foreach($temp_students as $student){
 			$return =  $return.$this->arraytoCsv($student).",\r\n";
 		}
-		//print_r($temp_students);
-		//echo $return;
-		//die();
-		//$this->load->dbutil();
-		//$delimiter = ",";
-		//$newline = "\r\n";
-		//$temp = $this->dbutil->csv_from_result($terms, $delimiter, $newline);
-		//$temp = $this->dbutil->csv_from_result($terms);
-		//$return =
+		
 		header("Content-type: text/csv");
 		header("Content-length:". strlen($return));
 		header("Content-Disposition: attachment; filename=".$name."_ineligibilities.csv");
 		
 		echo $return;
 		exit;
-		//echo $add.$terms;
-		//exit;	*/
-			/*
-			$fp = fopen($temp2['name']."_ineligibilities".'.csv', 'w');
-			$array = array('studentid', 'student no.', 'student name', 'twice fail inelig.', '50% passing inelig.', 'Math/CS 50% inelig.', '24 units inelig.');
-			fputcsv($fp, $array); 
-			foreach ($students as $list){
-				
-				fputcsv($fp, $list);
-			}
-		
-		$this->load_view('eligibilitytesting_view', compact('students', 'terms', 'activeyear', 'activetermid', 'show24Units'));
-		fclose(fp);
-		*/
 	}
 	
 	function arrayToCsv( array &$fields, $delimiter = ',', $enclosure = '"', $encloseAll = false, $nullToMysqlNull = false ) {

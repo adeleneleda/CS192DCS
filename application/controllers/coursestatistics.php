@@ -9,14 +9,11 @@ class Coursestatistics extends Main_Controller {
 	
    public function index()
 	{
-		//$this->Model->search();
-		//display all?
 		$dropdown = $this->Model->dropdown_info();
 		
 		$section_info = $this->Model->section_info();
 		$year_info = $this->Model->get_years();
 		$instructor_info = $this->Model->instructor_info();
-		//print_r($year_info);
 		$default_courseid = $dropdown[0]['courseid'];
 		$default_startsem = '1st';
 		$default_starttermid = '2007-2008';
@@ -38,11 +35,6 @@ class Coursestatistics extends Main_Controller {
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'], $selected['startsem'], $selected['endsem'], $selected['instructorid'], $selected['sectionid']);
-			//$search_results = $this->Model->search($selected['courseid'],'2012-2013', '2012-2013', '1st', 'Sum',  $selected['instructorid'], $selected['sectionid']);
-			//public function search($courseid, $startyear, $endyear, $startsem, $endsem,  $instructorid, $section) {
-			//print_r($search_results);
-			//die();
-			//meli adelen
 			$iod = array();
 			if(!empty($search_results)){
 			foreach($search_results as $indiv_search) {
@@ -51,7 +43,6 @@ class Coursestatistics extends Main_Controller {
 			
 			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
 			}else{ $overall_iod = 'N/A'; }
-			//meli end
 		}else{
 			$temp = $this->session->userdata('coursestat');
 			if(empty($temp)){
@@ -67,20 +58,15 @@ class Coursestatistics extends Main_Controller {
 				$selected = $this->session->userdata('coursestat');
 			}
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['startsem'],$selected['endsem'],$selected['instructorid'],$selected['sectionid']);
-			//$search_results = $this->Model->search($selected['courseid'],'2012-2013', '2012-2013', '1st', 'Sum',  $selected['instructorid'], $selected['sectionid']);
-			
-			//meli and adleen
 			$iod = array();
 			if(!empty($search_results)){
 			foreach($search_results as $indiv_search) {
-				//echo "HEREEEEEEEEEEEEEE";
 				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
 			}
 			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
 			}else{
 				$overall_iod = "N/A";
 			}
-			//meli end
 		}
 		$this->load_view('coursestatistics_view', compact('overall_iod','iod','selected', 'search_results', 'dropdown','section_info', 'year_info', 'instructor_info'));
 	}
@@ -89,8 +75,6 @@ class Coursestatistics extends Main_Controller {
 		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
 		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
 		$iod = $_POST['iod'];
-		//$stat = $this->Model->results_graph(1, 1);
-		//print_r($stat);
 		
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
@@ -113,8 +97,6 @@ class Coursestatistics extends Main_Controller {
 		}
 		
 		$add = "\"Index of Discrimination\", ".$_POST['csv_iod'].",\n\"Passing Rate\",\"".$_POST['csv_passingrate']."\",\n\n";
-		//echo $add.$temp;
-		//die();
 		header("Content-type: text/csv");
 		$name = str_replace(' ', '', $temp2['coursename']);
 		header("Content-Disposition: attachment; filename=".$name."_".$temp2['section']."_".$temp2['termid'].".csv");
