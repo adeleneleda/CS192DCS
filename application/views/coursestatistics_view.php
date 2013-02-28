@@ -32,7 +32,7 @@
 		<form id="search_dropdown" method="post" action="<?= base_url('coursestatistics/index')?>">
 		
 		<div class="well form-search">
-			<select name='courseid' id="selectError" style="width:180px">
+			<select name='courseid' id="selectError">
 				<?	$default_coursename = "CS 11";
 					foreach ($dropdown as $indiv_drop) {
 					if($selected['courseid'] == $indiv_drop['courseid']){
@@ -44,7 +44,6 @@
 					}
 				}?>
 			</select>
-			<button type="submit" class="btn-primary btn"><i class="icon-white icon-search2"></i></button>
         </div>
 		<div id="advanced_search_div" class="well" >
 			<legend>Advanced Search</legend>
@@ -154,6 +153,7 @@
 					</select>
 				</div>
 			</div>
+			<button type="submit" class="btn-primary btn">Search</button>
 		</div>
 		</form>
 	</div>

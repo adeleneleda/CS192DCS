@@ -124,8 +124,8 @@ $(function() {
 					</select> 
 				</div>
 			</div>
-            <button type="submit" class="btn btn-primary">Search</button>
 			</form>
+			<button type="submit" class="btn btn-primary">Search</button>
 		</div>
 	</div>
 	<div class="span9">
