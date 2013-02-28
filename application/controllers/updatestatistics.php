@@ -80,7 +80,7 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	private function displayUploadFileView($data = null)  {
-		$data['message'] = 'Select the xls file with grades to be uploaded';
+		$data['message'] = 'Select the CSV file with grades to be uploaded';
 		$data['upload_filetype'] = "Grade File";
 		$data['upload_header'] = "Grade Uploads";
 		$data['dest'] = site_url('updatestatistics/performUpload');
@@ -120,7 +120,8 @@ class Updatestatistics extends CI_Controller {
 	
 	private function parse($file) {
 		$data = array();
-		$this->load->model('excel_parser', 'parser', true);
+		// $this->load->model('excel_parser', 'parser', true);
+		$this->load->model('csv_parser', 'parser', true);
 		$this->parser->initialize($file);
 		$data['parse_output'] = $this->parser->parse();
 		$data['success_rows'] = $this->parser->getSuccessCount();

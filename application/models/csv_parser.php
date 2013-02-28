@@ -1,13 +1,12 @@
 <?php
-require_once 'excel_reader.php';
 require_once 'excel_query.php';
 require_once 'fields/exceptions/nstp_exception.php';
 require_once 'fields/exceptions/pe_exception.php';
 
-class Excel_Parser extends CI_Model {
+class Csv_Parser extends CI_Model {
 	private $query;
 	private $field_parsers = array();
-	private $spreadsheet, $rows, $cols;
+	private $csvfile;
 	private $successcount = 0;
 	private $errorcount = 0;
 		
@@ -16,6 +15,7 @@ class Excel_Parser extends CI_Model {
     }
 	
 	public function getErrorCount() {
+		// return 1;
 		return $this->errorcount;
 	}
 	
@@ -24,50 +24,59 @@ class Excel_Parser extends CI_Model {
 	}
 	
 	/** 
-		$excelfile - the filename of the input excel file to be parsed
+		$csvfile - the filename of the input csv file to be parsed
 	*/
-	public function initialize($excelfile) {
-		$this->spreadsheet = new Spreadsheet_Excel_Reader($excelfile, false);
+	public function initialize($csv_filename) {
 		$this->load->model('excel_query', 'query');
-		$this->rows = $this->spreadsheet->rowcount();
-		$this->cols = $this->spreadsheet->colcount();
+		if (($this->csvfile = fopen($csv_filename, "r")) === FALSE)
+			throw new Exception($csv_filename." could not be opened for reading");
 		
 		$this->load->model("Field_factory", "field_factory");
-		for ($col = 1; $col <= $this->cols - 2; $col++) // last 3 columns (grades) are parsed at the same time
-			$this->field_parsers[$col] = $this->field_factory->createFieldByNum($col);
 	}
 	
-	/** Start parsing $this->spreadsheet. */
+	/** Start parsing $this->csvfile. */
 	public function parse() {
 		$output = "<table class='databasetable'>";
 		// If 1st row is not a header, change to $i = 1
 		$output .= "<tr><th>row</th>";
-		for ($col = 1; $col <= $this->cols - 2; $col++) {
-			$header = $this->spreadsheet->val(1, $col);
-			$output .= "<th>$header</th>";
+		if ($row = fgetcsv($this->csvfile, 1000, ",")) { // read a line
+			$cols = count($row);
+			for ($i = 0; $i < $cols - 2; $i++) {
+				$this->field_parsers[] = $this->field_factory->createFieldByNum($i + 1);
+				$output .= '<th>'.$row[$i].'</th>';
+			}
 		}
 		$output .= "</tr>";
-		for ($row = 2; $row <= $this->rows; $row++) {
+		
+		$line_number = 1;
+		while (($row = fgetcsv($this->csvfile, 1000, ",")) !== FALSE) {
+			$line_number++;
 			$this->query = new Excel_query;
-			$output .= $this->parseRow($row);
+			$output .= $this->parseRow($row, $line_number, $cols);
 			$this->query->execute();
 		}
 		$output .= "</table>";
 		return $output;
 	}
 	
-	private function parseRow($row) {
+	private function parseRow($row, $line_number, $header_col_count) {
 		$success = true;
 		$error = true;
-		$output = "<tr><th>".$row."</th>";
-		for ($col = 1; $col <= $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
-			$value = $this->spreadsheet->val($row, $col);
-			$orig_value = $this->spreadsheet->val($row, $col);
+		$output = "<tr><th>".$line_number."</th>";
+		$cols = count($row);
+		if ($cols !== $header_col_count) {
+			$output .= "Inconsitent number of fields in line ".$line_number;
+			$this->errorcount++;
+			return $output;
+		}
+		for ($i = 0; $i < $cols - 2; $i++) { // last 3 columns (grades) are parsed at the same time
+			$value = $row[$i];
+			$orig_value = $value;
 			try {
-				$field = $this->field_parsers[$col];
-				if ($col == $this->cols - 2) { // grades, include comp and secondcomp
-					$compgrade = $this->spreadsheet->val($row, $col + 1);
-					$secondcompgrade = $this->spreadsheet->val($row, $col + 2);
+				$field = $this->field_parsers[$i];
+				if ($i == $cols - 3) { // grades : include comp and secondcomp
+					$compgrade = $row[$i + 1];
+					$secondcompgrade = $row[$i + 2];
 					$field->parse($value, $compgrade, $secondcompgrade);
 				}
 				else
