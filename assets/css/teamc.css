@@ -41,6 +41,9 @@
 	color:green;
 }
 
+
+
+
 .backup-location {
 	font-size:14px;
 	font-weight:bold;
@@ -59,9 +62,10 @@
 	border-collapse:collapse;
 }
 
+
+
 .databasetable table, th, td{
 	border-collapse:collapse;
-	border:1px solid green;
 	padding:0px;
 	white-space:nowrap;
 }
