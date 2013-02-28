@@ -1,12 +1,12 @@
 <?php
 require_once 'excel_reader.php';
-require_once 'query_data.php';
+require_once 'excel_query.php';
 require_once 'fields/exceptions/nstp_exception.php';
 require_once 'fields/exceptions/pe_exception.php';
 
 class Excel_Parser extends CI_Model {
-	private $query_data;
-	private $parsers;
+	private $query;
+	private $field_parsers = array();
 	private $spreadsheet, $rows, $cols;
 	private $successcount = 0;
 	private $errorcount = 0;
@@ -22,19 +22,19 @@ class Excel_Parser extends CI_Model {
 	public function getSuccessCount() {
 		return $this->successcount;
 	}
+	
 	/** 
 		$excelfile - the filename of the input excel file to be parsed
 	*/
 	public function initialize($excelfile) {
 		$this->spreadsheet = new Spreadsheet_Excel_Reader($excelfile);
-		$this->load->model('query_data', 'querydata');
+		$this->load->model('excel_query', 'query');
 		$this->rows = $this->spreadsheet->rowcount();
 		$this->cols = $this->spreadsheet->colcount();
 		
 		$this->load->model("Field_factory", "field_factory");
-		$this->parsers = array();
 		for ($col = 1; $col <= $this->cols - 2; $col++) // last 3 columns (grades) are parsed at the same time
-			$this->parsers[$col] = $this->field_factory->createFieldByNum($col);
+			$this->field_parsers[$col] = $this->field_factory->createFieldByNum($col);
 	}
 	
 	/** Start parsing $this->spreadsheet. */
@@ -48,9 +48,9 @@ class Excel_Parser extends CI_Model {
 		}
 		$output .= "</tr>";
 		for ($row = 2; $row <= $this->rows; $row++) {
-			$this->querydata = new Query_data;
+			$this->query = new Excel_query;
 			$output .= $this->parseRow($row);
-			$this->querydata->execute();
+			$this->query->execute();
 		}
 		$output .= "</table>";
 		return $output;
@@ -64,7 +64,7 @@ class Excel_Parser extends CI_Model {
 			$value = $this->spreadsheet->val($row, $col);
 			$orig_value = $this->spreadsheet->val($row, $col);
 			try {
-				$field = $this->parsers[$col];
+				$field = $this->field_parsers[$col];
 				if ($col == $this->cols - 2) { // grades, include comp and secondcomp
 					$compgrade = $this->spreadsheet->val($row, $col + 1);
 					$secondcompgrade = $this->spreadsheet->val($row, $col + 2);
@@ -72,19 +72,19 @@ class Excel_Parser extends CI_Model {
 				}
 				else
 					$field->parse($value);
-				$field->insertToQueryData($this->querydata);
+				$field->insertToQuery($this->query);
 				$output .= "<td class='databasecell'>$value</td>";
 			} catch (NstpException $e) {
-				$this->querydata->doNotExecute();
+				$this->query->doNotExecute();
 				$success = false;
 				$error = false;
 			} catch (PeException $e) {
-				$this->querydata->doNotExecute();
+				$this->query->doNotExecute();
 				$success = false;
 				$error = false;
 			}
 			catch (Exception $e) {
-				$this->querydata->doNotExecute();
+				$this->query->doNotExecute();
 				$message = $e->getMessage(); // store for tooltip message
 				$output .= "<td title='$message'><div class='databasecell upload_error'>$orig_value</div></td>";
 				$success = false;

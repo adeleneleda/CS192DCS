@@ -1,7 +1,7 @@
 <?php
 
 /** Holds a row of data to be added to the database. */
-class Query_data extends CI_Model {
+class Excel_query extends CI_Model {
 	private $shouldExecute;
 	
 	public function __construct() {
@@ -114,7 +114,7 @@ class Query_data extends CI_Model {
 	}
 	
 	private function get_studentclassid($studenttermid, $classid, $gradeid) {
-		$search = "SELECT studentclassid FROM studentclasses WHERE studenttermid = '$studenttermid' AND classid = '$classid' AND gradeid = '$gradeid';";
+		$search = "SELECT studentclassid FROM studentclasses WHERE studenttermid = '$studenttermid' AND classid = '$classid'";// AND gradeid = '$gradeid';";
 		$insert = "INSERT INTO studentclasses(studenttermid, classid, gradeid) VALUES($studenttermid, $classid, $gradeid);";
 		$studentclassid = $this->distinctInsert($search, $insert, 'studentclassid');
 		return $studentclassid;

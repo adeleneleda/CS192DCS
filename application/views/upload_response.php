@@ -1,11 +1,10 @@
 <?php
 if ($reset_success)
 	echo "<span class='success'>Database successfully reset.<br></span>";
-if ($upload_success) {	
+if ($upload_success && isset($success_rows) && isset($error_rows) && isset($parse_output)) {	
 	echo "<span class='success'>File successfully uploaded.<br></span><br>";
 	echo "<b><span class='success'>$success_rows</span></b> rows added, ";
 	echo "<b><span class='error'>$error_rows</span></b> rows with errors. ";
-	echo $excel_dump;
 	if ($error_rows > 0){
 		echo "<br><br>Rows with errors:<br>";
 		echo $parse_output;

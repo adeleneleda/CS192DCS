@@ -8,9 +8,9 @@ abstract class Field extends CI_Model {
 	
 	public abstract function parse(&$value1, $value2, $value3);
 	
-	public final function insertToQueryData(&$queryData) {
+	public final function insertToQuery(&$query) {
 		foreach ($this->values as $key => $value)
-			$queryData->$key = $value;
+			$query->$key = $value;
 	}
 }
 ?>

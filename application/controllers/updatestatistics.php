@@ -6,7 +6,6 @@ class Updatestatistics extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		
-		//load model
 		$this->load->model('student_model', 'student_model', true);
 	}
 	
@@ -53,7 +52,7 @@ class Updatestatistics extends CI_Controller {
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}
-	}//end update grade
+	}
 	
 	public function updateStudentInfo(){
 		$changedfield_name = $_POST['changedfield_name'];
@@ -80,44 +79,29 @@ class Updatestatistics extends CI_Controller {
 		$this->displayUploadFileView();
 	}
 	
-	private function getUploadsFolder() {
-		$upload_dir = "./assets/uploads";
-		if (!file_exists($upload_dir))
-			mkdir($upload_dir, 0755);
-		return $upload_dir;
-	}
-	
-	private function getAbsoluteBasePath() {
-		$base_url = explode('/', base_url(''), 4);
-		return $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3];
-	}
-	
-	private function dumpExcelTable($file) {
-		$reader_file = './application/models/excel_reader.php';
-		require_once $reader_file;
-		
-		// dump the input excel file
-		$printer = new Spreadsheet_Excel_Reader($file);
-		//$excel_dump = @$printer->dump(true,true);
-		//return $excel_dump;
-	}
-	
-	private function parse($file, &$data) {
-		$this->load->model('excel_parser', 'parser');
-		$this->parser->initialize($file);
-		$data['parse_output'] = $this->parser->parse();
-		$success_rows = $this->parser->getSuccessCount();
-		$error_rows = $this->parser->getErrorCount();
-		$data['success_rows'] = $success_rows;
-		$data['error_rows'] = $error_rows;
-	}
-	
 	private function displayUploadFileView($data = null)  {
 		$data['message'] = 'Select the xls file with grades to be uploaded';
 		$data['upload_filetype'] = "Grade File";
 		$data['upload_header'] = "Grade Uploads";
 		$data['dest'] = site_url('updatestatistics/performUpload');
 		$this->load->view('upload_file', $data);
+	}
+
+	// Called when an excel file is uploaded
+	public function performUpload() {
+		$data = array('upload_success' => false);
+		$data['reset_success'] = $this->resetIfChecked();
+		// maintain a table to store uploaded gradessheets?
+		try {
+			$file = $this->getUploadedFile();
+			$data['upload_success'] = true;
+			$parse_data = $this->parse($file);
+			$data = array_merge($data, $parse_data);
+			// $data['error_message'] = $file." could not be parsed.";
+		} catch (Exception $e) {
+			$data['error_message'] = $e->getMessage();
+		}
+		$this->displayViewWithHeaders('upload_response', $data);
 	}
 	
 	private function getUploadedFile() {
@@ -133,21 +117,15 @@ class Updatestatistics extends CI_Controller {
 		} else
 			throw new Exception("Error: $filename could not be uploaded.");
 	}
-
-	// Called when an excel file is uploaded
-	public function performUpload() {
-		$data = array('upload_success' => false);
-		$data['reset_success'] = $this->resetIfChecked();
-		// maintain a table to store uploaded gradessheets?
-		try {
-			$file = $this->getUploadedFile();
-			$data['excel_dump'] = $this->dumpExcelTable($file);
-			$data['upload_success'] = true;
-			$this->parse($file, $data);
-		} catch (Exception $e) {
-			$data['error_message'] = $e->getMessage();
-		}
-		$this->displayViewWithHeaders('upload_response', $data);
+	
+	private function parse($file) {
+		$data = array();
+		$this->load->model('excel_parser', 'parser', true);
+		$this->parser->initialize($file);
+		$data['parse_output'] = $this->parser->parse();
+		$data['success_rows'] = $this->parser->getSuccessCount();
+		$data['error_rows'] = $this->parser->getErrorCount();
+		return $data;
 	}
 	
 	/*-----------------------------------------------------end upload functions-----------------------------------------------------*/
@@ -169,6 +147,29 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	/*-----------------------------------------------------end reset functions-----------------------------------------------------*/
+	
+	/*-----------------------------------------------------start folder functions-----------------------------------------------------*/
+	
+	private function getUploadsFolder() {
+		$upload_dir = "./assets/uploads";
+		if (!file_exists($upload_dir))
+			mkdir($upload_dir, 0755);
+		return $upload_dir;
+	}
+	
+	private function getDumpsFolder() {
+		$backup_dir = $this->getAbsoluteBasePath().'dumps/';
+		if (!file_exists($backup_dir))
+			mkdir($backup_dir, 0755);
+		return $backup_dir;
+	}
+	
+	private function getAbsoluteBasePath() {
+		$base_url = explode('/', base_url(''), 4);
+		return $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3];
+	}
+	
+	/*-----------------------------------------------------end folder functions-----------------------------------------------------*/
 	
 	/*-----------------------------------------------------start backup functions-----------------------------------------------------*/
 	
@@ -194,11 +195,9 @@ class Updatestatistics extends CI_Controller {
 		$pg_dump = $pg_bin_dir."/pg_dump";
 		if (substr(php_uname(), 0, 7) == "Windows")
 			$pg_dump .= ".exe";
-		$backup_dir = $this->getAbsoluteBasePath().'dumps/';
-		if (!file_exists($backup_dir))
-			mkdir($backup_dir, 0755);
+		$backup_dir = $this->getDumpsFolder();
 		$backup_name = $backup_dir.$this->db->database.date("m-d-Y_h-i-s").".sql";
-		$cmd = escapeshellarg($pg_dump)." -U postgres ".$this->db->database." > $backup_name 2>&1";
+		$cmd = escapeshellarg($pg_dump)." -U postgres --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
 		if ($success) { // save cookie
@@ -247,14 +246,11 @@ class Updatestatistics extends CI_Controller {
 		$data['reset_success'] = $this->resetIfChecked();
 		try {
 			$backup_filename = $this->getAbsoluteBasePath().$this->getUploadedFile();
-			if (substr(php_uname(), 0, 7) == "Windows"){
-				$abs_basepath = $this->getAbsoluteBasePath();
+			if (substr(php_uname(), 0, 7) == "Windows")
 				$psql_location = $pg_bin_dir."/psql.exe";
-			} 
-			else { 
+			else
 				$psql_location = $pg_bin_dir."/psql";
-			}
-			$cmd = escapeshellarg($psql_location)." -U postgres ".$this->db->database." < $backup_filename 2>&1";
+			$cmd = escapeshellarg($psql_location)." -U postgres -f $backup_filename ".$this->db->database." 2>&1";
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
 			if ($success) { // save cookie
@@ -292,24 +288,6 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	/*-----------------------------------------------------end sql functions-----------------------------------------------------*/
-	
-	private function saveAsDialog($saveas_filename) {
-		header ("Content-Type: application/download");
-		header ("Content-Disposition: attachment; filename=$saveas_filename");
-		header ("Content-Length: " . filesize("$saveas_filename"));
-		$fp = fopen("$saveas_filename", "r");
-		fpassthru($fp);
-	}
-	
-	private function getResetSql(){
-		$filename = "Create Tables.sql";
-		$upload_dir = "./db files";
-		if (!file_exists($upload_dir))
-			mkdir($upload_dir, 0755);
-
-		$target = $upload_dir.'/'.$filename;
-		return $target;
-	}
 	
 	/*-----------------------------------------------------start display functions-----------------------------------------------------*/
 	

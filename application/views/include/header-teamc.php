@@ -43,35 +43,16 @@ $(document).ready(function(){
 			$('#content').show();
 		});
 	});
-	// $('form').submit(function(e) {
-		// e.preventDefault();
-		// action = $(this).attr('action');
-		// alert(action);
-		// $.ajaxFileUpload({
-			// url: action,
-			// secureuri: false,
-			// fileElementId: 'upload_file',
-			// dataType: 'json',
-			// data: {title:''},
-			// success: function(data, status){
-				// alert("Success");
-				// $('#container').load(action);
-			// },
-			// error: function() {
-				// alert("There was an error with form submission.");
-			// }
-		// });
-	// });
 });
 </script>
 
 <div class="span2">
-      <div class="well" id="sidebar" style ="
-	
-	padding-left: 5px;
-	margin-left: -25px;
+    <div class="well" id="sidebar" style ="
+	padding: 0px;
+	margin-left: -25%;
+	width:140px;
 	">
-       <ul class="nav nav-list-team-c">
+    <ul class="nav nav-list-team-c">
 <li class="nav-header">Update Navigation</li>
 <li id="up"><a class="teamcnav" href="<?= site_url("updatestatistics/upload") ?>">Upload</a></li>
 <li id="ed"><a class="teamcnav" href="<?= site_url("updatestatistics/edit") ?>">Edit</a></li>
@@ -82,16 +63,13 @@ $(document).ready(function(){
       </div>
     </div>
 
-
-
-	
-
 <div id = "container" style="
-	width:70%;
+	width:75%;
 	padding-left:30px;
-	padding-top:10px;
+	padding-top:0px;
 	padding-bottom:20px;
 	padding-right:10px;
+	margin-left: -60px;
 	overflow-x:auto;
 	" class = "span4">
 	<div id="loading" style="display:none;"><img src="<?=base_url('images/loading.gif')?>" alt="" /><br>Please wait...</div>
