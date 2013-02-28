@@ -204,7 +204,7 @@ class Coursestatistics_model extends Base_Model {
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
-				$iod = 0;
+				$iod = "N/A";
 			}
 			else {
                 for($ctr = 0; $ctr < 10; $ctr++)
@@ -221,9 +221,8 @@ class Coursestatistics_model extends Base_Model {
                         $pass2++;
                     }
                 }
+				$iod = ($pass1 - $pass2)/10;
 			}
-            
-            $iod = ($pass1 - $pass2)/10;
             return $iod;
   
   
@@ -269,7 +268,7 @@ class Coursestatistics_model extends Base_Model {
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
-				$iod = 0;
+				$iod = "N/A";
 			}
 			else {
                 for($ctr = 0; $ctr < 10; $ctr++)
@@ -286,10 +285,8 @@ class Coursestatistics_model extends Base_Model {
                         $pass2++;
                     }
                 }
+				 $iod = ($pass1 - $pass2)/10;
 			}
-            
-            $iod = ($pass1 - $pass2)/10;
-			//echo "iod: ".$iod."\n";
             return $iod;
 	}
   
