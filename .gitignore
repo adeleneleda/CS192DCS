@@ -4,4 +4,3 @@ application/cache
 application/logs
 assets/uploads
 dumps
-database.php
