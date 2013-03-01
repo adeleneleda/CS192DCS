@@ -80,24 +80,23 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	private function displayUploadFileView($data = null)  {
-		$data['message'] = 'Select the CSV file with grades to be uploaded';
+		$data['message'] = 'Select the XLS or CSV file with grades to be uploaded';
 		$data['upload_filetype'] = "Grade File";
 		$data['upload_header'] = "Grade Uploads";
 		$data['dest'] = site_url('updatestatistics/performUpload');
 		$this->load->view('upload_file', $data);
 	}
 
-	// Called when an excel file is uploaded
+	// Called when a grades file is uploaded
 	public function performUpload() {
 		$data = array('upload_success' => false);
 		$data['reset_success'] = $this->resetIfChecked();
 		// maintain a table to store uploaded gradessheets?
 		try {
-			$file = $this->getUploadedFile();
+			$filename = $this->getUploadedFile();
 			$data['upload_success'] = true;
-			$parse_data = $this->parse($file);
+			$parse_data = $this->parse($filename);
 			$data = array_merge($data, $parse_data);
-			// $data['error_message'] = $file." could not be parsed.";
 		} catch (Exception $e) {
 			$data['error_message'] = $e->getMessage();
 		}
@@ -118,17 +117,23 @@ class Updatestatistics extends CI_Controller {
 			throw new Exception("Error: $filename could not be uploaded.");
 	}
 	
-	private function parse($file) {
-		$data = array();
-		// $this->load->model('excel_parser', 'parser', true);
-		$this->load->model('csv_parser', 'parser', true);
-		$this->parser->initialize($file);
-		$data['parse_output'] = $this->parser->parse();
-		$data['success_rows'] = $this->parser->getSuccessCount();
-		$data['error_rows'] = $this->parser->getErrorCount();
-		return $data;
+	private function parse($filename) {
+		try {
+			return $this->tryToParseUsing('xls_parser', $filename);
+		} catch (Exception $e) {
+			return $this->tryToParseUsing('csv_parser', $filename);
+		}
 	}
 	
+	private function tryToParseUsing($parser_classname, $filename) {
+		$data = array();
+		$this->load->model($parser_classname, '', true);
+		$this->$parser_classname->initialize($filename);
+		$data['parse_output'] = $this->$parser_classname->parse();
+		$data['success_rows'] = $this->$parser_classname->getSuccessCount();
+		$data['error_rows'] = $this->$parser_classname->getErrorCount();
+		return $data;
+	}
 	/*-----------------------------------------------------end upload functions-----------------------------------------------------*/
 	
 	/*-----------------------------------------------------start reset functions-----------------------------------------------------*/
@@ -153,16 +158,19 @@ class Updatestatistics extends CI_Controller {
 	
 	private function getUploadsFolder() {
 		$upload_dir = "./assets/uploads";
-		if (!file_exists($upload_dir))
-			mkdir($upload_dir, 0755);
+		$this->createFolderIfNotExists($upload_dir);
 		return $upload_dir;
 	}
 	
 	private function getDumpsFolder() {
-		$backup_dir = $this->getAbsoluteBasePath().'dumps/';
-		if (!file_exists($backup_dir))
-			mkdir($backup_dir, 0755);
-		return $backup_dir;
+		$dumps_dir = $this->getAbsoluteBasePath().'dumps/';
+		$this->createFolderIfNotExists($dumps_dir);
+		return $dumps_dir;
+	}
+	
+	private function createFolderIfNotExists($folder_name) {
+		if (!file_exists($folder_name))
+			mkdir($folder_name, 0755);
 	}
 	
 	private function getAbsoluteBasePath() {

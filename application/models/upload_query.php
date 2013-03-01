@@ -1,7 +1,7 @@
 <?php
 
 /** Holds a row of data to be added to the database. */
-class Excel_query extends CI_Model {
+class Upload_query extends CI_Model {
 	private $shouldExecute;
 	
 	public function __construct() {

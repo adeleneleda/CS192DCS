@@ -35,10 +35,10 @@ $(document).ready(function(){
 		}else if($actionid == "rs"){
 			$('#rs').addClass('active');
 		}
+		// hide page contents and show loading gif
 		$('#loading').show();
 		$('#content').hide();
-		// ajax query to retrieve the HTML view without refreshing the page.
-		$('#content').load($(this).attr('href'), function () {
+		$('#content').load($(this).attr('href'), function () { // called when done loading
 			$('#loading').hide();
 			$('#content').show();
 		});
@@ -50,18 +50,18 @@ $(document).ready(function(){
     <div class="well" id="sidebar" style ="
 	padding: 0px;
 	margin-left: -25%;
-	width:140px;
+	width:150px;
 	">
     <ul class="nav nav-list-team-c">
-<li class="nav-header">Update Navigation</li>
-<li id="up"><a class="teamcnav" href="<?= site_url("updatestatistics/upload") ?>">Upload</a></li>
-<li id="ed"><a class="teamcnav" href="<?= site_url("updatestatistics/edit") ?>">Edit</a></li>
-<li id="bu"><a class="teamcnav" href="<?= site_url("updatestatistics/backup") ?>">Backup</a></li>
-<li id="re"><a class="teamcnav" href="<?= site_url("updatestatistics/restore") ?>">Restore</a></li>
-<li id="rs"><a class="teamcnav" href="<?= site_url("updatestatistics/sql") ?>">Run SQL</a></li>
-</ul>
-      </div>
+		<li class="nav-header">Update Navigation</li>
+		<li id="up"><a class="teamcnav" href="<?= site_url("updatestatistics/upload") ?>">Upload</a></li>
+		<li id="ed"><a class="teamcnav" href="<?= site_url("updatestatistics/edit") ?>">Edit</a></li>
+		<li id="bu"><a class="teamcnav" href="<?= site_url("updatestatistics/backup") ?>">Backup</a></li>
+		<li id="re"><a class="teamcnav" href="<?= site_url("updatestatistics/restore") ?>">Restore</a></li>
+		<li id="rs"><a class="teamcnav" href="<?= site_url("updatestatistics/sql") ?>">Run SQL</a></li>
+	</ul>
     </div>
+</div>
 
 <div id = "container" style="
 	width:75%;

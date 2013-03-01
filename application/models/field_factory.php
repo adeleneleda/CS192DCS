@@ -12,7 +12,7 @@ require_once 'fields/classname.php';
 require_once 'fields/grade.php';
 
 class Field_factory extends CI_Model {
-	private $fields = array('', 'Acadyear', 'Semester', 'Studentno', 'Lastname', 
+	private $fields = array('Acadyear', 'Semester', 'Studentno', 'Lastname', 
 		'Firstname', 'Middlename', 'Pedigree', 'Classcode', 'Classname', 'Grade');
 	
 	public function createField($field) {

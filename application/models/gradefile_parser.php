@@ -1,15 +1,15 @@
 <?php
-require_once 'excel_reader.php';
-require_once 'excel_query.php';
+require_once 'upload_query.php';
 require_once 'fields/exceptions/nstp_exception.php';
 require_once 'fields/exceptions/pe_exception.php';
 
-class Excel_Parser extends CI_Model {
-	private $query;
-	private $field_parsers = array();
-	private $spreadsheet, $rows, $cols;
-	private $successcount = 0;
-	private $errorcount = 0;
+class Gradefile_Parser extends CI_Model {
+	protected $query;
+	protected $field_parsers = array();
+	protected $successcount = 0;
+	protected $errorcount = 0;
+	protected $cols;
+	protected $row_no;
 		
 	function __construct() {
         parent::__construct();
@@ -23,32 +23,32 @@ class Excel_Parser extends CI_Model {
 		return $this->successcount;
 	}
 	
-	/** 
-		$excelfile - the filename of the input excel file to be parsed
-	*/
-	public function initialize($excelfile) {
-		$this->spreadsheet = new Spreadsheet_Excel_Reader($excelfile, false);
-		$this->load->model('excel_query', 'query');
-		$this->rows = $this->spreadsheet->rowcount();
-		$this->cols = $this->spreadsheet->colcount();
-		
+	public function initialize() {
+		$this->load->model('upload_query', 'query');
 		$this->load->model("Field_factory", "field_factory");
-		for ($col = 1; $col <= $this->cols - 2; $col++) // last 3 columns (grades) are parsed at the same time
-			$this->field_parsers[$col] = $this->field_factory->createFieldByNum($col);
+		for ($i = 0; $i < $this->cols - 2; $i++) // last 3 columns (grades) are parsed at the same time
+			$this->field_parsers[] = $this->field_factory->createFieldByNum($i);
+		$this->row_no = 0;
 	}
 	
-	/** Start parsing $this->spreadsheet. */
+	protected function nextRow() {
+	}
+	
+	private function headerRowHtml() {
+		$output = "<tr><th>row</th>";
+		$headers = $this->nextRow();
+		$cols = count($headers) - 2; // last 2 fields are also grades
+		for ($i = 0; $i < $cols; $i++)
+			$output .= '<th>'.$headers[$i].'</th>';
+		$output .= "</tr>";
+		return $output;
+	}
+	
 	public function parse() {
 		$output = "<table class='databasetable'>";
-		// If 1st row is not a header, change to $i = 1
-		$output .= "<tr><th>row</th>";
-		for ($col = 1; $col <= $this->cols - 2; $col++) {
-			$header = $this->spreadsheet->val(1, $col);
-			$output .= "<th>$header</th>";
-		}
-		$output .= "</tr>";
-		for ($row = 2; $row <= $this->rows; $row++) {
-			$this->query = new Excel_query;
+		$output .= $this->headerRowHtml();
+		while ($row = $this->nextRow()) {
+			$this->query = new Upload_query;
 			$output .= $this->parseRow($row);
 			$this->query->execute();
 		}
@@ -59,15 +59,15 @@ class Excel_Parser extends CI_Model {
 	private function parseRow($row) {
 		$success = true;
 		$error = true;
-		$output = "<tr><th>".$row."</th>";
-		for ($col = 1; $col <= $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
-			$value = $this->spreadsheet->val($row, $col);
-			$orig_value = $this->spreadsheet->val($row, $col);
+		$output = "<tr><th>".$this->row_no."</th>";
+		for ($col = 0; $col < $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
+			$value = $row[$col];
+			$orig_value = $value;
 			try {
 				$field = $this->field_parsers[$col];
-				if ($col == $this->cols - 2) { // grades, include comp and secondcomp
-					$compgrade = $this->spreadsheet->val($row, $col + 1);
-					$secondcompgrade = $this->spreadsheet->val($row, $col + 2);
+				if ($col == $this->cols - 3) { // grades : include comp and secondcomp
+					$compgrade = $row[$col + 1];
+					$secondcompgrade = $row[$col + 2];
 					$field->parse($value, $compgrade, $secondcompgrade);
 				}
 				else
