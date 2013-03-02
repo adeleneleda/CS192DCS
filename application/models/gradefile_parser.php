@@ -86,7 +86,7 @@ class Gradefile_Parser extends CI_Model {
 			catch (Exception $e) {
 				$this->query->doNotExecute();
 				$message = $e->getMessage(); // store for tooltip message
-				$output .= "<td title='$message'><div class='databasecell upload_error'>$orig_value</div></td>";
+				$output .= "<td title='$message' class='databasecell upload_error'>$orig_value</td>";
 				$success = false;
 			}
 		}

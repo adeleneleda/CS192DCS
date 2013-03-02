@@ -9,11 +9,6 @@
 
 		<title>UP DCS Student Profiling System</title>
 
-		<!-- Team C -->
-	   <link href="<?= base_url('assets/css/index.css') ?>" rel="stylesheet" type="text/css" />
-	   <link href="<?= base_url('assets/css/teamc.css') ?>" rel="stylesheet" type="text/css" />
-		<!---End Team C--->
-		
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-1.8.3.js') ?>"></script>
 		<link href="<?= base_url('assets/css/font-awesome.css') ?>" rel="stylesheet">
 		<link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
@@ -30,6 +25,16 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery.tablesorter.pager.js') ?>"></script>
 		
 		<link rel="shortcut icon" href="<?= base_url('images/favicon.ico')?>" >
+		
+		<?php if (isset($update_statistics)) { // include Team C headers ?>
+			<link href="<?= base_url('assets/css/update_statistics.css') ?>" rel="stylesheet" type="text/css" />
+			<script type="text/javascript" src="<?= base_url('assets/js/update_statistics_sidebar.js') ?>"></script>
+			<script type="text/javascript">
+				var base_url = "<?= base_url(''); ?>";
+				var site_url = "<?= site_url(''); ?>";
+			</script>
+		<?php } ?>
+		
 	</head>
 	<body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
 		<div class="container">

@@ -1,0 +1,27 @@
+.grades {
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:500;
+	border-collapse:collapse;
+}
+#gradeheader {
+	border-bottom:1px solid #FFFFFF;
+}
+.grades td {
+	font-size:1.2em;
+	border:1px solid #006600;
+	padding:3px 7px 2px 7px;
+}
+.grades th  {
+	font-size:1.4em;
+	text-align:left;
+	padding-top:3px;
+	padding-bottom:2px;
+	background-color:green;
+	color:#FFFFFF;
+}
+tr:nth-child(even) {
+	background: #F5F0EB;
+}
+tr:nth-child(odd) {
+	background: #FFF;
+}

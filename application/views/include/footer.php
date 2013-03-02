@@ -1,3 +1,4 @@
+	</div>
 		<hr>
 		<footer style="text-align:center" id="footer">
 			<p>UP Diliman - Department of Computer Science</p>

@@ -1,37 +1,19 @@
 @charset "UTF-8";
-/* CSS Document */
-
-/*delete button style definition*/
-.remove_button {
-	-moz-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-	box-shadow:inset 0px 1px 0px 0px #f7c5c0;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d) );
-	background:-moz-linear-gradient( center top, #fc8d83 5%, #e4685d 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8d83', endColorstr='#e4685d');
-	background-color:#fc8d83;
-	-moz-border-radius:9px;
-	-webkit-border-radius:9px;
-	border-radius:9px;
-	border:1px solid #d83526;
-	display:inline-block;
-	color:#ffffff;
-	font-family:Arial Black;
-	font-size:14px;
-	font-weight:bold;
-	padding:6px 6px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #b23e35;
-}.remove_button:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #e4685d), color-stop(1, #fc8d83) );
-	background:-moz-linear-gradient( center top, #e4685d 5%, #fc8d83 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e4685d', endColorstr='#fc8d83');
-	background-color:#e4685d;
-}.remove_button:active {
-	position:relative;
-	top:1px;
+#sidebar {
+	padding: 0px;
+	margin-left: -25%;
+	width:150px;
 }
-/*end delete button definition*/
+
+#container {
+	width:80%;
+	padding-left:30px;
+	padding-top:0px;
+	padding-bottom:20px;
+	padding-right:10px;
+	margin-left: -60px;
+	overflow-x:auto;
+}
 
 .error {
 	color:red;
@@ -40,9 +22,6 @@
 .success {
 	color:green;
 }
-
-
-
 
 .backup-location {
 	font-size:14px;
@@ -58,12 +37,6 @@
 	font-weight:bold;
 }
 
-.databasetable {
-	border-collapse:collapse;
-}
-
-
-
 .databasetable table, th, td{
 	border-collapse:collapse;
 	padding:0px;
@@ -75,27 +48,19 @@
 	background-color:green;
 	color:white;
 	padding:0px 5px 0px 5px;
+	border: 1px solid #AACFAA;
 }
 
-.databasetable td .upload_error {
+td.databasecell.upload_error {
 	background-color:#CF0220;
 	color: white;
-	/*border-color: #df382c;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);*/
-}
-
-.primarykey {
-	font-size:15px;
-	background-color:#00A42F;
-	color:white;
-	text-align:center;
 }
 
 .databasecell {
 	overflow:hidden;
 	height:22px;
+	text-align:center;
+	border: 1px solid #AACFAA;
 }
 
 .databasecell input {

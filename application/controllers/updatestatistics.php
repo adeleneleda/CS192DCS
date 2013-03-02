@@ -10,12 +10,7 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	public function index() {
-		$this->headers_included = true;
-		$this->load->view('include/header');
-		$this->load->view('include/header-teamc');
-		$this->displayUploadFileView();
-		$this->load->view('include/footer-teamc');
-		$this->load->view('include/footer');
+		$this->displayViewWithHeaders('upload_file', $this->uploadFileViewData());
 	}
 	
 	/*-----------------------------------------------------start edit functions-----------------------------------------------------*/
@@ -29,9 +24,24 @@ class Updatestatistics extends CI_Controller {
 		$this->displayView('edit_students', $data);
 	}
 	
+	public function updateStudentInfo(){
+		$changedfield_name = $_POST['changedfield_name'];
+		$changedfield_value = $_POST['changedfield_value'];
+		$personid = $_POST['personid'];
+		
+		try {
+			$this->load->model('Field_factory', 'field_factory');
+			$field = $this->field_factory->createFieldByName($changedfield_name);
+			$field->parse($changedfield_value);
+			$this->student_model->changeStudentInfo($changedfield_name, $changedfield_value, $personid);
+			echo "true";
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+	
 	public function editGrades($personid = null) {
 		$this->load->model('grades_model', 'grades_model', true);
-		
 		$data['student_info'] = $this->grades_model->getStudentInfo($personid);
 		$data['term_grades'] = $this->grades_model->getGrades($personid);
 		$this->displayView('edit_grades', $data);
@@ -54,37 +64,21 @@ class Updatestatistics extends CI_Controller {
 		}
 	}
 	
-	public function updateStudentInfo(){
-		$changedfield_name = $_POST['changedfield_name'];
-		$changedfield_value = $_POST['changedfield_value'];
-		$personid = $_POST['personid'];
-		
-		try {
-			$this->load->model('Field_factory', 'field_factory');
-			$field = $this->field_factory->createFieldByName($changedfield_name);
-			$field->parse($changedfield_value); //will throw an exception if grade format is wrong
-			
-			$this->student_model->changeStudentInfo($changedfield_name, $changedfield_value, $personid);
-			echo "true";
-		} catch (Exception $e) {
-			echo $e->getMessage();
-		}
-	}//end update student info
-	
 	/*-----------------------------------------------------end edit functions-----------------------------------------------------*/
 	
 	/*-----------------------------------------------------start upload functions-----------------------------------------------------*/
 	
 	public function upload() {
-		$this->displayUploadFileView();
+		$this->load->view('upload_file', $this->uploadFileViewData());
 	}
 	
-	private function displayUploadFileView($data = null)  {
+	private function uploadFileViewData()  {
+		$data = array();
 		$data['message'] = 'Select the XLS or CSV file with grades to be uploaded';
 		$data['upload_filetype'] = "Grade File";
 		$data['upload_header'] = "Grade Uploads";
 		$data['dest'] = site_url('updatestatistics/performUpload');
-		$this->load->view('upload_file', $data);
+		return $data;
 	}
 
 	// Called when a grades file is uploaded
@@ -301,8 +295,8 @@ class Updatestatistics extends CI_Controller {
 	/*-----------------------------------------------------start display functions-----------------------------------------------------*/
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
-		$this->headers_included = true;
-		$this->load->view('include/header');
+		$update_statistics = array('update_statistics' => '');
+		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);
 		$this->load->view('include/footer-teamc');
