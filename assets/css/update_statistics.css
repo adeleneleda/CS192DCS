@@ -1,4 +1,8 @@
 @charset "UTF-8";
+#edit_error{
+	width: 300px;
+	float: right;
+}
 #sidebar {
 	padding: 0px;
 	margin-left: -25%;

@@ -13,6 +13,9 @@ $(document).ready(function(){
 	});
 	
 	$(".studentinfocell").change(function() {
+		
+		$("#edit_error").slideUp("fast");	
+	
 		var callback = site_url + 'updatestatistics/updateStudentInfo';
 		var changed_cell = $(this);
 		
@@ -31,7 +34,9 @@ $(document).ready(function(){
 					$(changed_cell).prop("title", null);
 					setTimeout(function() { $(changed_cell).css("background-color","white"); }, 250);
 				} else {
-					// alert(retVal);
+					$("#edit_error p").html(retVal);
+					$("#edit_error").slideDown("slow");
+					$("#edit_error").delay(1500).slideUp("slow");					
 					$(changed_cell).prop("title", retVal);
 					$(changed_cell).css("background-color","#CF0220").css("color","white");
 				}
