@@ -176,4 +176,3 @@ $(function() {
 		</form>
 	</div>
 </div>
-
