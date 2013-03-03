@@ -23,24 +23,27 @@ INSERT INTO eligtwicefailcourses
 INSERT INTO eligtwicefailcourses 
 	SELECT courseid FROM courses WHERE coursename IN ('cs 11', 'cs 12', 'cs 21', 'cs 32');
 
-DROP TYPE t_elig_twicefailsubjects;
+DROP TYPE t_elig_twicefailsubjects CASCADE;
 CREATE TYPE t_elig_twicefailsubjects AS (
     studentid integer,
     classid integer,
     courseid integer,
+	section varchar(7),
+	coursename varchar(45),
     termid integer
 );
 
-DROP FUNCTION f_elig_twicefailsubjects(integer);
+DROP FUNCTION f_elig_twicefailsubjects(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_elig_twicefailsubjects(p_termid integer) 
 RETURNS SETOF t_elig_twicefailsubjects AS 
 $$
-	SELECT students.studentid, classes.classid, classes.courseid, classes.termid
+	SELECT students.studentid, classes.classid, classes.courseid, classes.section, courses.coursename, classes.termid
 	FROM 
 		students JOIN studentterms USING (studentid)
 		JOIN studentclasses USING (studenttermid)
 		JOIN grades USING (gradeid)
 		JOIN classes USING (classid)
+		JOIN courses USING (courseid)
 		JOIN 
 			(SELECT * FROM 
 				(SELECT students.studentid as jstudentid, eligtwicefailcourses.courseid
@@ -72,16 +75,17 @@ DROP TYPE t_elig_passhalfpersem CASCADE;
 CREATE TYPE t_elig_passhalfpersem AS (
 	studentid integer,
     studenttermid integer,
+	termid integer,
 	failpercentage real
 );
 
-DROP FUNCTION f_elig_passhalfpersem(integer);
+DROP FUNCTION f_elig_passhalfpersem(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_elig_passhalfpersem(p_termid integer) 
 RETURNS SETOF t_elig_passhalfpersem AS 
 $$
-	SELECT studentid, studenttermid, failpercentage
+	SELECT studentid, studenttermid, termid, failpercentage
 	FROM
-		(SELECT outerterms.studentid, outerterms.studenttermid,
+		(SELECT outerterms.studentid, outerterms.studenttermid, outerterms.termid,
 			(SELECT COALESCE(SUM(courses.credits), 0)
 			FROM studentclasses 
 				JOIN classes USING (classid)
@@ -108,16 +112,17 @@ DROP TYPE t_elig_passhalf_mathcs_persem CASCADE;
 CREATE TYPE t_elig_passhalf_mathcs_persem AS (
 	studentid integer,
     studenttermid integer,
+	termid integer,
 	failpercentage real
 );
 
-DROP FUNCTION f_elig_passhalf_mathcs_persem(integer);
+DROP FUNCTION f_elig_passhalf_mathcs_persem(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_elig_passhalf_mathcs_persem(p_termid integer) 
 RETURNS SETOF t_elig_passhalf_mathcs_persem AS 
 $$
-	SELECT studentid, studenttermid, failpercentage
+	SELECT studentid, studenttermid, termid, failpercentage
 	FROM
-		(SELECT outerterms.studentid, outerterms.studenttermid,
+		(SELECT outerterms.studentid, outerterms.studenttermid, outerterms.termid, 
 			(SELECT COALESCE(SUM(courses.credits), 0)
 			FROM studentclasses 
 				JOIN classes USING (classid)
@@ -146,29 +151,90 @@ LANGUAGE SQL;
 DROP TYPE t_elig_24unitspassed CASCADE;
 CREATE TYPE t_elig_24unitspassed AS (
 	studentid integer,
-	studenttermid integer,
+	yearid integer,
 	unitspassed real
 );
 
-DROP FUNCTION f_elig_24unitspassed(integer);
-CREATE OR REPLACE FUNCTION f_elig_24unitspassed(p_year integer) 
-RETURNS SETOF t_elig_24unitspassed AS 
+DROP FUNCTION f_elig_24unitspassed_singleyear(integer);
+CREATE OR REPLACE FUNCTION f_elig_24unitspassed_singleyear(p_year integer)
+RETURNS SETOF t_elig_24unitspassed AS
 $$
-	SELECT studentid, studenttermid, unitspassed
-	FROM 
-		(SELECT studentid, studenttermid,
+	SELECT studentid, $1, unitspassed
+	FROM
+		(SELECT studentid, 
 			(SELECT COALESCE(SUM(courses.credits), 0)
 			FROM studentterms JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
-			WHERE grades.gradevalue <= 1 AND grades.gradevalue >= 1
+			WHERE grades.gradevalue <= 3 AND grades.gradevalue >= 1
 				AND studentterms.termid >= $1 * 10
 				AND studentterms.termid <= $1 * 10 + 3
-				AND studentterms.studenttermid = outerTerms.studenttermid
-			)
-			AS unitspassed
-		FROM studentterms AS outerTerms) as innerQuery
+				AND studentterms.studentid = studentlist.studentid
+			) AS unitspassed
+		FROM 
+			(SELECT DISTINCT studentid
+			FROM studentterms
+			WHERE studentterms.termid >= $1 * 10
+				AND studentterms.termid <= $1 * 10 + 3
+			ORDER BY studentid) AS studentlist
+		) AS innerQuery
 	WHERE unitspassed < 24
 $$
 LANGUAGE SQL;
+
+DROP FUNCTION f_elig_24unitspassed(integer);
+CREATE OR REPLACE FUNCTION f_elig_24unitspassed(p_year integer) 
+RETURNS SETOF t_elig_24unitspassed AS 
+$$
+	SELECT f_elig_24unitspassed_singleyear(yearid)
+	FROM
+	(SELECT yearid
+	FROM 
+		(SELECT DISTINCT (termid / 10) AS yearid FROM terms) AS yearlist
+	WHERE yearid <= $1
+	ORDER BY yearid ASC) AS innerquery;
+$$
+LANGUAGE SQL;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------- DO NOT RUN BEYOND THIS POINT -----------------------------------------------
+
+
+-- Gives list of all students enrolled in a particular semester
+(SELECT DISTINCT studentid
+FROM studentterms
+WHERE studentterms.termid >= 2010 * 10
+	AND studentterms.termid <= 2010 * 10 + 3
+ORDER BY studentid) AS studentlist;
+
+
+select * 
+from studentterms join studentclasses using (studenttermid) 
+	join classes using (classid)
+	join courses using (courseid)
+where studentid = 57 and studentterms.termid >= 20110 and studentterms.termid <= 20113;-- and gradeid < 11;
+
+
+SELECT COALESCE(SUM(courses.credits), 0)
+FROM studentterms JOIN studentclasses USING (studenttermid)
+	  JOIN classes USING (classid)
+	  JOIN grades USING (gradeid)
+	  JOIN courses USING (courseid)
+WHERE grades.gradevalue <= 3 AND grades.gradevalue >= 1
+	  AND studentterms.termid >= 2010 * 10
+	  AND studentterms.termid <= 2010 * 10 + 3
+	  AND studentterms.studentid = outerTerms.studentid
+) AS unitspassed

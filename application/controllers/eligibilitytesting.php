@@ -30,11 +30,11 @@ class Eligibilitytesting extends Main_Controller {
 		$this->session->set_userdata('activetermid', $activetermid);
 		$this->session->set_userdata('activeyear', $activeyear);
 		
-		$show = array();
-		$show['twiceFail'] = true;
-		$show['passHalf'] = ($activetermid % 10 < 3) ? true : false;
-		$show['passHalfCSMath'] = ($activetermid % 10 < 3) ? true : false;
-		$show['24units'] = ($activetermid % 10 == 3) ? true : false;
+		// $show = array();
+		// $show['twiceFail'] = true;
+		// $show['passHalf'] = ($activetermid % 10 < 3) ? true : false;
+		// $show['passHalfCSMath'] = ($activetermid % 10 < 3) ? true : false;
+		// $show['24units'] = ($activetermid % 10 == 3) ? true : false;
 		
 		if ($activetermid % 10 == 3)
 			$students = $this->Model->get_studentsofyear($activetermid, $activeyear);
@@ -45,19 +45,43 @@ class Eligibilitytesting extends Main_Controller {
 		$passHalf = $this->Model->e_PassHalf($activetermid);
 		$passHalfMathCS = $this->Model->e_PassHalfMathCS($activetermid);
 		$total24 = $this->Model->e_24UnitsPassed((int) ($activetermid / 10));
+		// print_r($twiceFail);
+		// print_r($passHalf);
+		// print_r($passHalfMathCS);
+		// print_r($total24);
+		
 		foreach ($students as $studentKey => $oneStudent) {
-			foreach ($twiceFail as $oneFail)
-				if ($oneStudent['studentid'] == $oneFail['studentid'])
-					$students[$studentKey]['eTwiceFail'] = 'X';
-			foreach ($passHalf as $oneFail)
-				if ($oneStudent['studentid'] == $oneFail['studentid'])
-					$students[$studentKey]['ePassHalf'] = 'X';
-			foreach ($passHalfMathCS as $oneFail)
-				if ($oneStudent['studentid'] == $oneFail['studentid'])
-					$students[$studentKey]['ePassHalfMathCS'] = 'X';
-			foreach ($total24 as $oneFail)
-				if ($oneStudent['studentid'] == $oneFail['studentid'])
-					$students[$studentKey]['eTotal24'] = 'X';
+			// Twice Fail
+			$students[$studentKey]['eTwiceFail'] = array();
+			foreach ($twiceFail as $oneFail) {
+				if ($oneStudent['studentid'] == $oneFail['studentid']) {
+					array_push($students[$studentKey]['eTwiceFail'], $oneFail);
+				}
+			}
+			
+			// Pass Half
+			$students[$studentKey]['ePassHalf'] = array();
+			foreach ($passHalf as $oneFail) {
+				if ($oneStudent['studentid'] == $oneFail['studentid']) {
+					array_push($students[$studentKey]['ePassHalf'], $oneFail);
+				}
+			}
+			
+			// Pass Half MathCS
+			$students[$studentKey]['ePassHalfMathCS'] = array();
+			foreach ($passHalfMathCS as $oneFail) {
+				if ($oneStudent['studentid'] == $oneFail['studentid']) {
+					array_push($students[$studentKey]['ePassHalfMathCS'], $oneFail);
+				}
+			}
+			
+			// Pass 24 Units
+			$students[$studentKey]['eTotal24'] = array();
+			foreach ($total24 as $oneFail) {
+				if ($oneStudent['studentid'] == $oneFail['studentid']) {
+					array_push($students[$studentKey]['eTotal24'], $oneFail);
+				}
+			}
 		}
 		$studentyears = $this->Model->get_studentyears();
 		$temp = array(array('yearid' => '%', 'year' => 'All'));
@@ -65,7 +89,9 @@ class Eligibilitytesting extends Main_Controller {
 		$years = $this->Model->get_years();
 		$sems = $this->Model->get_semesters();
 		
-		$this->load_view('eligibilitytesting_view', compact('students', 'studentyears', 'years', 'sems', 'activeyear', 'activetermid', 'show'));
+		print_r($students);
+		
+		$this->load_view('eligibilitytesting_view', compact('students', 'studentyears', 'years', 'sems', 'activeyear', 'activetermid'));
 	}
 	
 	public function generate_csv() {

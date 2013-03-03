@@ -132,18 +132,10 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
-								<? if ($show['twiceFail']) { ?>
 								<th width="15%"><center>Twice Fail</center></th>
-								<? } ?>
-								<? if ($show['passHalf']) { ?>
 								<th width="15%"><center>50% Passing</center></th>
-								<? } ?>
-								<? if ($show['passHalfCSMath']) { ?>
 								<th width="15%"><center>Math/CS 50%</center></th>
-								<? } ?>
-								<? if ($show['24units']) { ?> 
-									<th width="15%"><center>24 units</center></th>
-								<? } ?>
+								<th width="15%"><center>24 units</center></th>
 							</tr>
 						</thead>
 
@@ -153,18 +145,42 @@ $(function() {
 								<tr>
 									<td><center><? echo $result['studentno']; ?></center></td>
 									<td><center><? echo $result['name'];?></center></td>
-									<? if ($show['twiceFail']) { ?>
-										<td><center><? echo empty($result['eTwiceFail']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-									<? } ?>
-									<? if ($show['passHalf']) { ?>
-										<td><center><? echo empty($result['ePassHalf']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-									<? } ?>
-									<? if ($show['passHalfCSMath']) { ?>
-										<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-									<? } ?>
-									<? if ($show['24units']) { ?> 
-										<td><center><? echo empty($result['eTotal24']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-									<? } ?>
+									<td><center>
+										<? if (empty($result['eTwiceFail'])) { ?>
+										<? } else { ?>
+											<? foreach ($result['eTwiceFail'] as $one) { ?>
+												<? echo $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
+											<? } ?>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+										<? } ?>
+									</center></td>									
+									<td><center>
+										<? if (empty($result['ePassHalf'])) { ?>
+										<? } else { ?>
+											<? foreach ($result['ePassHalf'] as $one) { ?>
+												<? echo (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+											<? } ?>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+										<? } ?>
+									</center></td>									
+									<td><center>
+										<? if (empty($result['ePassHalfMathCS'])) { ?>
+										<? } else { ?>
+											<? foreach ($result['ePassHalfMathCS'] as $one) { ?>
+												<? echo (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+											<? } ?>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+										<? } ?>
+									</center></td>
+									<td><center>
+										<? if (empty($result['eTotal24'])) { ?>
+										<? } else { ?>
+											<? foreach ($result['eTotal24'] as $one) { ?>
+												<? echo $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
+											<? } ?>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+										<? } ?>
+									</center></td>
 								</tr>
 							<? } ?>
 						<? } else { ?>
@@ -181,18 +197,10 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
-								<? if ($show['twiceFail']) { ?>
-									<th width="15%"><center>Twice Fail</center></th>
-								<? } ?>
-								<? if ($show['passHalf']) { ?>
-									<th width="15%"><center>50% Passing</center></th>
-								<? } ?>
-								<? if ($show['passHalfCSMath']) { ?>
-									<th width="15%"><center>Math/CS 50%</center></th>
-								<? } ?>
-								<? if ($show['24units']) { ?> 
-									<th width="15%"><center>24 units</center></th>
-								<? } ?>
+								<th width="15%"><center>Twice Fail</center></th>
+								<th width="15%"><center>50% Passing</center></th>
+								<th width="15%"><center>Math/CS 50%</center></th>
+								<th width="15%"><center>24 units</center></th>
 								</tr>
 						</thead>
 
@@ -200,26 +208,23 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (!($show['twiceFail'] && !empty($result['eTwiceFail'])) && 
-										!($show['passHalf'] && !empty($result['ePassHalf'])) && 
-										!($show['passHalfCSMath'] && !empty($result['ePassHalfMathCS'])) && 
-										!($show['24units'] && !empty($result['eTotal24']))) { ?>
+								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && empty($result['eTotal24'])) { ?>
 									<? $added = true; ?>
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
 										<td><center><? echo $result['name'];?></center></td>
-										<? if ($show['twiceFail']) { ?>
-										<td><center><? echo empty($result['eTwiceFail']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-										<? } ?>
-										<? if ($show['passHalf']) { ?>
-											<td><center><? echo empty($result['ePassHalf']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-										<? } ?>
-										<? if ($show['passHalfCSMath']) { ?>
-											<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-										<? } ?>
-										<? if ($show['24units']) { ?> 
-											<td><center><? echo empty($result['eTotal24']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-										<? } ?>
+										<td><center>
+											<? echo empty($result['eTwiceFail']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?>
+										</center></td>									
+										<td><center>
+											<? echo empty($result['ePassHalf']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?>
+										</center></td>									
+										<td><center>
+											<? echo empty($result['ePassHalfMathCS']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?>
+										</center></td>
+										<td><center>
+											<? echo empty($result['eTotal24']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?>
+										</center></td>
 									</tr>
 								<? } ?>
 							<? } ?>
@@ -242,18 +247,10 @@ $(function() {
 							<tr>
 								<th width="13%"><center>Student #</center></th>
 								<th width="30%"><center>Name</center></th>
-								<? if ($show['twiceFail']) { ?>
 								<th width="15%"><center>Twice Fail</center></th>
-								<? } ?>
-								<? if ($show['passHalf']) { ?>
 								<th width="15%"><center>50% Passing</center></th>
-								<? } ?>
-								<? if ($show['passHalfCSMath']) { ?>
 								<th width="15%"><center>Math/CS 50%</center></th>
-								<? } ?>
-								<? if ($show['24units']) { ?> 
-									<th width="15%"><center>24 units</center></th>
-								<? } ?>
+								<th width="15%"><center>24 units</center></th>
 							</tr>
 						</thead>
 
@@ -261,27 +258,48 @@ $(function() {
 						<? if (!empty($students)) { ?>
 							<? $added = false; ?>
 							<? foreach($students as $result) { ?>
-								<? if (!($show['twiceFail'] && !empty($result['eTwiceFail'])) && 
-										!($show['passHalf'] && !empty($result['ePassHalf'])) && 
-										!($show['passHalfCSMath'] && !empty($result['ePassHalfMathCS'])) && 
-										!($show['24units'] && !empty($result['eTotal24']))) { ?>
+								<? if (empty($result['eTwiceFail']) && empty($result['ePassHalf']) && empty($result['ePassHalfMathCS']) && empty($result['eTotal24'])) { ?>
 								<? } else { ?>
 									<? $added = true; ?>
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
 										<td><center><? echo $result['name'];?></center></td>
-										<? if ($show['twiceFail']) { ?>
-										<td><center><? echo empty($result['eTwiceFail']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-										<? } ?>
-										<? if ($show['passHalf']) { ?>
-											<td><center><? echo empty($result['ePassHalf']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>									
-										<? } ?>
-										<? if ($show['passHalfCSMath']) { ?>
-											<td><center><? echo empty($result['ePassHalfMathCS']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-										<? } ?>
-										<? if ($show['24units']) { ?> 
-											<td><center><? echo empty($result['eTotal24']) ? '' : '<img src="'.base_url("assets/img/glyphicons_207_remove_2.png").'"></img>'; ?></center></td>
-										<? } ?>
+										<td><center>
+											<? if (empty($result['eTwiceFail'])) { ?>
+											<? } else { ?>
+												<? foreach ($result['eTwiceFail'] as $one) { ?>
+													<? echo $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
+												<? } ?>
+												<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<? } ?>
+										</center></td>									
+										<td><center>
+											<? if (empty($result['ePassHalf'])) { ?>
+											<? } else { ?>
+												<? foreach ($result['ePassHalf'] as $one) { ?>
+													<? echo (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+												<? } ?>
+												<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<? } ?>
+										</center></td>									
+										<td><center>
+											<? if (empty($result['ePassHalfMathCS'])) { ?>
+											<? } else { ?>
+												<? foreach ($result['ePassHalfMathCS'] as $one) { ?>
+													<? echo (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+												<? } ?>
+												<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<? } ?>
+										</center></td>
+										<td><center>
+											<? if (empty($result['eTotal24'])) { ?>
+											<? } else { ?>
+												<? foreach ($result['eTotal24'] as $one) { ?>
+													<? echo $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
+												<? } ?>
+												<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<? } ?>
+										</center></td>
 									</tr>
 								<? } ?>
 							<? } ?>
