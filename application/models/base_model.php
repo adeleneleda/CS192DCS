@@ -19,7 +19,7 @@ class Base_Model extends CI_Model {
 	}
 	
 	public function get_studentyears() {
-		$results = $this->db->query('select year as yearid, year from (select distinct left(studentno, 4) as year from students ORDER BY year) as temp');
+		$results = $this->db->query('select year as yearid, year from (select distinct substr(studentno, 1, 4) as year from students ORDER BY year) as temp');
 		$final = $results->result_array();
 		return $final;
 	}
