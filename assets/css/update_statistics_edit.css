@@ -1,17 +1,17 @@
 #studentheader {
 border-bottom:1px solid #FFFFFF;
 }
-.students {
+.edit_table {
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
 	width:500;
 	border-collapse:collapse;
 }
-.students td{
+.edit_table td{
 	font-size:1.2em;
 	border:1px solid #006600;
 	padding:3px 7px 2px 7px;
 }
-.students th {
+.edit_table th {
 	font-size:1.4em;
 	color:#FFFFFF;
 	text-align:left;

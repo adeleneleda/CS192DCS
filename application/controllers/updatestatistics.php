@@ -249,6 +249,7 @@ class Updatestatistics extends CI_Controller {
 		$data['reset_success'] = $this->resetIfChecked();
 		try {
 			$backup_filename = $this->getAbsoluteBasePath().$this->getUploadedFile();
+			$backup_filename = escapeshellarg($backup_filename);
 			if (substr(php_uname(), 0, 7) == "Windows")
 				$psql_location = $pg_bin_dir."/psql.exe";
 			else

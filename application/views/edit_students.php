@@ -1,11 +1,11 @@
 <script type="text/javascript" src="<?= base_url('assets/js/edit_students.js') ?>"></script>
-<link href="<?= base_url('assets/css/edit_students.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('assets/css/update_statistics_edit.css') ?>" rel="stylesheet" type="text/css" />
 
 <span class="page-header">
 	<h3>Edit Student Information</h3>
 </span>
 
-<table class="students table table-bordered table-striped table-hover">
+<table class="students edit_table table table-bordered table-striped table-hover">
 	<?php if (empty($students)) { ?>
 		Database is empty.
 	<?php } else { ?>

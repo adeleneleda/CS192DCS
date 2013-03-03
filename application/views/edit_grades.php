@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?= base_url('assets/js/edit_grades.js') ?>"></script>
-<link href="<?= base_url('assets/css/edit_grades.css') ?>" rel="stylesheet" type="text/css" />
+<link href="<?= base_url('assets/css/update_statistics_edit.css') ?>" rel="stylesheet" type="text/css" />
 <?php 
 	$studentno = $student_info['studentno'];
 	$name = $student_info['student_name'];
@@ -23,7 +23,7 @@ function printGrades($term_grades){
  }
  
 function printGradeTable($termname, $rows){ ?>
-	<table width='70%' class='grades table table-bordered table-striped table-hover' >
+	<table width='70%' class='grades edit_table table table-bordered table-striped table-hover' >
 		<thead>
 			<tr>
 				<th id='gradeheader' colspan='4'><center><?=$termname?></center></th>
