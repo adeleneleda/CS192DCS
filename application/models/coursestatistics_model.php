@@ -107,8 +107,7 @@ class Coursestatistics_model extends Base_Model {
 			join courses using (courseid) 
 			join grades using (gradeid) 
 			where courseid in ('.$courseid.') and classid in ('.$classid.') group by gradename;';
-			
-	//echo $query;
+
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
@@ -131,9 +130,6 @@ class Coursestatistics_model extends Base_Model {
 	courseid in ('.$courseid.')) from studentclasses join classes using (classid) where
 	courseid in ('.$courseid.') and gradeid < 10),2) || \'%\' as percentage from classes where courseid in ('.$courseid.') limit 1;';
   }
-  
-  //echo $query;
-  //die();
   
   $results = $this->db->query($query);
 	if($results->num_rows() > 0)
@@ -208,7 +204,7 @@ class Coursestatistics_model extends Base_Model {
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
-				$iod = 0;
+				$iod = "N/A";
 			}
 			else {
                 for($ctr = 0; $ctr < 10; $ctr++)
@@ -225,10 +221,8 @@ class Coursestatistics_model extends Base_Model {
                         $pass2++;
                     }
                 }
+				$iod = ($pass1 - $pass2)/10;
 			}
-            
-            $iod = ($pass1 - $pass2)/10;
-			//echo "ASDFGHJKL iod: ".$iod."\n";
             return $iod;
   
   
@@ -274,7 +268,7 @@ class Coursestatistics_model extends Base_Model {
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
-				$iod = 0;
+				$iod = "N/A";
 			}
 			else {
                 for($ctr = 0; $ctr < 10; $ctr++)
@@ -291,10 +285,8 @@ class Coursestatistics_model extends Base_Model {
                         $pass2++;
                     }
                 }
+				 $iod = ($pass1 - $pass2)/10;
 			}
-            
-            $iod = ($pass1 - $pass2)/10;
-			//echo "iod: ".$iod."\n";
             return $iod;
 	}
   

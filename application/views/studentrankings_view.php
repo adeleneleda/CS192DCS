@@ -74,17 +74,16 @@ $(function() {
                     while($ctr < sizeof($year))
                     {
                     ?>
-					  <option value="<?php echo $year[$ctr]?>"
-					  <?php if($year[$ctr] == $currentyear)
+					  <option value="<?php echo $year[$ctr]['yearid']?>"
+					  <?php if($year[$ctr]['yearid'] == $currentyear)
                                 {   
                                 ?>
                                 selected = "selected"
                                 <?php
                                 }?>>
-                      <?php echo $year[$ctr]?></option>
+                      <?php echo $year[$ctr]['yearid']?></option>
                       <?php $ctr++; }?>
 					</select>
-					<button type="submit" class="btn btn-primary"><i class="icon-white icon-search2"></i></button>
 				</div>
 			</div>
 			</br>
@@ -92,18 +91,17 @@ $(function() {
 				<label class="control-label" for="select02">Year</label>
 				<div class="controls">
 					<select id = "focus_here" name="cyear">
-						<option value="0" <?php if($yearlvl == 0)
+                    <?php $ctr = 0;
+                        while($ctr < sizeof($y))
+                        {
+                    ?>
+						<option value=<?php echo $y[$ctr]['yearid']?> <?php if($yearlvl == $y[$ctr]['yearid'])
                         {?>selected="selected" <?php
-                        }?>>1st</option>
-						<option value="1" <?php if($yearlvl == 1)
-                        {?>selected="selected" <?php
-                        }?>>2nd</option>
-						<option value="2" <?php if($yearlvl == 2)
-                        {?>selected="selected" <?php
-                        }?>>3rd</option>
-                        <option value="3" <?php if($yearlvl == 3)
-                        {?>selected="selected" <?php
-                        }?>>4th</option>
+                        }?>><?php echo $y[$ctr]['year'] ?></option>
+                    <?php 
+                            $ctr++;
+                        }
+                    ?>
 					</select> 
 				</div>
 			</div>
@@ -112,18 +110,21 @@ $(function() {
 				<label class="control-label" for="select03">Semester</label>
 				<div class="controls">
 					<select id = "focus_here" name="semester">
-						<option value="1" <?php if($currentsem == 1)
+                    <?php $ctr = 1;
+                        while($ctr < 4)
+                        {
+                    ?>
+						<option value=<?php echo $ctr?> <?php if($currentsem == $ctr)
                         {?>selected="selected" <?php
-                        }?>>1st Sem</option>
-						<option value="2" <?php if($currentsem == 2)
-                        {?>selected="selected" <?php
-                        }?>>2nd Sem</option>
-						<option value="3" <?php if($currentsem == 3)
-                        {?>selected="selected" <?php
-                        }?>>Summer</option>
+                        }?>><?php echo $semarray[$ctr] ?></option>
+                    <?php 
+                            $ctr++;
+                        }
+                    ?>
 					</select> 
 				</div>
 			</div>
+            <button type="submit" class="btn btn-primary">Search</button>
 			</form>
 		</div>
 	</div>

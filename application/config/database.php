@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'postgres';
-$db['default']['password'] = '12345';
+$db['default']['password'] = 'prosper';
 $db['default']['database'] = 'studentprofiler';
 $db['default']['dbdriver'] = 'postgre';
 $db['default']['dbprefix'] = '';

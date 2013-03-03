@@ -7,25 +7,7 @@ class StudentRankings_Model extends Base_Model {
         // Call the Model constructor
         parent::__construct();
     }
-    
-
-    
-    function get_years()
-    {
-        $termresults = $this->db->query('SELECT termid FROM terms;');
-        $termresults = $termresults->result_array();
-        $results = array();
-        $ctr = 0;
-        $termctr = 0;
-        for($ctr = 0; $ctr < sizeof($termresults)/3; $ctr++)
-        {
-            $results[$ctr] = ($termresults[$termctr]['termid']/10) - (($termresults[$termctr]['termid']%10)/10);
-            $termctr = $termctr+3;
-        }
-        return $results;
-    }
-
-    
+     
     function get_gwa($sem, $year)
     {
         $results = $this->db->query('SELECT DISTINCT a.studentno, a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), cwaproto4(a.studentid), csgwa(a.studentid), mathgwa(a.studentid)

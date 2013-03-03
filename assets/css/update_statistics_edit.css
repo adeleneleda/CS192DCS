@@ -1,0 +1,33 @@
+#studentheader {
+border-bottom:1px solid #FFFFFF;
+}
+.edit_table {
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	width:500;
+	border-collapse:collapse;
+}
+.edit_table td{
+	font-size:1.2em;
+	border:1px solid #006600;
+	padding:3px 7px 2px 7px;
+}
+.edit_table th {
+	font-size:1.4em;
+	color:#FFFFFF;
+	text-align:left;
+	padding-top:3px;
+	padding-bottom:2px;
+	background-color:green;
+}
+tr:nth-child(even) {
+	background-color: #F5F0EB;
+}
+tr:nth-child(odd) {
+	background-color: #FFF;
+}
+a.btn-primary{
+	color:#FFFFFF;
+}
+a.btn-primary:hover, a.btn-primary:active, a.btn-primary.active, a.btn-primary.disabled, a.btn-primary[disabled] {
+	background-color:#006600;
+}
