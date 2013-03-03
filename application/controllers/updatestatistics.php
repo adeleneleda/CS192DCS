@@ -201,6 +201,7 @@ class Updatestatistics extends CI_Controller {
 		$backup_dir = $this->getDumpsFolder();
 		$backup_name = $backup_dir.$this->db->database.date("m-d-Y_h-i-s").".sql";
 		$cmd = escapeshellarg($pg_dump)." -U postgres --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
+		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
 		if ($success) { // save cookie
@@ -255,6 +256,7 @@ class Updatestatistics extends CI_Controller {
 			else
 				$psql_location = $pg_bin_dir."/psql";
 			$cmd = escapeshellarg($psql_location)." -U postgres -f $backup_filename ".$this->db->database." 2>&1";
+			putenv("PGPASSWORD=".$this->db->password);
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
 			if ($success) { // save cookie
