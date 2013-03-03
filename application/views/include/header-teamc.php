@@ -1,3 +1,7 @@
+<div class="page-header" id="page-header">
+    <h1><img src="<?= base_url('assets/img/glyphicons_081_refresh.png')?>"></img>&nbsp;Update Statistics</h1>
+</div>
+
 <div class="span2">
     <div class="well" id="sidebar">
     <ul class="nav nav-list-team-c">

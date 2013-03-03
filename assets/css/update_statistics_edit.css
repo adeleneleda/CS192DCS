@@ -1,24 +1,38 @@
 #studentheader {
 border-bottom:1px solid #FFFFFF;
 }
-.edit_table {
+#students, #grades {
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	width:500;
+	width:90%;
 	border-collapse:collapse;
+	text-align:center;
 }
-.edit_table td{
-	font-size:1.2em;
+#students td, #grades td {
+	font-size:1.1em;
+	height:20px;
 	border:1px solid #006600;
-	padding:3px 7px 2px 7px;
+	width:auto;
+	padding-top:3px;
+	padding-bottom:1px;
+	text-align:center;
 }
-.edit_table th {
+
+#students th, #grades th  {
 	font-size:1.4em;
 	color:#FFFFFF;
-	text-align:left;
 	padding-top:3px;
 	padding-bottom:2px;
-	background-color:green;
+	background-color:rgb(56, 150, 60);
+	text-align:center;
 }
+
+.edit_table  .gradecell, .edit_table .studentinfocell {
+	height:15px;
+	width:80%;
+	text-align:center;
+	margin:0px;
+}
+
 tr:nth-child(even) {
 	background-color: #F5F0EB;
 }

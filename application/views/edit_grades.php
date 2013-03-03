@@ -1,5 +1,5 @@
-<script type="text/javascript" src="<?= base_url('assets/js/edit_grades.js') ?>"></script>
 <link href="<?= base_url('assets/css/update_statistics_edit.css') ?>" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?= base_url('assets/js/edit_grades.js') ?>"></script>
 <?php 
 	$studentno = $student_info['studentno'];
 	$name = $student_info['student_name'];
@@ -23,23 +23,21 @@ function printGrades($term_grades){
  }
  
 function printGradeTable($termname, $rows){ ?>
-	<table width='70%' class='grades edit_table table table-bordered table-striped table-hover' >
+	<center><h4><?=$termname?></h4>
+	<table id="grades" class="edit_table tablesorter">
 		<thead>
 			<tr>
-				<th id='gradeheader' colspan='4'><center><?=$termname?></center></th>
-			</tr>
-			<tr>
-				<th width='20%'><center>Class Code</center></th>
-				<th width='40%'><center>Class</center></th>
-				<th width='20%'><center>Units</center></th>
-				<th width='20%'><center>Grade</center></th>
+				<th width='20%'>Class Code</th>
+				<th width='40%'>Class</th>
+				<th width='20%'>Units</th>
+				<th width='20%'>Grade</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach($rows as $row)
 			printGradeRow($row); ?>
 		</tbody>
-	</table>
+	</table></center>
 <?php }
 
 function printGradeRow($row){
@@ -59,7 +57,7 @@ function printGradeRow($row){
 	
 	$length = strlen($grade) + 1;
 	$data = array('name'=>'gradecell', 'id'=>$id, 'class'=>'gradecell', 'size'=>$length, 'value'=>$grade);
-	echo "<td><div class='controls'>".form_input($data)."</div></td>";
+	echo "<td><center>".form_input($data)."</center></td>";
 	
 	echo "</tr>"; 
 }

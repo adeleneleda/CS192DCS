@@ -1,4 +1,8 @@
+function scrollToPageHeader() {
+	location.href = "#page-header";
+}
 $(document).ready(function(){
+	scrollToPageHeader();
 	$('#sr').removeClass('active');
 	$('#cs').removeClass('active');
 	$('#et').removeClass('active');
@@ -40,6 +44,7 @@ $(document).ready(function(){
 		$('#content').load($(this).attr('href'), function () { // called when done loading
 			$('#loading').hide();
 			$('#content').show();
+			scrollToPageHeader();
 		});
 	});
 });
