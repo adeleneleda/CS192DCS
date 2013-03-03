@@ -89,7 +89,7 @@ class Eligibilitytesting extends Main_Controller {
 		$years = $this->Model->get_years();
 		$sems = $this->Model->get_semesters();
 		
-		print_r($students);
+		//print_r($students);
 		
 		$this->load_view('eligibilitytesting_view', compact('students', 'studentyears', 'years', 'sems', 'activeyear', 'activetermid'));
 	}
@@ -162,7 +162,7 @@ class Eligibilitytesting extends Main_Controller {
 		header("Content-length:". strlen($return));
 		header("Content-Disposition: attachment; filename=".$name."_ineligibilities.csv");
 		
-		echo $return;
+		//echo $return;
 		exit;
 	}
 	

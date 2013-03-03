@@ -34,7 +34,7 @@
 				var site_url = "<?= site_url(''); ?>";
 			</script>
 		<?php } ?>
-		
+		<script type="text/javascript" src="<?= base_url('assets/js/jquery.qtip-1.0.0-rc3.min.js') ?>"></script>
 	</head>
 	<body class="preview" data-spy="scroll" data-target=".subnav" data-offset="80">
 		<div class="container">

@@ -69,7 +69,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="select01">Year of Students</label>
 				<div class="controls">
-					<select name="year" id="select01" style="width:180px">
+					<select name="year" id="select01">
                     <?php $ctr = 0; 
                     while($ctr < sizeof($year))
                     {
@@ -124,6 +124,7 @@ $(function() {
 					</select> 
 				</div>
 			</div>
+			<br/>
             <button type="submit" class="btn btn-primary">Search</button>
 			</form>
 		</div>
