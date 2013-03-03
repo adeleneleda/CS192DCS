@@ -57,7 +57,7 @@ $$
 					FROM students JOIN studentterms USING (studentid) 
 						JOIN studentclasses USING (studenttermid) 
 						JOIN classes USING (classid)
-					WHERE classes.termid = $1
+					WHERE classes.termid <= $1
 						AND students.studentid = studentlist.jstudentid
 						AND classes.courseid = studentlist.courseid) >= 1
 			) AS studentlist
@@ -98,7 +98,7 @@ $$
 			WHERE studentclasses.studenttermid = outerTerms.studenttermid)
 			AS failpercentage
 		FROM studentterms AS outerterms
-		WHERE termid = $1) AS temp
+		WHERE termid <= $1) AS temp
 	WHERE failpercentage > 0.5;
 $$
 LANGUAGE SQL;
@@ -136,7 +136,7 @@ $$
 				AND (courses.coursename ilike 'Math %' OR courses.coursename ilike 'CS %'))
 			AS failpercentage
 		FROM studentterms AS outerterms
-		WHERE termid = $1) AS temp
+		WHERE termid <= $1) AS temp
 	WHERE failpercentage > 0.5;
 $$
 LANGUAGE SQL;
@@ -157,12 +157,12 @@ $$
 	SELECT studentid, studenttermid, unitspassed
 	FROM 
 		(SELECT studentid, studenttermid,
-			(SELECT SUM(courses.credits)
+			(SELECT COALESCE(SUM(courses.credits), 0)
 			FROM studentterms JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
-			WHERE grades.gradevalue <= 5 AND grades.gradevalue >= 1
+			WHERE grades.gradevalue <= 1 AND grades.gradevalue >= 1
 				AND studentterms.termid >= $1 * 10
 				AND studentterms.termid <= $1 * 10 + 3
 				AND studentterms.studenttermid = outerTerms.studenttermid
