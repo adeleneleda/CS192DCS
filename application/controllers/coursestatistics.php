@@ -10,7 +10,6 @@ class Coursestatistics extends Main_Controller {
    public function index()
 	{
 		$dropdown = $this->Model->dropdown_info();
-		
 		$section_info = $this->Model->section_info();
 		$year_info = $this->Model->get_years();
 		$instructor_info = $this->Model->instructor_info();

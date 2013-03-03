@@ -23,7 +23,6 @@ class StudentRankings extends CI_Controller {
         $this->load_view('studentrankings_view', compact('name', 'year', 'sem', 'currentyear', 'currentsem', 'yearlvl', 'semarray', 'y'));
     }
     
-    
     public function index()
     {
         $year = $this->Model->get_studentyears();
