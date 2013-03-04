@@ -19,9 +19,9 @@ CREATE TABLE eligtwicefailcourses (
 );
 
 INSERT INTO eligtwicefailcourses 
-	SELECT courseid FROM courses WHERE coursename IN ('math 17', 'math 53', 'math 54', 'math 55');
+	SELECT courseid FROM courses WHERE coursename IN ('Math 17', 'Math 53', 'Math 54', 'Math 55');
 INSERT INTO eligtwicefailcourses 
-	SELECT courseid FROM courses WHERE coursename IN ('cs 11', 'cs 12', 'cs 21', 'cs 32');
+	SELECT courseid FROM courses WHERE coursename IN ('CS 11', 'CS 12', 'CS 21', 'CS 32');
 
 DROP TYPE t_elig_twicefailsubjects CASCADE;
 CREATE TYPE t_elig_twicefailsubjects AS (
