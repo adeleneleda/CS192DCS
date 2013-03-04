@@ -1,3 +1,24 @@
+<script>
+$(document).ready(function(){
+	$('.upload_error').each(function() {
+		$(this).qtip({
+			content: $(this).attr('title'),
+			show: { solo: true, ready: false },
+			position: {
+				corner: {
+					tooltip: 'bottomMiddle', // Use the corner...
+					target: 'topMiddle' // ...and opposite corner
+				}
+			},
+			style: {
+				tip: true,
+				name: 'cream',
+			}
+		});
+		$(this).prop('title', null);
+	});
+});
+</script>
 <?php if ($reset_success) : ?>
 	<span class='success'>Database successfully reset.<br></span>
 <?php endif;

@@ -10,7 +10,7 @@
 		<li id="ed"><a class="teamcnav" href="<?= site_url("updatestatistics/edit") ?>">Edit</a></li>
 		<li id="bu"><a class="teamcnav" href="<?= site_url("updatestatistics/backup") ?>">Backup</a></li>
 		<li id="re"><a class="teamcnav" href="<?= site_url("updatestatistics/restore") ?>">Restore</a></li>
-		<li id="rs"><a class="teamcnav" href="<?= site_url("updatestatistics/sql") ?>">Run SQL</a></li>
+		<!--<li id="rs"><a class="teamcnav" href="<?= site_url("updatestatistics/sql") ?>">Run SQL</a></li>-->
 	</ul>
     </div>
 </div>

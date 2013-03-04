@@ -180,7 +180,7 @@ class Updatestatistics extends CI_Controller {
 		$cookie = $this->input->cookie('pg_bin_dir', TRUE);
 		if (isset($_POST['pg_bin_dir'])) {
 			$pg_bin_dir = $_POST['pg_bin_dir'];
-			if (!preg_match("/bin$/", $pg_bin_dir))
+			if (!preg_match("@bin[\\\/]?$@", $pg_bin_dir))
 				$pg_bin_dir .= "/bin";
 			$this->performBackup($pg_bin_dir);
 		}
@@ -199,7 +199,8 @@ class Updatestatistics extends CI_Controller {
 		if (substr(php_uname(), 0, 7) == "Windows")
 			$pg_dump .= ".exe";
 		$backup_dir = $this->getDumpsFolder();
-		$backup_name = $backup_dir.$this->db->database.date("m-d-Y_h-i-s").".sql";
+		ini_set('date.timezone', 'Asia/Manila');
+		$backup_name = $backup_dir.$this->db->database.'--'.date("Y-m-d--H-i-s").".sql";
 		$cmd = escapeshellarg($pg_dump)." -U postgres --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
 		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
@@ -221,7 +222,7 @@ class Updatestatistics extends CI_Controller {
 		$cookie = $this->input->cookie('pg_bin_dir', TRUE);
 		if (isset($_POST['pg_bin_dir'])) {
 			$pg_bin_dir = $_POST['pg_bin_dir'];
-			if (!preg_match("/bin$/", $pg_bin_dir))
+			if (!preg_match("@bin[\\\/]?$@", $pg_bin_dir))
 				$pg_bin_dir .= "/bin";
 			$this->showRestoreDialog($pg_bin_dir);
 		}

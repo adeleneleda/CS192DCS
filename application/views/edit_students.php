@@ -14,7 +14,7 @@
 				<th width='25%'>First Name</th>
 				<th width='20%'>Middle Name</th>
 				<th width='17%'>Pedigree</th>
-				<th width='14%'></th>
+				<th width='14%' class="filter-false"></th>
 			</tr>
 		</thead>
 	<?php } ?>
