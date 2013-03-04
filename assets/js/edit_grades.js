@@ -1,8 +1,5 @@
 $(document).ready(function(){
 	$(".gradecell").change(function() {
-	
-		$("#edit_error").slideUp("fast");
-		
 		var callback = site_url + 'updatestatistics/updateGrade';
 		var changed_cell = $(this);
 		
@@ -17,13 +14,27 @@ $(document).ready(function(){
 			success: function (retVal) {
 				if (retVal == 'true') {
 					$(changed_cell).css('background-color','#AAFFCC').css("color","#555555");
-					$(changed_cell).prop("title", null);
-					setTimeout(function() { $(changed_cell).css("background-color","white"); }, 250);
+					setTimeout(function() {
+						$(changed_cell).css("background-color","white");
+						$("#grades").trigger('update'); // re-sort table
+					}, 250);
+					$(changed_cell).qtip('hide');
+					$(changed_cell).qtip('disable');
 				} else {
-					$("#edit_error p").html(retVal);
-					$("#edit_error").slideDown("slow");
-					$("#edit_error").delay(1500).slideUp("slow");	
-					$(changed_cell).prop("title", retVal);
+					$(changed_cell).qtip({
+						content: retVal,
+						show: { solo: true, ready: true },
+						position: {
+							corner: {
+								tooltip: 'bottomMiddle', // Use the corner...
+								target: 'topMiddle' // ...and opposite corner
+							}
+						},
+						style: {
+							tip: true,
+							name: 'cream',
+						}
+					});
 					$(changed_cell).css("background-color","#CF0220").css("color","white");
 				}
 			},

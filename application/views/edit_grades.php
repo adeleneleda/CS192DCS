@@ -56,7 +56,7 @@ function printGradeRow($row){
 	echo "<td>$units</td>";
 	
 	$length = strlen($grade) + 1;
-	$data = array('name'=>'gradecell', 'id'=>$id, 'class'=>'gradecell', 'size'=>$length, 'value'=>$grade);
+	$data = array('name'=>'gradecell', 'id'=>$id, 'class'=>'gradecell tool', 'size'=>$length, 'value'=>$grade);
 	echo "<td><center>".form_input($data)."</center></td>";
 	
 	echo "</tr>"; 

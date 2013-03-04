@@ -24,7 +24,7 @@ class Gradefile_Parser extends CI_Model {
 	}
 	
 	public function initialize() {
-		$this->load->model('upload_query', 'query');
+		$this->query = new Upload_query;
 		$this->load->model("Field_factory", "field_factory");
 		for ($i = 0; $i < $this->cols - 2; $i++) // last 3 columns (grades) are parsed at the same time
 			$this->field_parsers[] = $this->field_factory->createFieldByNum($i);
@@ -48,7 +48,7 @@ class Gradefile_Parser extends CI_Model {
 		$output = "<table class='databasetable'>";
 		$output .= $this->headerRowHtml();
 		while ($row = $this->nextRow()) {
-			$this->query = new Upload_query;
+			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
 			$this->query->execute();
 		}

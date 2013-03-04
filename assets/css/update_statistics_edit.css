@@ -1,11 +1,20 @@
+#content {
+	position:relative;
+	display:inline-block;
+	min-height:550px;
+}
 #studentheader {
-border-bottom:1px solid #FFFFFF;
+	border-bottom:1px solid #FFFFFF;
 }
 #students, #grades {
 	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	width:90%;
+	width:100%;
 	border-collapse:collapse;
 	text-align:center;
+}
+#students {
+	position:absolute;
+	table-layout:fixed;
 }
 #students td, #grades td {
 	font-size:1.1em;

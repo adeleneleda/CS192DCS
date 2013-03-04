@@ -7,22 +7,14 @@
 		Database is empty.
 	<?php } else { ?>
 	<table id="students" class="edit_table tablesorter">
-		<colgroup>
-			<col style="width:10%;">
-			<col style="width:15%;">
-			<col style="width:15%;">
-			<col style="width:15%;">
-			<col style="width:8%;">
-			<col style="width:10%;">
-		</colgroup>
 		<thead>
 			<tr>
-				<th>Student Number</th>
-				<th>Last Name</th>
-				<th>First Name</th>
-				<th>Middle Name</th>
-				<th>Pedigree</th>
-				<th></th>
+				<th width='16%'>Student #</th>
+				<th width='20%'>Last Name</th>
+				<th width='25%'>First Name</th>
+				<th width='20%'>Middle Name</th>
+				<th width='17%'>Pedigree</th>
+				<th width='14%'></th>
 			</tr>
 		</thead>
 	<?php } ?>
@@ -50,7 +42,7 @@
 			
 		function printCell($personid, $fieldname, $fieldvalue) {
 			$length = strlen($fieldvalue) + 1;
-			$data = array('name'=>'studentinfocell', 'id'=>$personid, 'class'=>'studentinfocell',
+			$data = array('name'=>'studentinfocell', 'id'=>$personid, 'class'=>'studentinfocell tool',
 			'data-changedfieldname'=>$fieldname, 'size'=>$length, 'value'=>$fieldvalue, 'style' => 'width:80%',);
 			echo "<td><center>".form_input($data)."</center></td>";
 		} ?>

@@ -1,9 +1,3 @@
-<script>
-	$(document).ready(function(){
-		$("#edit_error").hide();
-	});
-</script>
-
 <div class="page-header" id="page-header">
     <h1><img src="<?= base_url('assets/img/glyphicons_081_refresh.png')?>"></img>&nbsp;Update Statistics</h1>
 </div>
@@ -22,12 +16,6 @@
 </div>
 
 <div id="container" class="span4">
-	<div id="edit_error" class="alert alert-error">
-		<strong>Error</strong>
-		<p>
-		Error message here.
-		</p>
-	</div>
 	<div id="loading" style="display:none;">
 		<img src="<?=base_url('images/loading.gif')?>" alt="" /><br>Please wait...
 	</div>
