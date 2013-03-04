@@ -7,19 +7,23 @@ class Coursestatistics_model extends Base_Model {
    }
    
   public function dropdown_info() {
-	$query = "select coursename, courseid from courses;";
+  
+	$query = "select coursename, courseid from courses where domain = 'MAJ';";
 	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
 			return $temp;
 		}
 	return false;
+  
   }
   
    public function term_info() {
 	$query = "select termid, name from terms;";
-	$results = $this->db->query($query);	
+	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
@@ -29,8 +33,10 @@ class Coursestatistics_model extends Base_Model {
   }
   
   public function get_years() {
+  
 	$query = "select distinct year from terms;";
 	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
@@ -39,29 +45,42 @@ class Coursestatistics_model extends Base_Model {
 	return false;
   }
   
-    public function instructor_info() {
+  
+  
+     public function instructor_info() {
+  
 	$query = "select firstname, lastname, instructorid from persons join instructors using (personid);";
 	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
 			return $temp;
 		}
 	return false;
+  
   }
-
-    public function section_info() {
+  
+  
+     public function section_info() {
+  
 	$query = "select distinct section from classes;";
 	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
 			return $temp;
 		}
 	return false;
+  
   }
 
+  
+  
+
   public function search($courseid, $startyear, $endyear, $startsem, $endsem,  $instructorid, $section) {
+  
 	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section, lastname || ', ' || firstname as instructorname
 			FROM courses JOIN classes USING (courseid) 
 			JOIN instructorclasses USING (classid) 
@@ -82,6 +101,7 @@ class Coursestatistics_model extends Base_Model {
   }
   
   public function results_graph($classid, $courseid) {
+  
 	$query = 'SELECT gradename, count(*) from studentclasses
 			join classes using (classid) 
 			join courses using (courseid) 
@@ -89,6 +109,7 @@ class Coursestatistics_model extends Base_Model {
 			where courseid in ('.$courseid.') and classid in ('.$classid.') group by gradename;';
 
 	$results = $this->db->query($query);
+		
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();
@@ -109,6 +130,7 @@ class Coursestatistics_model extends Base_Model {
 	courseid in ('.$courseid.')) from studentclasses join classes using (classid) where
 	courseid in ('.$courseid.') and gradeid < 10),2) || \'%\' as percentage from classes where courseid in ('.$courseid.') limit 1;';
   }
+  
   $results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
@@ -118,6 +140,7 @@ class Coursestatistics_model extends Base_Model {
 	return false;    
 	
   }
+  
   
   public function results_chart($classid = null, $courseid) {
   
@@ -133,6 +156,7 @@ class Coursestatistics_model extends Base_Model {
 	courseid in ('.$courseid.')) from studentclasses a join classes using (classid) where a.gradeid = grades.gradeid and 
 	courseid in ('.$courseid.')),2) || \'%\' as percentage from grades;';
 	}
+	
 	$results = $this->db->query($query);
 		
 	if($results->num_rows() > 0)
@@ -157,12 +181,16 @@ class Coursestatistics_model extends Base_Model {
 		{
 			$prevsem = $prevsem - 1;
 			$prevsem = $prevsem*10;
-			$prevsem = $prevsem + 2;
+			$prevsem = $prevsem + 3;
 		}
 		else if($semester == 2)
 		{
 			$prevsem = $thissem-1;
 		}
+        else if($semester == 3)
+        {
+            $prevsem = $thissem-1;
+        }
 			$results = $this->db->query('SELECT grades.gradevalue
 				FROM students s
 				JOIN persons USING (personid)
@@ -175,7 +203,7 @@ class Coursestatistics_model extends Base_Model {
 				JOIN instructorclasses using (classid)
 				JOIN instructors using (instructorid)
 				WHERE courses.courseid = ' . $courseid . '
-				ORDER BY gwa(s.studentid, ' . $prevsem . ') ASC;');
+				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
 			$results = $results->result_array();				
             $ctr = 0;
             
@@ -200,6 +228,9 @@ class Coursestatistics_model extends Base_Model {
 				$iod = ($pass1 - $pass2)/10;
 			}
             return $iod;
+  
+  
+  
   }
   
 	public function index_of_discrimination($sem, $courseid, $instructorname){
@@ -213,16 +244,21 @@ class Coursestatistics_model extends Base_Model {
         $thissem = $currentsem[0]['termid'];
 		$semester = $thissem%10;
 		$prevsem = ($thissem/10) - $semester/10;
+	
 		if($semester == 1)
 		{
 			$prevsem = $prevsem - 1;
 			$prevsem = $prevsem*10;
-			$prevsem = $prevsem + 2;
+			$prevsem = $prevsem + 3;
 		}
 		else if($semester == 2)
 		{
 			$prevsem = $thissem-1;
 		}
+        else if($semester == 3)
+        {
+            $prevsem = $thissem-1;
+        }
 			$results = $this->db->query('SELECT grades.gradevalue
 				FROM students s
 				JOIN persons USING (personid)
@@ -235,7 +271,7 @@ class Coursestatistics_model extends Base_Model {
 				JOIN instructorclasses using (classid)
 				JOIN instructors using (instructorid)
 				WHERE courses.courseid = ' . $courseid . ' AND terms.termid = ' . $thissem . ' AND instructors.instructorid = ' . $instructorid. '
-				ORDER BY gwa(s.studentid, ' . $prevsem . ') ASC;');
+				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
 			$results = $results->result_array();				
             $ctr = 0;
             

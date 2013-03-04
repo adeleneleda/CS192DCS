@@ -15,6 +15,8 @@ class Grade extends Field {
 			$grade = number_format($grade, 2); // make into 2 decimal places
 		else if (preg_match('/^DRP$|^NG$|^INC$/i', $grade))
 			$grade = strtoupper($grade);
+		else if (!strcasecmp('IP', $grade))
+			$grade = 'NG';
 		else
 			throw new Exception('Invalid input in grade');
 		if (preg_match('/^4\.00$|^INC$/', $grade)) {

@@ -69,7 +69,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="select01">Year of Students</label>
 				<div class="controls">
-					<select name="year" id="select01">
+					<select name="year" id="select01" style="width:180px">
                     <?php $ctr = 0; 
                     while($ctr < sizeof($year))
                     {
@@ -124,7 +124,6 @@ $(function() {
 					</select> 
 				</div>
 			</div>
-			<br/>
             <button type="submit" class="btn btn-primary">Search</button>
 			</form>
 		</div>
@@ -152,7 +151,7 @@ $(function() {
             <td> <?php echo $name[$ctr]['studentno']; ?> </td>
 			<td> <?php echo $name[$ctr]['lastname'] . ', ' . $name[$ctr]['firstname'] . ' ' . $name[$ctr]['middlename']; ?> </td>
 			<td> <?php echo $name[$ctr]['gwa']; ?> </td>
-			<td> <?php echo $name[$ctr]['cwaproto4']; ?> </td>
+			<td> <?php echo $name[$ctr]['xcwa69']; ?> </td>
 			<td> <?php echo $name[$ctr]['csgwa']; ?> </td>
 			<td> <?php echo $name[$ctr]['mathgwa']; ?>  </td></td>
 			</tr>

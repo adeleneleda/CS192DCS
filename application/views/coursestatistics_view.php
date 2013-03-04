@@ -189,8 +189,8 @@
 			</td>
 		</tr>
 		<tr>
-			<td><h4>Computer Programming I</h4></td>
-			<td align="right"><i class="icon-tags"></i> 
+			
+			<td colspan = "2" align="right"><i class="icon-tags"></i> 
 			<span class="label" style="background-color:#A60800"><?= $default_startterm?></span>
 			<span class="label" style="background-color:#FFAA00"><?= $default_endterm?></span>
 			<span class="label" style="background-color:#8805AB"><?= $default_instructor?></span>
