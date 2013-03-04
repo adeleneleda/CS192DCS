@@ -1,6 +1,7 @@
-<?php if ($reset_success) ?>
+<?php if ($reset_success) : ?>
 	<span class='success'>Database successfully reset.<br></span>
-<?php if ($upload_success && isset($success_rows) && isset($error_rows) && isset($parse_output)) {	?>
+<?php endif;
+	if ($upload_success && isset($success_rows) && isset($error_rows) && isset($parse_output)) {	?>
 	<span class='success'>File successfully uploaded.<br></span><br>
 	<b><span class='success'><?= $success_rows ?></span></b> rows added,
 	<b><span class='error'><?= $error_rows ?></span></b> rows with errors.
