@@ -31,7 +31,7 @@
 		<form id="search_dropdown" method="post" action="<?= base_url('coursestatistics/index')?>">
 		
 		<div class="well form-search">
-			<select name='courseid' id="selectError" style="width:180px">
+			<select name='courseid' id="selectError">
 				<?	$default_coursename = "CS 11";
 					foreach ($dropdown as $indiv_drop) {
 					if($selected['courseid'] == $indiv_drop['courseid']){
@@ -43,7 +43,6 @@
 					}
 				}?>
 			</select>
-			<button type="submit" class="btn-primary btn"><i class="icon-white icon-search2"></i></button>
         </div>
 		<div id="advanced_search_div" class="well" >
 			<legend>Advanced Search</legend>
@@ -153,6 +152,7 @@
 					</select>
 				</div>
 			</div>
+		<button type="submit" class="btn-primary btn">Search</button>
 		</div>
 		</form>
 	</div>
@@ -246,13 +246,9 @@
 				yaxis: {
 					label:'Number of Students',
 					labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-					max: <? if(max($count) % 5 == 0){
-					echo max($count)+5;
-					}else if(max($count)<5){
-					echo 5;
-					}else echo max($count)+ (max($count)%5);?>,
+					max: <?= ((int)(max($count)/50) > 0) ? max($count)+(5*(int)(max($count)/50)) : max($count) + 10?>,
 					min: 0,
-					tickInterval: 5,
+					tickInterval : <?= (int)((max($count)+15) / 10)?>,
 					tickOptions:{ 
 						fontSize: '10pt'
 					},
@@ -272,6 +268,7 @@
 <!-- Don't touch this! -->
 
 <!-- Additional plugins go here -->
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.jqplot.min.css') ?>"></link>
 	<script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
 	<script class="include" type="text/javascript" src="<?= base_url('assets/js/jquery.jqplot.min.js') ?>"></script>
 	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.barRenderer.min.js') ?>"></script>
@@ -281,5 +278,5 @@
 	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasTextRenderer.min.js') ?>"></script>
 	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasAxisLabelRenderer.min.js') ?>"></script>
 	<script class="include" type="text/javascript" src="<?= base_url('assets/plugins/jqplot.canvasAxisTickRenderer.min.js') ?>"></script>
-	<link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/jquery.jqplot.min.css') ?>"></link>
+	
 <!-- End additional plugins -->

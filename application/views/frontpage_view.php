@@ -31,6 +31,8 @@ $(document).ready(function() {
 			The GWA, CWA, CS GWA, Math GWA are also displayed. Students can be arranged alphabetically, by GWA, CWA, CS GWA, and Math GWA.
 			<br/>
 			<br/>
+			<br/>
+			<br/>
 		</div>
 	</div>
 	<div style="margin-right:1%" class="span6">
@@ -41,12 +43,6 @@ $(document).ready(function() {
 			This module allows the user to see the course statistics. It comes with a Search and and an Advanced Search function which allows user to filter the results more.
 			The results of the Search will be a list of subjects satisfying the query.
 			Upon clicking View Statistics, user will be presented with a graph and a table containing the passing rate, grade statistics and the index of discrimination.
-			<br/>
-			<br/>
-			<br/>
-			
-			<br/>
-			<br/>
 			<br/>
 			<br/>
 		</div>
@@ -74,11 +70,6 @@ $(document).ready(function() {
 			<br/>
 			This module allows to update the records in the database by uploading spreadsheets with grades for the semester.
 			It also allows direct editing of the fields of the tables, backup and restore of the database.
-			<br/>
-			<br/>
-			Screenshots
-			<br/>
-			<br/>
 			<br/>
 			<br/>
 		</div>
