@@ -30,16 +30,11 @@ class Eligibilitytesting extends Main_Controller {
 		$this->session->set_userdata('activetermid', $activetermid);
 		$this->session->set_userdata('activeyear', $activeyear);
 		
-		// $show = array();
-		// $show['twiceFail'] = true;
-		// $show['passHalf'] = ($activetermid % 10 < 3) ? true : false;
-		// $show['passHalfCSMath'] = ($activetermid % 10 < 3) ? true : false;
-		// $show['24units'] = ($activetermid % 10 == 3) ? true : false;
-		
-		if ($activetermid % 10 == 3)
+		if ($activetermid % 10 == 3) {
 			$students = $this->Model->get_studentsofyear($activetermid, $activeyear);
-		else
+		} else {
 			$students = $this->Model->get_studentsofterm($activetermid, $activeyear);
+		}
 		
 		$twiceFail = $this->Model->e_TwiceFail($activetermid);
 		$passHalf = $this->Model->e_PassHalf($activetermid);
@@ -89,7 +84,7 @@ class Eligibilitytesting extends Main_Controller {
 		$years = $this->Model->get_years();
 		$sems = $this->Model->get_semesters();
 		
-		//print_r($students);
+		// print_r($students);
 		
 		$this->load_view('eligibilitytesting_view', compact('students', 'studentyears', 'years', 'sems', 'activeyear', 'activetermid'));
 	}

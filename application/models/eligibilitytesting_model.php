@@ -14,22 +14,16 @@ class EligibilityTesting_Model extends Base_Model {
 	}
 
 	public function get_studentsofterm($termid, $year) {
-		$results = $this->db->query('SELECT studentid, studentno, firstname || \' \' || middlename || \' \' || lastname as name FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) WHERE studentterms.termid = ' . $termid . ' AND studentno ILIKE \'' . $year . '%\'');
-		
+		$query = 'SELECT * FROM f_loadstudents_andineligible_nosum(' . $termid . ', \'' . $year . '%\')';
+		$results = $this->db->query($query);
 		$final = $results->result_array();
 		return $final;
 	}
 	
 	public function get_studentsofyear($termid, $year) {
-		$termid = (int) ($termid / 10);
-		$year1 = $termid * 10 + 1;
-		$year2 = $termid * 10 + 2;
-		$year3 = $termid * 10 + 3;
-		$results = $this->db->query('SELECT DISTINCT studentid, studentno, 
-			firstname || \' \' || middlename || \' \' || lastname as name 
-			FROM students JOIN studentterms USING (studentid) JOIN persons USING (personid) 
-			WHERE studentterms.termid IN (' . $year1 . ', ' . $year2 . ', ' . $year3 . ') AND studentno ILIKE \'' . $year . '%\'');
-		
+		$yearid = (int) ($termid / 10);
+		$query = 'SELECT * FROM f_loadstudents_andineligible_year(' . $termid . ', \'' . $year . '%\', ' . $yearid . ')';
+		$results = $this->db->query($query);
 		$final = $results->result_array();
 		return $final;
 	}
@@ -41,25 +35,26 @@ class EligibilityTesting_Model extends Base_Model {
 	}
 	
 	public function e_TwiceFail($termid) {
-		$results = $this->db->query('SELECT * FROM f_elig_twicefailsubjects(' . $termid . ')');
+		$results = $this->db->query('SELECT elig.*, \'(\' || terms.year || \')\' AS name FROM f_loadelig_twicefailsubjects(' . $termid . ') AS elig JOIN terms USING (termid)');
 		$final = $results->result_array();
 		return $final;
 	}
 	
 	public function e_PassHalf($termid) {
-		$results = $this->db->query('SELECT * FROM f_elig_passhalfpersem(' . $termid . ')');
+		$results = $this->db->query('SELECT eligpasshalf.*, \'(\' || terms.year || \')\' AS name FROM eligpasshalf JOIN terms USING (termid) WHERE eligpasshalf.termid <= ' . $termid);
 		$final = $results->result_array();
 		return $final;
 	}
 	
 	public function e_PassHalfMathCS($termid) {
-		$results = $this->db->query('SELECT * FROM f_elig_passhalf_mathcs_persem(' . $termid . ')');
+		$results = $this->db->query('SELECT eligpasshalfmathcs.*, \'(\' || terms.year || \')\' AS name FROM eligpasshalfmathcs JOIN terms USING (termid) WHERE termid <= ' . $termid);
 		$final = $results->result_array();
 		return $final;
 	}
 	
-	public function e_24UnitsPassed($termid) {
-		$results = $this->db->query('SELECT * FROM f_elig_24unitspassed(' . $termid . ')');
+	public function e_24UnitsPassed($yearid) {
+		$query = 'SELECT *, \'' . '(' . $yearid . '-' . ($yearid + 1) . ')' . '\' AS name FROM elig24unitspassing WHERE yearid <= ' . $yearid;
+		$results = $this->db->query($query);
 		$final = $results->result_array();
 		return $final;
 	}

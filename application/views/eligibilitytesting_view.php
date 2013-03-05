@@ -162,7 +162,7 @@ $(function() {
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['eTwiceFail'] as $one) { ?>
-												<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
+												<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 										<? } ?>
@@ -172,7 +172,7 @@ $(function() {
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['ePassHalf'] as $one) { ?>
-												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 										<? } ?>
@@ -182,7 +182,7 @@ $(function() {
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['ePassHalfMathCS'] as $one) { ?>
-												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 										<? } ?>
@@ -192,7 +192,7 @@ $(function() {
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['eTotal24'] as $one) { ?>
-												<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
+												<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 										<? } ?>
@@ -285,7 +285,7 @@ $(function() {
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['eTwiceFail'] as $one) { ?>
-													<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
+													<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											<? } ?>
@@ -295,7 +295,7 @@ $(function() {
 											<? } else { ?>
 												<? $tooltip = ""; 
 												foreach ($result['ePassHalf'] as $one) { ?>
-													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											<? } ?>
@@ -305,7 +305,7 @@ $(function() {
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['ePassHalfMathCS'] as $one) { ?>
-													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
+													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											<? } ?>
@@ -315,7 +315,7 @@ $(function() {
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['eTotal24'] as $one) { ?>
-													<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
+													<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											<? } ?>
