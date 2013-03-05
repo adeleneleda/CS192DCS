@@ -156,7 +156,7 @@ class Coursestatistics_model extends Base_Model {
 	public function whole_index_of_discrimination($sem, $courseid) {  
 		$pass1 = 0;
 		$pass2 = 0;
-        $currentsem = $this->db->query('SELECT termid FROM terms WHERE name = \'' . $sem . '\';');
+        $currentsem = $this->db->query('select termid from terms order by termid desc limit 1;');
         $currentsem = $currentsem->result_array();
         $thissem = $currentsem[0]['termid'];
 		$semester = $thissem%10;
@@ -342,6 +342,10 @@ class Coursestatistics_model extends Base_Model {
 			}
             return $iod;
 	}
+	
+	
+	
+	
   
 	public function make_csv($classid = null, $courseid) {
   

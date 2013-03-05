@@ -54,11 +54,15 @@ class Coursestatistics extends Main_Controller {
 		$this->load_view('coursestatistics_view', compact('selected', 'search_results', 'dropdown','section_info', 'year_info', 'instructor_info'));
 	}
 	
-	public function stat() {
+	public function stat($tag = null) {
 		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
 		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
-		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
 		
+		if($tag != 0) {
+		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
+		} else {
+		$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);
+		}
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$year_info = $this->Model->term_info();

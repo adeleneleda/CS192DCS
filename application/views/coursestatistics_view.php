@@ -172,7 +172,7 @@
 		<tr>
 			<td style="width:40%"><h3><?= $default_coursename?></h3></td>
 			<td align="right">
-			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
+			<form method="post" action="<?= base_url('coursestatistics/stat/0')?>">
 				<input type="hidden" name="classid" value="<?= null?>">
 				<input type="hidden" name="courseid" value="<?= $search_results[0]['courseid']?>">
 				<?if(empty($search_results)){
