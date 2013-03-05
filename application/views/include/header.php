@@ -48,6 +48,7 @@
 					<span>
 						<h1>UP DCS Student Profiling System</h1> 
 						<p class="lead">Department of Computer Science, UP Diliman</p>
+						<a id="focus_here" name="focus_here"></a>
 					</span>
 				</div>
 				

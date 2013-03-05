@@ -6,6 +6,7 @@ $(document).ready(function() {
 	$('#et').addClass('active');
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
+	document.location.href="#focus_here";
 	$('.tool').qtip({
 		position: {
 			corner: {
