@@ -6,7 +6,6 @@ $(document).ready(function() {
 	$('#et').removeClass('active');
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
-	document.location.href="#focus_here";
 }); 
 
 $(function() {
@@ -152,7 +151,7 @@ $(function() {
             <td> <?php echo $name[$ctr]['studentno']; ?> </td>
 			<td> <?php echo $name[$ctr]['lastname'] . ', ' . $name[$ctr]['firstname'] . ' ' . $name[$ctr]['middlename']; ?> </td>
 			<td> <?php echo $name[$ctr]['gwa']; ?> </td>
-			<td> <?php echo $name[$ctr]['xcwa69']; ?> </td>
+			<td> <?php echo $name[$ctr]['cwa']; ?> </td>
 			<td> <?php echo $name[$ctr]['csgwa']; ?> </td>
 			<td> <?php echo $name[$ctr]['mathgwa']; ?>  </td></td>
 			</tr>

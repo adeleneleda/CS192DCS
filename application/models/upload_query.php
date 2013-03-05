@@ -143,7 +143,10 @@ class Upload_query extends CI_Model {
 			$studenttermid = $this->get_studenttermid($studentid, $termid);
 			$gradeid = $this->get_gradeid();
 			$studentclassid = $this->get_studentclassid($studenttermid, $classid, $gradeid);
+			
+			return $studenttermid; //dan
 		}
+		else return -1;	//dan
 	}
 	
 	// Groupmates, you don't need to understand everything else below, just leave it as is.

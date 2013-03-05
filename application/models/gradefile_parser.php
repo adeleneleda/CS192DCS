@@ -10,6 +10,9 @@ class Gradefile_Parser extends CI_Model {
 	protected $errorcount = 0;
 	protected $cols;
 	protected $row_no;
+	
+	//dan
+	protected $affected = array();
 		
 	function __construct() {
         parent::__construct();
@@ -50,8 +53,29 @@ class Gradefile_Parser extends CI_Model {
 		while ($row = $this->nextRow()) {
 			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
-			$this->query->execute();
+			//$this->query->execute(); commented out by Dan
+			
+			//Dan
+			$temp = $this->query->execute();
+			if($temp > -1) {
+				//if (!in_array($temp, $affected)) $affected[] = $temp;
+				$affected[] = $temp;
+				
+			}
 		}
+		
+		//print_r($affected);
+		//start Dan's precomputing
+		//can I please have also a loading bar? :)) Gusto ko nakasulat "Precomputing metrics..." para pogi ahahahahaha
+		foreach($affected as $studenttermid) {
+            $update1 = $this->db->query('UPDATE studentterms SET cwa = xcwa69(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid . ';');
+            $update2 = $this->db->query('UPDATE studentterms SET gwa = gwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+			$update3 = $this->db->query('UPDATE studentterms SET csgwa = csgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+			$update4 = $this->db->query('UPDATE studentterms SET mathgwa = mathgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+        }
+		
+		//end Dan's precomputing
+		
 		$output .= "</table>";
 		return $output;
 	}
