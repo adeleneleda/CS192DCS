@@ -1,6 +1,5 @@
 <script>	
 $(document).ready(function() { 
-	document.getElementById('focus_here').focus()
 	$('#sr').removeClass('active');
 	$('#cs').removeClass('active');
 	$('#et').addClass('active');
@@ -8,6 +7,7 @@ $(document).ready(function() {
 	$('#ab').removeClass('active');
 	document.location.href="#focus_here";
 	$('.tool').qtip({
+		show: { delay: 0},
 		position: {
 			corner: {
                 tooltip: 'bottomMiddle', // Use the corner...
@@ -158,46 +158,54 @@ $(function() {
 								<tr>
 									<td><center><? echo $result['studentno']; ?></center></td>
 									<td><center><? echo $result['name'];?></center></td>
-									<td><center>
 										<? if (empty($result['eTwiceFail'])) { ?>
+										<td><center>
+										</center></td>	
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['eTwiceFail'] as $one) { ?>
 												<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
 											<? } ?>
-											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
-										<? } ?>
-									</center></td>									
-									<td><center>
+											<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
+										<? } ?>		
 										<? if (empty($result['ePassHalf'])) { ?>
+										<td><center>
+										</center></td>	
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['ePassHalf'] as $one) { ?>
 												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
 											<? } ?>
-											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
 										<? } ?>
-									</center></td>									
-									<td><center>
 										<? if (empty($result['ePassHalfMathCS'])) { ?>
+										<td><center>
+										</center></td>	
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['ePassHalfMathCS'] as $one) { ?>
 												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
 											<? } ?>
-											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
 										<? } ?>
-									</center></td>
-									<td><center>
 										<? if (empty($result['eTotal24'])) { ?>
+										<td><center>
+										</center></td>	
 										<? } else { ?>
 											<? $tooltip = "";
 											foreach ($result['eTotal24'] as $one) { ?>
 												<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
 											<? } ?>
-											<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
 										<? } ?>
-									</center></td>
 								</tr>
 							<? } ?>
 						<? } else { ?>
@@ -281,46 +289,54 @@ $(function() {
 									<tr>
 										<td><center><? echo $result['studentno']; ?></center></td>
 										<td><center><? echo $result['name'];?></center></td>
-										<td><center>
 											<? if (empty($result['eTwiceFail'])) { ?>
+											<td><center>
+										</center></td>	
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['eTwiceFail'] as $one) { ?>
 													<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['termid'] . '<br />'; ?>
 												<? } ?>
-												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
-											<? } ?>
-										</center></td>									
-										<td><center>
+												<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
+										<? } ?>
 											<? if (empty($result['ePassHalf'])) { ?>
+											<td><center>
+										</center></td>	
 											<? } else { ?>
 												<? $tooltip = ""; 
 												foreach ($result['ePassHalf'] as $one) { ?>
 													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
 												<? } ?>
-												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
-											<? } ?>
-										</center></td>									
-										<td><center>
+												<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
+										<? } ?>
 											<? if (empty($result['ePassHalfMathCS'])) { ?>
+											<td><center>
+										</center></td>	
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['ePassHalfMathCS'] as $one) { ?>
 													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['termid'] . '<br />'; ?>
 												<? } ?>
-												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
-											<? } ?>
-										</center></td>
-										<td><center>
+												<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
+										<? } ?>
 											<? if (empty($result['eTotal24'])) { ?>
+											<td><center>
+										</center></td>	
 											<? } else { ?>
 												<? $tooltip = "";
 												foreach ($result['eTotal24'] as $one) { ?>
 													<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['yearid'] . '<br />'; ?>
 												<? } ?>
-												<img class="tool" title="<?= $tooltip?>" src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
-											<? } ?>
-										</center></td>
+												<td class="tool" title="<?= $tooltip?>"><center>
+											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											</center></td>
+										<? } ?>
 									</tr>
 								<? } ?>
 							<? } ?>
