@@ -66,6 +66,10 @@ class Coursestatistics_model extends Base_Model {
 
   public function search($courseid, $startyear, $endyear, $startsem, $endsem,  $instructorid, $section) {
   
+	if($instructorid == "") {
+		$instructorid = "select instructorid from instructors";
+	}
+  
 	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section, lastname || ', ' || firstname as instructorname
 			FROM courses JOIN classes USING (courseid) 
 			JOIN instructorclasses USING (classid) 
