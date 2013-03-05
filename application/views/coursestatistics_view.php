@@ -67,7 +67,6 @@
 					<td>
 						<div class="controls">
 							<select style="width:100%" name = 'starttermid' id="select01">
-							<option value="2008-2009">2007-2008</option>
 							<? 	$default_startterm = "Beginning of time";
 								foreach ($year_info as $term) {
 								if($selected['starttermid'] == $term['year']){
@@ -103,7 +102,6 @@
 					<td>
 						<div class="controls">
 							<select style="width:100%" name = 'endtermid' id="select01">
-							<option value="2012-2013">2013-2014</option>
 							<?	$default_endterm = "Current";
 								foreach ($year_info as $term) {
 								if($selected['endtermid'] == $term['year']){
@@ -179,7 +177,6 @@
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
 				<input type="hidden" name="classid" value="<?= null?>">
 				<input type="hidden" name="courseid" value="<?= $search_results[0]['courseid']?>">
-				<input type="hidden" name="iod" value="<?= $overall_iod?>">
 				<?if(empty($search_results)){
 					echo '<a class="btn btn-primary disabled">View Statistics</a>';
 				}else{
@@ -207,7 +204,6 @@
 				<th class="header">Section</th>
 				<th class="header">Instructor</th>
 				<th class="header">AY Term</th>
-				<th class="header">IOD</th>
 				<th class="header" style="width:10%">Actions</th>
 			</tr>
 		</thead>
@@ -218,11 +214,10 @@
 			<td><?= $subject['section']?></td>
 			<td><?= $subject['instructorname']?></td>
 			<td><?= $subject['ayterm']?></td>
-			<td><?= $iod[$index]?></td>
+			
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
 				<input type="hidden" name="classid" value="<?= $subject['classid']?>">
 				<input type="hidden" name="courseid" value="<?= $subject['courseid']?>">
-				<input type="hidden" name="iod" value="<?= $iod[$index]?>">
 				<td><input type="submit" value="View Statistics"></input></td>
 			</form>
 			</tr>

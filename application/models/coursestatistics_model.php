@@ -32,21 +32,6 @@ class Coursestatistics_model extends Base_Model {
 	return false;
   }
   
-  public function get_years() {
-  
-	$query = "select distinct year from terms;";
-	$results = $this->db->query($query);
-		
-	if($results->num_rows() > 0)
-		{
-			$temp = $results->result_array();
-			return $temp;
-		}
-	return false;
-  }
-  
-  
-  
      public function instructor_info() {
   
 	$query = "select firstname, lastname, instructorid from persons join instructors using (personid);";
@@ -271,6 +256,66 @@ class Coursestatistics_model extends Base_Model {
 				JOIN instructorclasses using (classid)
 				JOIN instructors using (instructorid)
 				WHERE courses.courseid = ' . $courseid . ' AND terms.termid = ' . $thissem . ' AND instructors.instructorid = ' . $instructorid. '
+				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
+			$results = $results->result_array();				
+            $ctr = 0;
+            
+			if(sizeof($results) < 10) {
+				$iod = "N/A";
+			}
+			else {
+                for($ctr = 0; $ctr < 10; $ctr++)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass1++;
+                    }
+                }
+                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
+                {
+                    if($results[$ctr]['gradevalue'] != '5.00')
+                    {
+                        $pass2++;
+                    }
+                }
+				 $iod = ($pass1 - $pass2)/10;
+			}
+            return $iod;
+	}
+	
+	public function index_of_discrimination_perclass($classid){
+		$pass1 = 0;
+		$pass2 = 0;
+        $currentsem = $this->db->query('SELECT termid FROM classes WHERE classid = ' . $classid .';');
+        $currentsem = $currentsem->result_array();
+        $thissem = $currentsem[0]['termid'];
+		$semester = $thissem%10;
+		$prevsem = ($thissem/10) - $semester/10;
+	
+		if($semester == 1)
+		{
+			$prevsem = $prevsem - 1;
+			$prevsem = $prevsem*10;
+			$prevsem = $prevsem + 3;
+		}
+		else if($semester == 2)
+		{
+			$prevsem = $thissem-1;
+		}
+        else if($semester == 3)
+        {
+            $prevsem = $thissem-1;
+        }
+			$results = $this->db->query('SELECT grades.gradevalue
+				FROM students s
+				JOIN persons USING (personid)
+				JOIN studentterms USING (studentid)
+				JOIN studentclasses USING (studenttermid)
+				JOIN terms USING (termid)
+				JOIN grades USING (gradeid)
+				JOIN classes USING (classid)
+				JOIN instructorclasses using (classid)
+				WHERE classid = '.$classid.'
 				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
 			$results = $results->result_array();				
             $ctr = 0;
