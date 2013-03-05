@@ -1,12 +1,12 @@
 <script type="text/javascript">
-		$(document).ready(function() {
-			document.getElementById('focus_here').focus()
-			$('#sr').removeClass('active');
-			$('#cs').addClass('active');
-			$('#et').removeClass('active');
-			$('#us').removeClass('active');
-			$('#ab').removeClass('active');
-		});
+	$(document).ready(function() {
+		$('#sr').removeClass('active');
+		$('#cs').addClass('active');
+		$('#et').removeClass('active');
+		$('#us').removeClass('active');
+		$('#ab').removeClass('active');
+		document.location.href="#focus_here";
+	});
 </script>
 
 <style type="text/css">
@@ -21,11 +21,9 @@
 		color:white;
 	}
 </style>
-
 <div class="page-header">
 	<h1><img src="<?= base_url('assets/img/glyphicons_041_charts.png')?>"></img> Course Statistics</h1>
 </div>
-
 <div class="row">
 	<div class="span3">
 		<h3>Search Course</h3>
@@ -137,7 +135,7 @@
 			<div class="control-group">
 				<label class="control-label" for="select01"><b>Section</b></label>
 				<div class="controls">
-					<select name = 'section' id="focus_here">
+					<select name = 'section'>
 					<option value="">Any</option>
 					 <?	$default_section = "Any";
 						foreach ($section_info as $section) {
@@ -174,7 +172,7 @@
 		<tr>
 			<td style="width:40%"><h3><?= $default_coursename?></h3></td>
 			<td align="right">
-			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
+			<form method="post" action="<?= base_url('coursestatistics/stat/0')?>">
 				<input type="hidden" name="classid" value="<?= null?>">
 				<input type="hidden" name="courseid" value="<?= $search_results[0]['courseid']?>">
 				<?if(empty($search_results)){

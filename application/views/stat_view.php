@@ -1,11 +1,12 @@
 <script type="text/javascript">
-		$(document).ready(function() {
-			$('#sr').removeClass('active');
-			$('#cs').addClass('active');
-			$('#et').removeClass('active');
-			$('#us').removeClass('active');
-			$('#ab').removeClass('active');
-		});
+	$(document).ready(function() {
+		$('#sr').removeClass('active');
+		$('#cs').addClass('active');
+		$('#et').removeClass('active');
+		$('#us').removeClass('active');
+		$('#ab').removeClass('active');
+		document.location.href="#focus_here";
+	});
 </script>
 
 <style type="text/css">
@@ -24,7 +25,6 @@
 <div class="page-header">
 	<h1><img src="<?= base_url('assets/img/glyphicons_041_charts.png')?>"></img> Course Statistics</h1>
 </div>
-
 <div class="row">
 	<div class="span3">
 		<h3>Search Course</h3>

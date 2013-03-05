@@ -34,14 +34,7 @@ class Coursestatistics extends Main_Controller {
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'], $selected['startsem'], $selected['endsem'], $selected['instructorid'], $selected['sectionid']);
-			$iod = array();
-			if(!empty($search_results)){
-			foreach($search_results as $indiv_search) {
-				$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
-			}
 			
-			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
-			}else{ $overall_iod = 'N/A'; }
 		}else{
 			$temp = $this->session->userdata('coursestat');
 			if(empty($temp)){
@@ -57,24 +50,19 @@ class Coursestatistics extends Main_Controller {
 				$selected = $this->session->userdata('coursestat');
 			}
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['startsem'],$selected['endsem'],$selected['instructorid'],$selected['sectionid']);
-			//$iod = array();
-			if(!empty($search_results)){
-			foreach($search_results as $indiv_search) {
-				//$iod[] = $this->Model->index_of_discrimination($indiv_search['ayterm'], $selected['courseid'], $indiv_search['instructorname']);
-			}
-			$overall_iod = $this->Model->whole_index_of_discrimination($indiv_search['ayterm'], $selected['courseid']);
-			}else{
-				$overall_iod = "N/A";
-			}
 		}
-		$this->load_view('coursestatistics_view', compact('overall_iod', 'selected', 'search_results', 'dropdown','section_info', 'year_info', 'instructor_info'));
+		$this->load_view('coursestatistics_view', compact('selected', 'search_results', 'dropdown','section_info', 'year_info', 'instructor_info'));
 	}
 	
-	public function stat() {
+	public function stat($tag = null) {
 		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
 		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
-		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
 		
+		if($tag != 0) {
+		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
+		} else {
+		$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);
+		}
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$year_info = $this->Model->term_info();

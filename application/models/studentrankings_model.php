@@ -10,15 +10,15 @@ class StudentRankings_Model extends Base_Model {
      
     function get_gwa($sem, $year)
     {
-        $results = $this->db->query('SELECT DISTINCT a.studentno, a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), xcwa69(a.studentid,' . $sem .'+1), csgwa(a.studentid), mathgwa(a.studentid)
-        FROM (SELECT lastname, firstname, middlename, studentid, studentno from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
+        $results = $this->db->query('SELECT a.studentno, a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), xcwa69(a.studentid,' . $sem .'+1), csgwa(a.studentid), mathgwa(a.studentid)
+        FROM (SELECT DISTINCT lastname, firstname, middlename, studentid, studentno from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
         $results = $results->result_array();
 		return $results;
     }
 	
 	function make_csv($sem, $year){
-	$results = $this->db->query('SELECT DISTINCT a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), xcwa69(a.studentid,' . $sem .'+1), csgwa(a.studentid), mathgwa(a.studentid)
-        FROM (SELECT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
+	$results = $this->db->query('SELECT  a.lastname, a.firstname, a.middlename, gwa(a.studentid,' . $sem .'), xcwa69(a.studentid,' . $sem .'+1), csgwa(a.studentid), mathgwa(a.studentid)
+        FROM (SELECT DISTINCT lastname, firstname, middlename, studentid from viewclasses v where v.termid = ' . $sem .' AND v.studentno LIKE \''.$year.'%\') as a;');
 
 		
 	if($results->num_rows() > 0)
