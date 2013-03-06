@@ -203,7 +203,7 @@ class Updatestatistics extends CI_Controller {
 		$backup_dir = $this->getDumpsFolder();
 		ini_set('date.timezone', 'Asia/Manila');
 		$backup_name = $backup_dir.$this->db->database.'--'.date("Y-m-d--H-i-s").".sql";
-		$cmd = escapeshellarg($pg_dump)." -U postgres --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
+		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
 		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
