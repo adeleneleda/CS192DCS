@@ -53,14 +53,11 @@ class Gradefile_Parser extends CI_Model {
 			//$this->query->execute(); commented out by Dan
 			
 			//Dan
-			$temp = $this->query->execute();
-			if($temp > -1) {
-				//if (!in_array($temp, $affected)) $affected[] = $temp;
-				$affected[] = $temp;
-				
-			}
+			$studenttermid = $this->query->execute();
+			if($studenttermid > -1)
+				$affected[] = $studenttermid;
 		}
-		
+		$affected = array_unique($affected);
 		//print_r($affected);
 		//start Dan's precomputing
 		//can I please have also a loading bar? :)) Gusto ko nakasulat "Precomputing metrics..." para pogi ahahahahaha
