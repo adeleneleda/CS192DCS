@@ -47,12 +47,10 @@ class Gradefile_Parser extends CI_Model {
 	public function parse() {
 		$output = "<table class='databasetable'>";
 		$output .= $this->headerRowHtml();
-		$affected = array();
 		while ($row = $this->nextRow()) {
 			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
 			//$this->query->execute(); commented out by Dan
-			
 			//Dan
 			$studenttermid = $this->query->execute();
 			if($studenttermid > -1)
@@ -82,7 +80,7 @@ class Gradefile_Parser extends CI_Model {
 			$this->query->doNotExecute();
 			return $output."<td colspan='10' title='Invalid column count' class='databasecell upload_error'><center>Invalid column count</center></td>";
 		}
-
+		
 		for ($col = 0; $col < $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
 			$value = $row[$col];
 			$orig_value = $value;

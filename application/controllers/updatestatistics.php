@@ -91,6 +91,11 @@ class Updatestatistics extends CI_Controller {
 			$data['upload_success'] = true;
 			$parse_data = $this->parse($filename);
 			$data = array_merge($data, $parse_data);
+			
+			// [Josh] Post Processing of Data
+			$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
+			$this->eligibilitytesting_model->postprocessing();
+			// [Josh] End Post Processing
 		} catch (Exception $e) {
 			$data['error_message'] = $e->getMessage();
 		}
