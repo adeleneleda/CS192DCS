@@ -3,7 +3,6 @@
 class Updatestatistics extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
-		
 		$this->load->model('student_model', 'student_model', true);
 	}
 	
@@ -206,7 +205,7 @@ class Updatestatistics extends CI_Controller {
 		$backup_dir = $this->getDumpsFolder();
 		ini_set('date.timezone', 'Asia/Manila');
 		$backup_name = $backup_dir.$this->db->database.'--'.date("Y-m-d--H-i-s").".sql";
-		$cmd = escapeshellarg($pg_dump)." -U postgres --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
+		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean --inserts -i -f $backup_name ".$this->db->database." 2>&1";
 		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
@@ -215,6 +214,7 @@ class Updatestatistics extends CI_Controller {
 			$this->input->set_cookie($cookie);
 		}
 		$data['backup_location'] = $backup_name;
+		$data['pg_bin_dir'] = $pg_bin_dir;
 		$data['output'] = $output;
 		$data['success'] = $success;
 		$this->displayView('backup_response', $data);
@@ -261,7 +261,7 @@ class Updatestatistics extends CI_Controller {
 				$psql_location = $pg_bin_dir."/psql.exe";
 			else
 				$psql_location = $pg_bin_dir."/psql";
-			$cmd = escapeshellarg($psql_location)." -U postgres -f $backup_filename ".$this->db->database." 2>&1";
+			$cmd = escapeshellarg($psql_location)." -U ".$this->db->username." -f $backup_filename ".$this->db->database." 2>&1";
 			putenv("PGPASSWORD=".$this->db->password);
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
@@ -305,6 +305,7 @@ class Updatestatistics extends CI_Controller {
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
 		$update_statistics = array('update_statistics' => true);
+		
 		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);
