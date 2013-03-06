@@ -59,10 +59,12 @@ class Coursestatistics extends Main_Controller {
 		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
 		
 		if($tag == 1) {
-		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
+			$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
+			//echo $iod;
 		} else {
-		$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);
+			$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);
 		}
+		
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
 		$year_info = $this->Model->get_years();
@@ -70,7 +72,11 @@ class Coursestatistics extends Main_Controller {
 		$selected = $this->session->userdata('coursestat');
 		$classid = $_POST['classid'];
 		$courseid = $_POST['courseid'];
-		$this->load_view('stat_view', compact('classid','courseid','iod','stat', 'stat2', 'selected', 'dropdown','section_info', 'year_info', 'instructor_info'));
+		$course = $_POST['course'];
+		$section1 = ($_POST['section'] == "") ? "Overall" : $_POST['section'];
+		
+		$ayterm = $_POST['ayterm'];
+		$this->load_view('stat_view', compact('course', 'section1', 'ayterm', 'classid','courseid','iod','stat', 'stat2', 'selected', 'dropdown','section_info', 'year_info', 'instructor_info'));
 	}
 
 	public function generate_csv() {

@@ -159,8 +159,14 @@
 		
 	<div class="span9">
 		<a href="<?= base_url('coursestatistics')?>" class="btn btn-primary">Back to search results</a>
-		<br>
-		<br>
+		<br/>
+		<br/>
+		<div align="center">
+		<h3><?= $course?> - <?= $section1?></h3>
+		</div>
+		<div align="center">
+		<h4><?= $ayterm?></h4>
+		</div>
         <div id="chart1" style="margin-top:20px; margin-left:20px; width:98%; height:400px;"></div>
 		<br/>
 		<br/>

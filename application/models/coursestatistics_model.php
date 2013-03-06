@@ -324,7 +324,10 @@ class Coursestatistics_model extends Base_Model {
 				JOIN studentterms USING (studentid)
 				WHERE studentterms.termid=' . $prevsem . '
 				ORDER BY cwa ASC;');
-			$results = $results->result_array();				
+			$results = $results->result_array();	
+			//echo $classid;
+			//echo $prevsem;
+			//print_r($results);
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
