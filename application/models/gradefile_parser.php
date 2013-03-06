@@ -4,11 +4,11 @@ require_once 'fields/exceptions/nstp_exception.php';
 require_once 'fields/exceptions/pe_exception.php';
 
 class Gradefile_Parser extends CI_Model {
-	const COLS = 12;
 	protected $query;
 	protected $field_parsers = array();
 	protected $successcount = 0;
 	protected $errorcount = 0;
+	protected $cols;
 	protected $row_no;
 	
 	//dan
@@ -34,6 +34,9 @@ class Gradefile_Parser extends CI_Model {
 		$this->row_no = 0;
 	}
 	
+	protected function nextRow() {
+	}
+	
 	private function headerRowHtml() {
 		$output = "<tr><th>row</th>";
 		$headers = $this->nextRow();
@@ -47,18 +50,21 @@ class Gradefile_Parser extends CI_Model {
 	public function parse() {
 		$output = "<table class='databasetable'>";
 		$output .= $this->headerRowHtml();
+		$affected = array();
 		while ($row = $this->nextRow()) {
 			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
 			//$this->query->execute(); commented out by Dan
 			
 			//Dan
-			$studenttermid = $this->query->execute();
-			if($studenttermid > -1)
-				$affected[] = $studenttermid;
+			$temp = $this->query->execute();
+			if($temp > -1) {
+				if (!in_array($temp, $affected)) $affected[] = $temp;
+				//$affected[] = $temp;
+				
+			}
 		}
-		$affected = array_unique($affected);
-		//print_r($affected);
+		
 		//start Dan's precomputing
 		//can I please have also a loading bar? :)) Gusto ko nakasulat "Precomputing metrics..." para pogi ahahahahaha
 		foreach($affected as $studenttermid) {
@@ -78,10 +84,6 @@ class Gradefile_Parser extends CI_Model {
 		$success = true;
 		$error = true;
 		$output = "<tr><th>".$this->row_no."</th>";
-		if (count($row) < self::COLS) { // invalid column count
-			$this->query->doNotExecute();
-			return $output."<td colspan='10' title='Invalid column count' class='databasecell upload_error'><center>Invalid column count</center></td>";
-		}
 		for ($col = 0; $col < $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
 			$value = $row[$col];
 			$orig_value = $value;
