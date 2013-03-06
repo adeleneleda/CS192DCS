@@ -193,8 +193,10 @@ class Coursestatistics_model extends Base_Model {
 				JOIN instructorclasses using (classid)
 				JOIN instructors using (instructorid)
 				WHERE courses.courseid = ' . $courseid . '
-				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
-			$results = $results->result_array();				
+				AND terms.termid = ' . $prevsem . '
+				ORDER BY cwa ASC;');
+
+			$results = $results->result_array();
             $ctr = 0;
             
 			if(sizeof($results) < 10) {
@@ -311,17 +313,17 @@ class Coursestatistics_model extends Base_Model {
         {
             $prevsem = $thissem-1;
         }
-			$results = $this->db->query('SELECT grades.gradevalue
-				FROM students s
-				JOIN persons USING (personid)
+			$results = $this->db->query('SELECT a.gradevalue FROM
+				(SELECT students.studentid, grades.gradevalue FROM students 
 				JOIN studentterms USING (studentid)
 				JOIN studentclasses USING (studenttermid)
 				JOIN terms USING (termid)
 				JOIN grades USING (gradeid)
 				JOIN classes USING (classid)
-				JOIN instructorclasses using (classid)
-				WHERE classid = '.$classid.'
-				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
+				WHERE classes.classid = '. $classid .') as a
+				JOIN studentterms USING (studentid)
+				WHERE studentterms.termid=' . $prevsem . '
+				ORDER BY cwa ASC;');
 			$results = $results->result_array();				
             $ctr = 0;
             

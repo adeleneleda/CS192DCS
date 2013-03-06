@@ -213,7 +213,7 @@
 			<td><?//= $subject['instructorname']?></td>
 			<td><?= $subject['ayterm']?></td>
 			
-			<form method="post" action="<?= base_url('coursestatistics/stat')?>">
+			<form method="post" action="<?= base_url('coursestatistics/stat/1')?>">
 				<input type="hidden" name="classid" value="<?= $subject['classid']?>">
 				<input type="hidden" name="courseid" value="<?= $subject['courseid']?>">
 				<td><input type="submit" value="View Statistics"></input></td>

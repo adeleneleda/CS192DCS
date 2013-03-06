@@ -58,7 +58,7 @@ class Coursestatistics extends Main_Controller {
 		$stat = $this->Model->results_chart($_POST['classid'], $_POST['courseid']);
 		$stat2 = $this->Model->get_total_and_percentage($_POST['classid'], $_POST['courseid']);
 		
-		if($tag != 0) {
+		if($tag == 1) {
 		$iod = $this->Model->index_of_discrimination_perclass($_POST['classid']);
 		} else {
 		$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);

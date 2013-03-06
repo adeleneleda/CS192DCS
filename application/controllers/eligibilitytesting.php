@@ -157,7 +157,7 @@ class Eligibilitytesting extends Main_Controller {
 			else { 
 			$temp['eTwiceFail'] ='';
 				foreach ($student['eTwiceFail'] as $one) { 
-					$temp['eTwiceFail'] = $temp['eTwiceFail'].$one['coursename'].' '.$one['section'].' '.$one['termid'].', '; 
+					$temp['eTwiceFail'] = $temp['eTwiceFail'].$one['coursename'].' '.$one['section'].' '.$one['name'].', '; 
 				}
 				$temp['eTwiceFail'] = substr($temp['eTwiceFail'], 0, strlen($temp['eTwiceFail'])-2);
 			}
@@ -168,7 +168,7 @@ class Eligibilitytesting extends Main_Controller {
 			else { 
 			$temp['ePassHalf'] ='';
 				foreach ($student['ePassHalf'] as $one) { 
-					$temp['ePassHalf'] = $temp['ePassHalf'].(int) (100 - $one['failpercentage'] * 100). '% Passing '.$one['termid'].', '; 
+					$temp['ePassHalf'] = $temp['ePassHalf'].(int) (100 - $one['failpercentage'] * 100). '% Passing '.$one['name'].', '; 
 				}
 				$temp['ePassHalf'] = substr($temp['ePassHalf'], 0, strlen($temp['ePassHalf'])-2);
 			}
@@ -179,7 +179,7 @@ class Eligibilitytesting extends Main_Controller {
 			else { 
 			$temp['ePassHalfMathCS'] ='';
 				foreach ($student['ePassHalfMathCS'] as $one) { 
-					$temp['ePassHalfMathCS'] = $temp['ePassHalfMathCS'].(int) (100 - $one['failpercentage'] * 100). '% Passing '.$one['termid'].', '; 
+					$temp['ePassHalfMathCS'] = $temp['ePassHalfMathCS'].(int) (100 - $one['failpercentage'] * 100). '% Passing '.$one['name'].', '; 
 				}
 				$temp['ePassHalfMathCS'] = substr($temp['ePassHalfMathCS'], 0, strlen($temp['ePassHalfMathCS'])-2);
 			}

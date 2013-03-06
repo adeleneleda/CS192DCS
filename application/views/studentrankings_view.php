@@ -1,11 +1,11 @@
 <script>	
 $(document).ready(function() { 
-	document.getElementById('focus_here').focus()
 	$('#sr').addClass('active');
 	$('#cs').removeClass('active');
 	$('#et').removeClass('active');
 	$('#us').removeClass('active');
 	$('#ab').removeClass('active');
+	document.location.href="#focus_here";
 }); 
 
 $(function() {
@@ -69,7 +69,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="select01">Year of Students</label>
 				<div class="controls">
-					<select name="year" id="select01" style="width:180px">
+					<select name="year" id="select01" >
                     <?php $ctr = 0; 
                     while($ctr < sizeof($year))
                     {
@@ -95,9 +95,14 @@ $(function() {
                         while($ctr < sizeof($y))
                         {
                     ?>
-						<option value=<?php echo $y[$ctr]['yearid']?> <?php if($yearlvl == $y[$ctr]['yearid'])
-                        {?>selected="selected" <?php
-                        }?>><?php echo $y[$ctr]['year'] ?></option>
+						<option value="<?php echo $y[$ctr]['yearid']?>" 
+						<?php if($yearlvl == $y[$ctr]['yearid'])
+                        {
+						?>
+						selected="selected" 
+						<?php
+                        }?>>
+					<?php echo $y[$ctr]['year'] ?></option>
                     <?php 
                             $ctr++;
                         }
@@ -109,7 +114,7 @@ $(function() {
 			<div class="control-group">
 				<label class="control-label" for="select03">Semester</label>
 				<div class="controls">
-					<select id = "focus_here" name="semester">
+					<select name="semester">
                     <?php $ctr = 1;
                         while($ctr < 4)
                         {
@@ -124,6 +129,7 @@ $(function() {
 					</select> 
 				</div>
 			</div>
+			<br/>
             <button type="submit" class="btn btn-primary">Search</button>
 			</form>
 		</div>
@@ -132,12 +138,12 @@ $(function() {
 		<table id="students" class="tablesorter">
 			<thead>
 			  <tr>
-                <th style="width:18%">Student #</th>
-				<th style="width:30%">Name</th>
-				<th style="width:18%">GWA</th>
-				<th style="width:18%">CWA</th>
-				<th style="width:18%">CS GWA</th>
-				<th style="width:18%">Math GWA</th>
+                <th style="width:13%">Student #</th>
+				<th style="width:42%">Name</th>
+				<th style="width:10%">GWA</th>
+				<th style="width:10%">CWA</th>
+				<th style="width:12%">CS GWA</th>
+				<th style="width:13%">Math GWA</th>
 			  </tr>
 			</thead>
 			<tbody>
