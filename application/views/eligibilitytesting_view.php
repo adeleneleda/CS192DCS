@@ -51,7 +51,7 @@ $(function() {
 
     // widget code contained in the jquery.tablesorter.widgets.js file
     // use the zebra stripe widget if you plan on hiding any rows (filter widget)
-    widgets : [ "uitheme", "zebra" ],
+    widgets : [ "uitheme", "zebra", "filter"],
 
     widgetOptions : {
       // using the default zebra striping class name, so it actually isn't included in the theme variable above
@@ -167,7 +167,7 @@ $(function() {
 												<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>		
 										<? if (empty($result['ePassHalf'])) { ?>
@@ -179,7 +179,7 @@ $(function() {
 												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 										<? if (empty($result['ePassHalfMathCS'])) { ?>
@@ -191,7 +191,7 @@ $(function() {
 												<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 										<? if (empty($result['eTotal24'])) { ?>
@@ -203,7 +203,7 @@ $(function() {
 												<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['name'] . '<br />'; ?>
 											<? } ?>
 											<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 								</tr>
@@ -298,7 +298,7 @@ $(function() {
 													<? $tooltip .= $one['coursename'] . ' ' . $one['section'] . ' ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 											<? if (empty($result['ePassHalf'])) { ?>
@@ -310,7 +310,7 @@ $(function() {
 													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 											<? if (empty($result['ePassHalfMathCS'])) { ?>
@@ -322,7 +322,7 @@ $(function() {
 													<? $tooltip .= (int) (100 - $one['failpercentage'] * 100) . '% Passing ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 											<? if (empty($result['eTotal24'])) { ?>
@@ -334,7 +334,7 @@ $(function() {
 													<? $tooltip .= $one['unitspassed'] . ' Units Passed ' . $one['name'] . '<br />'; ?>
 												<? } ?>
 												<td class="tool" title="<?= $tooltip?>"><center>
-											<img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
+											<a style="opacity:0">|</a><img src="<?=base_url("assets/img/glyphicons_207_remove_2.png")?>"></img>
 											</center></td>
 										<? } ?>
 									</tr>
