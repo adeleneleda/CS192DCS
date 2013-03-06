@@ -69,10 +69,8 @@
 			$row = $result->row();
 			$studenttermid = $row->studenttermid;
 			
-            $update1 = $this->db->query('UPDATE studentterms SET cwa = xcwa69(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid . ';');
-            $update2 = $this->db->query('UPDATE studentterms SET gwa = gwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
-			$update3 = $this->db->query('UPDATE studentterms SET csgwa = csgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
-			$update4 = $this->db->query('UPDATE studentterms SET mathgwa = mathgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+			$this->load->model('studentrankings_model', 'studentrankings_model', true);
+			$this->studentrankings_model->recomputeStanding($studenttermid);
 		}
 		
 		private function recomputeEligibility() {

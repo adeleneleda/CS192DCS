@@ -59,12 +59,9 @@ class Gradefile_Parser extends CI_Model {
 		$affected = array_unique($affected);
 		//start Dan's precomputing
 		//can I please have also a loading bar? :)) Gusto ko nakasulat "Precomputing metrics..." para pogi ahahahahaha
-		foreach($affected as $studenttermid) {
-            $update1 = $this->db->query('UPDATE studentterms SET cwa = xcwa69(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid . ';');
-            $update2 = $this->db->query('UPDATE studentterms SET gwa = gwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
-			$update3 = $this->db->query('UPDATE studentterms SET csgwa = csgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
-			$update4 = $this->db->query('UPDATE studentterms SET mathgwa = mathgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
-        }
+		$this->load->model('studentrankings_model', 'studentrankings_model', true);
+		foreach($affected as $studenttermid)
+			$this->studentrankings_model->recomputeStanding($studenttermid);
 		
 		//end Dan's precomputing
 		

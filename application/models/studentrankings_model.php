@@ -7,6 +7,13 @@ class StudentRankings_Model extends Base_Model {
         // Call the Model constructor
         parent::__construct();
     }
+	
+	public function recomputeStanding($studenttermid) {
+		$update1 = $this->db->query('UPDATE studentterms SET cwa = xcwa69(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid . ';');
+		$update2 = $this->db->query('UPDATE studentterms SET gwa = gwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+		$update3 = $this->db->query('UPDATE studentterms SET csgwa = csgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+		$update4 = $this->db->query('UPDATE studentterms SET mathgwa = mathgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+	}
      
     function get_gwa($sem, $year)
     {
