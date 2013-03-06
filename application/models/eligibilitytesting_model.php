@@ -64,4 +64,15 @@ class EligibilityTesting_Model extends Base_Model {
 		$final = $results->result_array();
 		return $final[0];
 	}
+	
+	public function postprocessing() {
+		$this->db->query('DELETE FROM eligtwicefail');
+		$this->db->query('DELETE FROM eligpasshalf');
+		$this->db->query('DELETE FROM eligpasshalfmathcs');
+		$this->db->query('DELETE FROM elig24unitspassing');
+		$this->db->query('INSERT INTO eligtwicefail SELECT DISTINCT * FROM f_getall_eligtwicefail() ORDER BY studentid, courseid, termid');
+		$this->db->query('INSERT INTO eligpasshalf SELECT DISTINCT * FROM f_getall_eligpasshalf() ORDER BY studentid, studenttermid, termid, failpercentage');
+		$this->db->query('INSERT INTO eligpasshalfmathcs SELECT DISTINCT * FROM f_getall_eligpasshalfmathcs() ORDER BY studentid, studenttermid, termid, failpercentage');
+		$this->db->query('INSERT INTO elig24unitspassing SELECT DISTINCT * FROM f_getall_24unitspassed() ORDER BY studentid, yearid, unitspassed');
+	}
 }
