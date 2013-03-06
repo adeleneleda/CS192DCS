@@ -210,7 +210,7 @@
 			<?foreach($search_results as $index=>$subject){?>
 			<td><?= $subject['coursename']?></td>
 			<td><?= $subject['section']?></td>
-			<td><?= $subject['instructorname']?></td>
+			<td><?//= $subject['instructorname']?></td>
 			<td><?= $subject['ayterm']?></td>
 			
 			<form method="post" action="<?= base_url('coursestatistics/stat')?>">

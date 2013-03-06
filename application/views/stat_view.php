@@ -246,9 +246,10 @@
 				yaxis: {
 					label:'Number of Students',
 					labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-					max: <?= ((int)(max($count)/50) > 0) ? max($count)+(5*(int)(max($count)/50)) : max($count) + 10?>,
+					<?$var = max($count)+(5*((int)(max($count)/50) + 1));?>
+					max: <?= ($var < 8) ? $var + (8 - $var) : 8*(((int)($var / 8)) + 1)?>,
 					min: 0,
-					tickInterval : <?= (int)((max($count)+15) / 10)?>,
+					tickInterval : <?= ($var < 8) ? 1 : (8*(((int)($var / 8)) + 1)) / 8 ?>,
 					tickOptions:{ 
 						fontSize: '10pt'
 					},
