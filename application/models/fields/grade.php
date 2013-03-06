@@ -10,10 +10,7 @@ class Grade extends Field {
 			$grade = $secondcompgrade;
 		else if (!empty($compgrade))
 			$grade = $compgrade;
-<<<<<<< HEAD
-		
-=======
->>>>>>> b89fbfa9c38192c59763319a0760d2d2e31bf5c7
+			
 		if (empty($grade))
 			$grade = "NG";
 		else if (preg_match('/^([12](\.([27]50*|[05]0*))?)$|^([345](\.0*)?)$/', $grade))
