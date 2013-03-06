@@ -1,6 +1,4 @@
 <?php
-if($reset_success)
-	echo "<span class='success'>Database successfully reset.<br></span>";
 if ($restore_success)
 	echo "<h4><span class='success'>Restore complete<br></span></h4><br>";
 else

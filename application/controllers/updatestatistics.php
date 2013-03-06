@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Updatestatistics extends CI_Controller {
-	private $headers_included = false;
-	
 	public function __construct() {
 		parent::__construct();
 		
@@ -138,7 +136,7 @@ class Updatestatistics extends CI_Controller {
 	/*-----------------------------------------------------start reset functions-----------------------------------------------------*/
 	
 	private function resetDatabase(){
-		$query = "TRUNCATE studentclasses, studentterms, instructorclasses, instructors, classes, students, persons";
+		$query = "TRUNCATE elig24unitspassing, eligpasshalf, eligpasshalfmathcs, eligtwicefail, studentclasses, studentterms, instructorclasses, instructors, classes, students, persons;";
 		$this->db->query($query);
 	}
 	
@@ -201,6 +199,8 @@ class Updatestatistics extends CI_Controller {
 	
 	private function performBackup($pg_bin_dir) {
 		$pg_dump = $pg_bin_dir."/pg_dump";
+		$data = array();
+		$data['pg_bin_dir'] = $pg_bin_dir;
 		if (substr(php_uname(), 0, 7) == "Windows")
 			$pg_dump .= ".exe";
 		$backup_dir = $this->getDumpsFolder();
@@ -252,8 +252,8 @@ class Updatestatistics extends CI_Controller {
 	
 	public function performRestore() {
 		$pg_bin_dir = $_POST['pg_bin_dir'];
-		
-		$data['reset_success'] = $this->resetIfChecked();
+		$data = array();
+		$data['pg_bin_dir'] = $pg_bin_dir;
 		try {
 			$backup_filename = $this->getAbsoluteBasePath().$this->getUploadedFile();
 			$backup_filename = escapeshellarg($backup_filename);
@@ -304,7 +304,7 @@ class Updatestatistics extends CI_Controller {
 	/*-----------------------------------------------------start display functions-----------------------------------------------------*/
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
-		$update_statistics = array('update_statistics' => '');
+		$update_statistics = array('update_statistics' => true);
 		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);
@@ -313,10 +313,7 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	private function displayView($viewname, $data = null) {
-		// if ($this->headers_included)
-			$this->load->view($viewname, $data);
-		// else
-			// $this->displayViewWithHeaders($viewname, $data);
+		$this->load->view($viewname, $data);
 	}
 	
 	/*-----------------------------------------------------end display functions-------------------------------------------------*/
