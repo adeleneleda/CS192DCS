@@ -47,8 +47,6 @@ class Upload_query extends CI_Model {
 			$result = $this->db->query($insert_query);
 			$result = $this->db->query($search_query);
 			$row = $result->result_array();
-			if (empty($row)) // nothing was inserted
-				throw new Exception("Failed to add to database");
 		} else if (!empty($update_query)) {
 			$primary_key = $row[0][$primary_key_name];
 			$this->db->query($update_query.' '.$primary_key_name.'='.$primary_key);
