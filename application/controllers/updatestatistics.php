@@ -203,7 +203,7 @@ class Updatestatistics extends CI_Controller {
 		$backup_dir = $this->getDumpsFolder();
 		ini_set('date.timezone', 'Asia/Manila');
 		$backup_name = $backup_dir.$this->db->database.'--'.date("Y-m-d--H-i-s").".sql";
-		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean --inserts -f $backup_name ".$this->db->database." 2>&1";
+		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean --inserts -i -f $backup_name ".$this->db->database." 2>&1";
 		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
@@ -260,7 +260,7 @@ class Updatestatistics extends CI_Controller {
 				$psql_location = $pg_bin_dir."/psql.exe";
 			else
 				$psql_location = $pg_bin_dir."/psql";
-			$cmd = escapeshellarg($psql_location)." -U postgres -f $backup_filename ".$this->db->database." 2>&1";
+			$cmd = escapeshellarg($psql_location)." -U ".$this->db->username." -f $backup_filename ".$this->db->database." 2>&1";
 			putenv("PGPASSWORD=".$this->db->password);
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
