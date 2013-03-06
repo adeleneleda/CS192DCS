@@ -1,11 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Updatestatistics extends CI_Controller {
-	private $headers_included = false;
-	
 	public function __construct() {
 		parent::__construct();
-		
 		$this->load->model('student_model', 'student_model', true);
 	}
 	
@@ -215,6 +212,7 @@ class Updatestatistics extends CI_Controller {
 			$this->input->set_cookie($cookie);
 		}
 		$data['backup_location'] = $backup_name;
+		$data['pg_bin_dir'] = $pg_bin_dir;
 		$data['output'] = $output;
 		$data['success'] = $success;
 		$this->displayView('backup_response', $data);
@@ -252,6 +250,7 @@ class Updatestatistics extends CI_Controller {
 	
 	public function performRestore() {
 		$pg_bin_dir = $_POST['pg_bin_dir'];
+		$data['pg_bin_dir'] = $pg_bin_dir;
 		
 		$data['reset_success'] = $this->resetIfChecked();
 		try {
@@ -304,7 +303,7 @@ class Updatestatistics extends CI_Controller {
 	/*-----------------------------------------------------start display functions-----------------------------------------------------*/
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
-		$update_statistics = array('update_statistics' => '');
+		$update_statistics = array('update_statistics' => 'true');
 		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);
@@ -313,10 +312,7 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	private function displayView($viewname, $data = null) {
-		// if ($this->headers_included)
 			$this->load->view($viewname, $data);
-		// else
-			// $this->displayViewWithHeaders($viewname, $data);
 	}
 	
 	/*-----------------------------------------------------end display functions-------------------------------------------------*/
