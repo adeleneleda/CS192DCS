@@ -199,7 +199,6 @@ class Updatestatistics extends CI_Controller {
 	private function performBackup($pg_bin_dir) {
 		$pg_dump = $pg_bin_dir."/pg_dump";
 		$data = array();
-		$data['pg_bin_dir'] = $pg_bin_dir;
 		if (substr(php_uname(), 0, 7) == "Windows")
 			$pg_dump .= ".exe";
 		$backup_dir = $this->getDumpsFolder();
@@ -252,14 +251,9 @@ class Updatestatistics extends CI_Controller {
 	
 	public function performRestore() {
 		$pg_bin_dir = $_POST['pg_bin_dir'];
-<<<<<<< HEAD
 		$data = array();
 		$data['pg_bin_dir'] = $pg_bin_dir;
-=======
-		$data['pg_bin_dir'] = $pg_bin_dir;
 		
-		$data['reset_success'] = $this->resetIfChecked();
->>>>>>> b89fbfa9c38192c59763319a0760d2d2e31bf5c7
 		try {
 			$backup_filename = $this->getAbsoluteBasePath().$this->getUploadedFile();
 			$backup_filename = escapeshellarg($backup_filename);
@@ -310,11 +304,7 @@ class Updatestatistics extends CI_Controller {
 	/*-----------------------------------------------------start display functions-----------------------------------------------------*/
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
-<<<<<<< HEAD
 		$update_statistics = array('update_statistics' => true);
-=======
-		$update_statistics = array('update_statistics' => 'true');
->>>>>>> b89fbfa9c38192c59763319a0760d2d2e31bf5c7
 		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);
@@ -323,11 +313,7 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	private function displayView($viewname, $data = null) {
-<<<<<<< HEAD
 		$this->load->view($viewname, $data);
-=======
-			$this->load->view($viewname, $data);
->>>>>>> b89fbfa9c38192c59763319a0760d2d2e31bf5c7
 	}
 	
 	/*-----------------------------------------------------end display functions-------------------------------------------------*/
