@@ -70,16 +70,17 @@ class Coursestatistics_model extends Base_Model {
 		$instructorid = "select instructorid from instructors";
 	}
   
-	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section, lastname || ', ' || firstname as instructorname
+	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section
 			FROM courses JOIN classes USING (courseid) 
-			JOIN instructorclasses USING (classid) 
-			JOIN instructors USING (instructorid) 
-			JOIN persons using (personid)
 			JOIN terms USING (termid)  
 			WHERE courseid = ".$courseid." 
 			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
-			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND instructorid in (".$instructorid.") and section ilike '%".$section."%';";
-
+			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND section ilike '%".$section."%';";
+	//, lastname || ', ' || firstname as instructorname
+	//JOIN instructorclasses USING (classid) 
+	//JOIN instructors USING (instructorid) 
+	//JOIN persons using (personid)
+	//instructorid in (".$instructorid.") and
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{

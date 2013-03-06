@@ -65,7 +65,7 @@ class Coursestatistics extends Main_Controller {
 		}
 		$dropdown = $this->Model->dropdown_info();
 		$section_info = $this->Model->section_info();
-		$year_info = $this->Model->term_info();
+		$year_info = $this->Model->get_years();
 		$instructor_info = $this->Model->instructor_info();
 		$selected = $this->session->userdata('coursestat');
 		$classid = $_POST['classid'];
