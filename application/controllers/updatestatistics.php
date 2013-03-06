@@ -305,7 +305,6 @@ class Updatestatistics extends CI_Controller {
 	
 	private function displayViewWithHeaders($viewname, $data = null) {
 		$update_statistics = array('update_statistics' => true);
-		
 		$this->load->view('include/header', $update_statistics);
 		$this->load->view('include/header-teamc');
 		$this->load->view($viewname, $data);

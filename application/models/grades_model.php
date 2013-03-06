@@ -63,6 +63,23 @@
 			return $grades_info;
 		}
 		
+		private function recomputeStanding($studentclassid) {
+			$query = "SELECT studenttermid FROM studentclasses WHERE studentclassid = '$studentclassid'";
+			$result = $this->db->query($query);
+			$row = $result->row();
+			$studenttermid = $row->studenttermid;
+			
+            $update1 = $this->db->query('UPDATE studentterms SET cwa = xcwa69(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid . ';');
+            $update2 = $this->db->query('UPDATE studentterms SET gwa = gwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+			$update3 = $this->db->query('UPDATE studentterms SET csgwa = csgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+			$update4 = $this->db->query('UPDATE studentterms SET mathgwa = mathgwa(' . $studenttermid . ') WHERE studenttermid = ' . $studenttermid .';');
+		}
+		
+		private function recomputeEligibility() {
+			$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
+			$this->eligibilitytesting_model->postprocessing();
+		}
+		
 		public function changeGrade($grade, $studentclassid){
 			$query = "SELECT gradeid FROM grades WHERE gradename = '$grade'";
 			$result = $this->db->query($query);	
@@ -72,12 +89,13 @@
 			$query = "UPDATE studentclasses SET gradeid = '$gradeid' WHERE studentclassid = '$studentclassid'";
 			$this->db->query($query);	
 			
-			if ($this->db->affected_rows() > 0){
+			if ($this->db->affected_rows() > 0) {
+				$this->recomputeStanding($studentclassid);
+				$this->recomputeEligibility();
 				return true;
 			}
-			else {
+			else
 				throw new Exception("Error in update of grade.");
-			}
 		}//end change grade
 
 	}//end class	
