@@ -95,6 +95,223 @@ CREATE TYPE t_loadstudents_andineligible AS (
 ALTER TYPE public.t_loadstudents_andineligible OWNER TO postgres;
 
 --
+-- Name: alltimecwa(integer); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION alltimecwa(p_studentid integer) RETURNS numeric
+    LANGUAGE plpgsql
+    AS $_$DECLARE 
+
+ah numeric DEFAULT 0; -- [SUM] (units*grade) of passing AH
+ahf numeric DEFAULT 0; -- [SUM] (units*grade) of failed AH
+mst numeric DEFAULT 0;
+mstf numeric DEFAULT 0;
+ssp numeric DEFAULT 0;
+sspf numeric DEFAULT 0;
+maj numeric DEFAULT 0;
+ele numeric DEFAULT 0;
+elef numeric DEFAULT 0;
+ahd numeric DEFAULT 0; -- [SUM] units of passing AH
+ahdf numeric DEFAULT 0; -- [SUM] units of failed AH
+mstd numeric DEFAULT 0;
+mstdf numeric DEFAULT 0;
+sspd numeric DEFAULT 0;
+sspdf numeric DEFAULT 0;
+majd numeric DEFAULT 0;
+eled numeric DEFAULT 0;
+eledf numeric DEFAULT 0;
+cwa numeric DEFAULT 0;
+numer numeric DEFAULT 0;
+denom numeric DEFAULT 0;
+
+BEGIN
+	
+	--first 5 ah numer
+	SELECT COALESCE(SUM(x*y),0) into ah FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'AH' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 5) as sss;
+
+	--first 5 ah denom
+	SELECT COALESCE(SUM(y),0) into ahd FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'AH' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 5) as sss;
+
+	--ah fail numer
+	SELECT COALESCE(SUM(x*y), 0) into ahf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'AH' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--ah fail denom
+	SELECT COALESCE(SUM(y), 0) into ahdf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'AH' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--first 4 mst numer
+	SELECT COALESCE(SUM(x*y), 0) into mst FROM
+	(SELECT v.gradevalue as x, v.credits as y, v.coursename
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 4) as sss;
+
+	--first 4 mst denom
+	SELECT COALESCE(SUM(y), 0) into mstd FROM
+	(SELECT v.gradevalue as x, v.credits as y, v.coursename
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 4) as sss;
+
+	--ns1 and ns2 corrections
+	IF (SELECT COUNT(*) FROM (SELECT v.gradevalue as x, v.credits as y, v.coursename
+								FROM viewclasses v 
+								WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND v.gradeid < 10
+								ORDER BY v.termid ASC
+								LIMIT 4) as sss WHERE coursename IN ('Nat Sci 1', 'Chem 1', 'Physics 10')) > 2 THEN
+		SELECT xns1_correction($1, $2) into mst;
+		SELECT xns1_dcorrection($1, $2) into mstd;
+	ELSE 
+		IF (SELECT COUNT(*) FROM (SELECT v.gradevalue as x, v.credits as y, v.coursename
+								FROM viewclasses v 
+								WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND v.gradeid < 10
+								ORDER BY v.termid ASC
+								LIMIT 4) as sss WHERE coursename IN ('Nat Sci 2', 'Bio 1', 'Geol 1')) > 2 THEN
+		SELECT xns2_correction($1, $2) into mst;
+		SELECT xns2_dcorrection($1, $2) into mstd;
+		END IF;
+	END IF;
+
+	--mst fails numer
+	SELECT COALESCE(SUM(x*y), 0) into mstf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--mst fails denom
+	SELECT COALESCE(SUM(y), 0) into mstdf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'MST' AND v.coursename <> 'Math 2' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--first 5 ssp numer
+	SELECT COALESCE(SUM(x*y), 0) into ssp FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'SSP' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 5) as sss;
+
+	--first 5 ssp denom
+	SELECT COALESCE(SUM(y), 0) into sspd FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'SSP' AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 5) as sss;
+
+	--ssp fails numer
+	SELECT COALESCE(SUM(x*y), 0) into sspf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'SSP' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--ssp fails denom
+	SELECT COALESCE(SUM(y), 0) into sspdf FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND v.domain = 'SSP' AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--maj pass+fail numer
+	SELECT COALESCE(SUM(x*y), 0) into maj FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'MAJ' AND v.gradeid <= 11) as sss;
+
+	--maj pass+fail denom
+	SELECT COALESCE(SUM(y), 0) into majd FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v 
+		WHERE v.studentid = $1 AND v.domain = 'MAJ' AND v.gradeid <= 11) as sss;
+
+	--first 3 ele numer
+	SELECT COALESCE(SUM(x*y), 0) into ele FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 3) as sss;
+	
+	--first 3 ele denom
+	SELECT COALESCE(SUM(y), 0) into eled FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND v.gradeid < 10
+		ORDER BY v.termid ASC
+		LIMIT 3) as sss;
+
+	--overflowing electives correction
+	IF (SELECT COUNT(*) FROM (SELECT v.gradevalue as x, v.credits as y, v.domain
+								FROM viewclasses v
+								WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND v.gradeid < 10
+								ORDER BY v.termid ASC
+								LIMIT 3) as sss WHERE sss.domain = 'C197') > 2 THEN
+		SELECT xovercs197_correction($1, $2) INTO ele;
+		SELECT xovercs197_dcorrection($1, $2) INTO eled;
+	ELSE
+		IF (SELECT COUNT(*) FROM (SELECT v.gradevalue as x, v.credits as y, v.domain
+									FROM viewclasses v
+									WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND v.gradeid < 10
+									ORDER BY v.termid ASC
+									LIMIT 3) as sss WHERE sss.domain = 'MSEE') > 2 THEN
+			SELECT xovermsee_correction($1, $2) INTO ele;
+			SELECT xovermsee_dcorrection($1, $2) INTO eled;
+		ELSE
+		IF (SELECT COUNT(*) FROM (SELECT v.gradevalue as x, v.credits as y, v.domain
+									FROM viewclasses v
+									WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND v.gradeid < 10
+									ORDER BY v.termid ASC
+									LIMIT 3) as sss WHERE sss.domain = 'FE') > 2 THEN
+			SELECT xoverfe_correction($1, $2) INTO ele;
+			SELECT xoverfe_dcorrection($1, $2) INTO eled;
+		END IF;
+		END IF;
+	END IF;
+
+	--ele fails numer
+	SELECT COALESCE(SUM(x*y),0) into elef FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	--ele fails denom
+	SELECT COALESCE(SUM(y),0) into elef FROM
+	(SELECT v.gradevalue as x, v.credits as y
+		FROM viewclasses v
+		WHERE v.studentid = $1 AND (v.domain = 'CSE' OR v.domain = 'MSEE' OR v.domain = 'FE' OR v.domain = 'C197') AND (v.gradeid = 11 OR v.gradeid = 10)) as sss;
+
+	numer = (ah + ahf + mst + mstf + ssp + sspf + maj + ele);
+	denom = (ahd + ahdf + mstd + mstdf + sspd + sspdf + majd + eled);
+	IF denom = 0 THEN RETURN 0; END IF;
+	cwa = numer / denom;
+
+	RETURN round(cwa,4);	
+
+
+END;
+$_$;
+
+
+ALTER FUNCTION public.alltimecwa(p_studentid integer) OWNER TO postgres;
+
+--
 -- Name: csgwa(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
