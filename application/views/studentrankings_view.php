@@ -141,7 +141,7 @@ $(function() {
 		<div><b><a class="showNotes" style="cursor: pointer; text-decoration:none; color:red">*Notes about filtering</a></b></div>
 		
 		<div id="notes" style="padding:10px; display:none; background-color:#FFD073;">
-		Filtering is done through case-insensitive perfect matching. Operators can also be used for filtering. For example, inputting "<1.25" in the GWA filter will only show students that have GWAs that are numerically less than 1.25
+		Filtering is done through case-insensitive perfect matching. Operators can also be used for filtering. For example, inputting "<1.25" in the GWA filter will only show students that have GWAs that are <b><i>numerically</i></b> less than 1.25
 		</div>
 		<br/>
 		<table id="students" class="tablesorter"> 

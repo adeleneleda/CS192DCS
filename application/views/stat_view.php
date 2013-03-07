@@ -1,5 +1,18 @@
 <script type="text/javascript">
 	$(document).ready(function() {
+		$.ajax({
+		  type: "POST",
+		  url: "<?= ($tag == 0) ? base_url("coursestatistics/getIOD/0") : base_url("coursestatistics/getIOD/1")?>",
+		  data: { classid: "<?= $classid?>", courseid: "<?= $courseid?>"},
+		  dataType: "json",
+		  success: function(msg){
+			$('#loading').hide();
+			$('#IODdiv').show();
+			$('#IODval').text(msg);
+			$('#csv_iod').val(msg);
+			$('#download').removeClass('disabled');
+		  }
+		});
 		$('#sr').removeClass('active');
 		$('#cs').addClass('active');
 		$('#et').removeClass('active');
@@ -198,7 +211,10 @@
 			<div class="span3">
 				<div class="well">
 					<strong>Index of Discrimination</strong>
-					</br></br><?= $iod?></br></br>
+					</br></br>
+					<div id="loading"><img src="<?= base_url('images/69.gif')?>"/></div>
+					<div id="IODdiv" style="display:hidden;"><label id="IODval"></label></div>
+					</br></br>
 					<strong>Passing Rate</strong>
 					</br></br><?= $stat2['percentage']?>
 				</div>
@@ -206,8 +222,8 @@
 				<input type="hidden" name="csv_classid" value="<?= $classid?>">
 				<input type="hidden" name="csv_courseid" value="<?= $courseid?>">
 				<input type="hidden" name="csv_passingrate" value="<?= $stat2['percentage']?>">
-				<input type="hidden" name="csv_iod" value="<?= $iod?>">
-				<input class="btn btn-primary" type="submit" value="Download CSV"/>
+				<input id="csv_iod" type="hidden" name="csv_iod" value="">
+				<input id="download" class="btn btn-primary disabled" type="submit" value="Download CSV"/>
 				</form>
 			</div>
 		</div>

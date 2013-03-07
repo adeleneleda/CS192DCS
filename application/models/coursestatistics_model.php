@@ -190,15 +190,16 @@ class Coursestatistics_model extends Base_Model {
 				JOIN grades USING (gradeid)
 				JOIN classes USING (classid)
 				JOIN courses USING (courseid)
-				JOIN instructorclasses using (classid)
-				JOIN instructors using (instructorid)
 				WHERE courses.courseid = ' . $courseid . '
-				AND terms.termid = ' . $prevsem . '
-				ORDER BY cwa ASC;');
-
+				ORDER BY xcwa69(s.studentid, 99999) ASC;');
+			
+			
+			//JOIN instructorclasses using (classid)
+			//JOIN instructors using (instructorid)
 			$results = $results->result_array();
             $ctr = 0;
-            
+            //print_r($results);
+			//die();
 			if(sizeof($results) < 10) {
 				$iod = "N/A";
 			}
@@ -219,8 +220,9 @@ class Coursestatistics_model extends Base_Model {
                 }
 				$iod = ($pass1 - $pass2)/10;
 			}
+			
             return $iod;
-  
+			
   
   
   }
