@@ -1,5 +1,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#download').attr("disabled","diasbled");
 		$.ajax({
 		  type: "POST",
 		  url: "<?= ($tag == 0) ? base_url("coursestatistics/getIOD/0") : base_url("coursestatistics/getIOD/1")?>",
@@ -10,7 +11,8 @@
 			$('#IODdiv').show();
 			$('#IODval').text(msg);
 			$('#csv_iod').val(msg);
-			$('#download').removeClass('disabled');
+			$('#download').removeClass("disabled");
+			$('#download').removeAttr("disabled");
 		  }
 		});
 		$('#sr').removeClass('active');
