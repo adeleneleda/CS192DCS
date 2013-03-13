@@ -13,12 +13,6 @@ class Upload_query extends CI_Model {
 
 	/** Holds the query data (acad year, last name, grade, etc. */
 	private $data = array();
-	/* Data list:
-		acadyear	semester	termname	studentno
-		firstname	middlename	lastname	pedigree
-		classcode	coursename	section		grade
-		termid		batch
-	*/
 	
 	private function initializeCurriculumIds() {
 		$query = "SELECT curriculumid FROM curricula WHERE curriculumname='new'";
@@ -54,9 +48,9 @@ class Upload_query extends CI_Model {
 		return $row[0][$primary_key_name];
 	}
 	
-	private function get_personid() {
-		$search = "SELECT personid FROM persons WHERE lastname = '$this->lastname' AND firstname = '$this->firstname' AND middlename = '$this->middlename' AND pedigree='$this->pedigree';";
-		$insert = "INSERT INTO persons(lastname, firstname, middlename, pedigree) VALUES ('$this->lastname', '$this->firstname', '$this->middlename', '$this->pedigree');";
+	private function get_personid($lastname, $firstname, $middlename, $pedigree) {
+		$search = "SELECT personid FROM persons WHERE lastname = '$lastname' AND firstname = '$firstname' AND middlename = '$middlename' AND pedigree='$pedigree';";
+		$insert = "INSERT INTO persons(lastname, firstname, middlename, pedigree) VALUES ('$lastname', '$firstname', '$middlename', '$pedigree');";
 		$personid = $this->distinctInsert('personid', $search, $insert);
 		return $personid;
 	}
@@ -130,21 +124,33 @@ class Upload_query extends CI_Model {
 		return $studentclassid;
 	}
 	
+	private function insertToInstructorClasses($classid) {
+		if (!empty($this->instructor_lastname)) {
+			$instructor_personid = $this->get_personid($this->instructor_lastname, $this->instructor_firstname, '', '');
+			$search = "SELECT instructorid FROM instructors WHERE personid='$instructor_personid';";
+			$insert = "INSERT INTO instructors(personid) VALUES($instructor_personid);";
+			$instructorid = $this->distinctInsert('instructorid', $search, $insert);
+			$search = "SELECT instructorclassid FROM instructorclasses WHERE instructorid='$instructorid' AND classid='$classid';";
+			$insert = "INSERT INTO instructorclasses(instructorid, classid) VALUES($instructorid, $classid);";
+			$this->distinctInsert('instructorclassid', $search, $insert);
+		}
+	}
+	
 	public function execute() {
 		if ($this->shouldExecute) {
-			$personid = $this->get_personid();
+			$student_personid = $this->get_personid($this->lastname, $this->firstname, $this->middlename, $this->pedigree);
 			$curriculumid = $this->get_curriculumid();
-			$studentid = $this->get_studentid($personid, $curriculumid);
+			$studentid = $this->get_studentid($student_personid, $curriculumid);
 			$termid = $this->get_termid();
 			$courseid = $this->get_courseid();
 			$classid = $this->get_classid($termid, $courseid);
 			$studenttermid = $this->get_studenttermid($studentid, $termid);
 			$gradeid = $this->get_gradeid();
 			$studentclassid = $this->get_studentclassid($studenttermid, $classid, $gradeid);
-			
-			return $studenttermid; //dan
+			$this->insertToInstructorClasses($classid);
+			return $studenttermid;
 		}
-		else return -1;	//dan
+		else return -1;
 	}
 	
 	// Groupmates, you don't need to understand everything else below, just leave it as is.

@@ -10,10 +10,10 @@ require_once 'fields/pedigree.php';
 require_once 'fields/classcode.php';
 require_once 'fields/classname.php';
 require_once 'fields/grade.php';
+require_once 'fields/instructor.php';
 
 class Field_factory extends CI_Model {
-	private $fields = array('Acadyear', 'Semester', 'Studentno', 'Lastname', 
-		'Firstname', 'Middlename', 'Pedigree', 'Classcode', 'Classname', 'Grade');
+	private $fields = array('Acadyear', 'Semester', 'Studentno', 'Lastname', 'Firstname', 'Middlename', 'Pedigree', 'Classcode', 'Classname', 'Grade', 'Grade', 'Grade', 'Instructor');
 	
 	public function createField($field) {
 		if (is_numeric($field))

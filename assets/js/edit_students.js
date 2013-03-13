@@ -30,7 +30,8 @@ $(document).ready(function(){
 					$(changed_cell).css('background-color','#AAFFCC').css("color","#555555");
 					setTimeout(function() {
 						$(changed_cell).css("background-color","white");
-						$("#students").trigger('update'); // re-sort table
+						// $("#students").trigger('update'); // re-sort table
+						// $(changed_cell).focus();
 					}, 250);
 					$(changed_cell).qtip('hide');
 					$(changed_cell).qtip('disable');

@@ -19,4 +19,5 @@
 	<div id="loading" style="display:none;">
 		<img src="<?=base_url('images/loading.gif')?>" alt="" /><br>Please wait...
 	</div>
+	<div id="progressbar" style="height:50px;display:none;"></div>
 	<div id="content">
