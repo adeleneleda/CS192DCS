@@ -4,15 +4,13 @@ require_once 'fields/exceptions/nstp_exception.php';
 require_once 'fields/exceptions/pe_exception.php';
 
 class Gradefile_Parser extends CI_Model {
-	const COLS = 12;
+	const COLS = 13;
 	protected $query;
 	protected $field_parsers = array();
 	protected $successcount = 0;
 	protected $errorcount = 0;
 	protected $row_no;
-	
-	//dan
-	protected $affected = array();
+	protected $affected_studentTerms;
 		
 	function __construct() {
         parent::__construct();
@@ -27,9 +25,10 @@ class Gradefile_Parser extends CI_Model {
 	}
 	
 	public function initialize() {
+		$this->affected_studentTerms = array();
 		$this->query = new Upload_query;
 		$this->load->model("Field_factory", "field_factory");
-		for ($i = 0; $i < $this->cols - 2; $i++) // last 3 columns (grades) are parsed at the same time
+		for ($i = 0; $i < self::COLS; $i++)
 			$this->field_parsers[] = $this->field_factory->createFieldByNum($i);
 		$this->row_no = 0;
 	}
@@ -37,8 +36,8 @@ class Gradefile_Parser extends CI_Model {
 	private function headerRowHtml() {
 		$output = "<tr><th>row</th>";
 		$headers = $this->nextRow();
-		$cols = count($headers) - 2; // last 2 fields are also grades
-		for ($i = 0; $i < $cols; $i++)
+		$headers = array('Acad year','Sem','Student #','Last name','First name','Middle name','Pedigree','Classcode','Class','Grade','Instructor');
+		for ($i = 0; $i < self::COLS - 2; $i++)
 			$output .= '<th>'.$headers[$i].'</th>';
 		$output .= "</tr>";
 		return $output;
@@ -50,20 +49,19 @@ class Gradefile_Parser extends CI_Model {
 		while ($row = $this->nextRow()) {
 			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
-			//$this->query->execute(); commented out by Dan
-			//Dan
 			$studenttermid = $this->query->execute();
 			if($studenttermid > -1)
-				$affected[] = $studenttermid;
+				$this->affected_studentTerms[] = $studenttermid;
 		}
-		$affected = array_unique($affected);
-		//start Dan's precomputing
-		//can I please have also a loading bar? :)) Gusto ko nakasulat "Precomputing metrics..." para pogi ahahahahaha
-		$this->load->model('studentrankings_model', 'studentrankings_model', true);
-		foreach($affected as $studenttermid)
+		$this->load->model('studentrankings_model', 'studentrankings_model', true);	
+		$this->affected_studentTerms = array_unique($this->affected_studentTerms);
+		foreach($this->affected_studentTerms as $studenttermid)
 			$this->studentrankings_model->recomputeStanding($studenttermid);
-		
-		//end Dan's precomputing
+			
+		// [Josh] Post Processing of Data
+		// $this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
+		// $this->eligibilitytesting_model->postprocessing();
+		// [Josh] End Post Processing
 		
 		$output .= "</table>";
 		return $output;
@@ -74,18 +72,23 @@ class Gradefile_Parser extends CI_Model {
 		$error = true;
 		$output = "<tr><th>".$this->row_no."</th>";
 		if (count($row) < self::COLS) { // invalid column count
-			$this->query->doNotExecute();
-			return $output."<td colspan='10' title='Invalid column count' class='databasecell upload_error'><center>Invalid column count</center></td>";
+			$diff = self::COLS - count($row);
+			for ($i = 0; $i < $diff; $i++)
+				$row[] = ''; // blank out the rest
+			// $this->query->doNotExecute();
+			// $success = false;
+			// $output .= "<td colspan='".(self::COLS - 2)."' title='Invalid number of fields' class='databasecell upload_error'><center>Invalid column count</center></td>";
 		}
-		
-		for ($col = 0; $col < $this->cols - 2; $col++) { // last 3 columns (grades) are parsed at the same time
+		for ($col = 0; $col < self::COLS; $col++) {
 			$value = $row[$col];
 			$orig_value = $value;
-			try {
+			if ($col == 10 || $col == 11)
+				continue; // comp and secondcomp grades: skip
+			else try {
 				$field = $this->field_parsers[$col];
-				if ($col == $this->cols - 3) { // grades : include comp and secondcomp
-					$compgrade = $row[$col + 1];
-					$secondcompgrade = $row[$col + 2];
+				if ($col == 9) { // grades : include comp and secondcomp
+					$compgrade = $row[10];
+					$secondcompgrade = $row[11];
 					$field->parse($value, $compgrade, $secondcompgrade);
 				}
 				else

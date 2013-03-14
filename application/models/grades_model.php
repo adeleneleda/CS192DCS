@@ -13,7 +13,6 @@
 			
 			if ($result->num_rows() > 0){
 			   $row = $result->row(); 
-			   //pedigree how?
 			   $student_info['student_name'] = $row->lastname.", ".$row->firstname." ".$row->middlename." ".$row->pedigree;
 			   $student_info['studentno'] = $row->studentno;
 			}
@@ -89,7 +88,7 @@
 			
 			if ($this->db->affected_rows() > 0) {
 				$this->recomputeStanding($studentclassid);
-				$this->recomputeEligibility();
+				// $this->recomputeEligibility();
 				return true;
 			}
 			else

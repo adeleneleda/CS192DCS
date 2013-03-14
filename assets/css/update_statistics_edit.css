@@ -16,6 +16,9 @@
 	position:absolute;
 	table-layout:fixed;
 }
+#students .tablesorter-filter {
+	height:auto;
+}
 #students td, #grades td {
 	font-size:1.1em;
 	height:20px;

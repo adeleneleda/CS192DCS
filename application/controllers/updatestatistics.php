@@ -80,37 +80,33 @@ class Updatestatistics extends CI_Controller {
 
 	// Called when a grades file is uploaded
 	public function performUpload() {
+		set_time_limit(3600);
 		$data = array('upload_success' => false);
 		$data['reset_success'] = $this->resetIfChecked();
 		// maintain a table to store uploaded gradessheets?
 		try {
-			$filename = $this->getUploadedFile();
+			$file = $this->getUploadedFile();
+			$estimated_rows = $file['size'] / 75;
+			$estimated_rate = (1000 / 60000)*(200); // number of rows parsed in 200 ms
 			$data['upload_success'] = true;
-			$parse_data = $this->parse($filename);
+			$parse_data = $this->parse($file['name']);
 			$data = array_merge($data, $parse_data);
-			
-			// [Josh] Post Processing of Data
-			$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
-			$this->eligibilitytesting_model->postprocessing();
-			// [Josh] End Post Processing
 		} catch (Exception $e) {
 			$data['error_message'] = $e->getMessage();
 		}
-		$this->displayViewWithHeaders('upload_response', $data);
+		$this->displayView('upload_response', $data);
 	}
 	
 	private function getUploadedFile() {
-		$filename = $_FILES['upload_file']['name'];
-		$filetype = $_FILES['upload_file']['type'];
-		$filesize = $_FILES['upload_file']['size'];
-		
-		// customize filename for ease of access?
-		// check for filetypes that are allowed?
-		$target = $this->getUploadsFolder().'/'.$filename;
-		if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $target)) {
-			return $target;
+		$file = array();
+		if (!isset($_FILES['upload_file']))
+			throw new Exception("No file was provided.");
+		$file['size'] = $_FILES['upload_file']['size'];
+		$file['name'] = $this->getUploadsFolder().'/'.$_FILES['upload_file']['name'];
+		if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $file['name'])) {
+			return $file;
 		} else
-			throw new Exception("Error: $filename could not be uploaded.");
+			throw new Exception("Error: ".$file['name']." could not be uploaded.");
 	}
 	
 	private function parse($filename) {
@@ -209,7 +205,7 @@ class Updatestatistics extends CI_Controller {
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
 		if ($success) { // save cookie
-			$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'1000000');
+			$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'100000000');
 			$this->input->set_cookie($cookie);
 		}
 		$data['backup_location'] = $backup_name;
@@ -255,7 +251,8 @@ class Updatestatistics extends CI_Controller {
 		$data['pg_bin_dir'] = $pg_bin_dir;
 		
 		try {
-			$backup_filename = $this->getAbsoluteBasePath().$this->getUploadedFile();
+			$backup_file = $this->getUploadedFile();
+			$backup_filename = $this->getAbsoluteBasePath().$backup_file['name'];
 			$backup_filename = escapeshellarg($backup_filename);
 			if (substr(php_uname(), 0, 7) == "Windows")
 				$psql_location = $pg_bin_dir."/psql.exe";
@@ -266,7 +263,7 @@ class Updatestatistics extends CI_Controller {
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
 			if ($success) { // save cookie
-				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'1000000');
+				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'100000000');
 				$this->input->set_cookie($cookie);
 			}
 			$data['output'] = $output;
@@ -275,7 +272,7 @@ class Updatestatistics extends CI_Controller {
 			$data['output'] = array();
 			$data['restore_success'] = false;
 		}
-		$this->displayViewWithHeaders('restore_response', $data);
+		$this->displayView('restore_response', $data);
 	}
 	
 	/*-----------------------------------------------------end restore functions-----------------------------------------------------*/
@@ -296,7 +293,7 @@ class Updatestatistics extends CI_Controller {
 		$sql_text = $this->load->file($sql_file, true);
 		$this->db->query($sql_text);
 		$data['success'] = true;
-		$this->displayViewWithHeaders('sql_response', $data);
+		$this->displayView('sql_response', $data);
 	}
 	
 	/*-----------------------------------------------------end sql functions-----------------------------------------------------*/

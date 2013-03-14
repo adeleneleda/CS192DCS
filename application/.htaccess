@@ -1,1 +1,9 @@
-Deny from all
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /CS192DCS/index.php/$1 [L] 
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
+php_value max_execution_time 1500
+php_value max_input_time 1500
+php_value memory_limit 128M
