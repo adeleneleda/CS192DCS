@@ -16,6 +16,7 @@ class Csv_Parser extends Gradefile_Parser {
 	}
 	
 	public function initialize($csv_filename) {
+		ini_set('auto_detect_line_endings', true);
 		if (($this->csvfile = fopen($csv_filename, "r")) === FALSE)
 			throw new Exception($csv_filename." could not be opened for reading");
 		parent::initialize();

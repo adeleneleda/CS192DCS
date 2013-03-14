@@ -130,7 +130,7 @@ class Upload_query extends CI_Model {
 			$search = "SELECT instructorid FROM instructors WHERE personid='$instructor_personid';";
 			$insert = "INSERT INTO instructors(personid) VALUES($instructor_personid);";
 			$instructorid = $this->distinctInsert('instructorid', $search, $insert);
-			$search = "SELECT instructorclassid FROM instructorclasses WHERE instructorid='$instructorid' AND classid='$classid';";
+			$search = "SELECT instructorclassid FROM instructorclasses WHERE classid='$classid';";
 			$insert = "INSERT INTO instructorclasses(instructorid, classid) VALUES($instructorid, $classid);";
 			$this->distinctInsert('instructorclassid', $search, $insert);
 		}
