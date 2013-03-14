@@ -213,12 +213,12 @@
 			<div class="span3">
 				<div class="well">
 					<strong>Index of Discrimination</strong>
-					</br></br>
+					<br/><br/>
 					<div id="loading"><img src="<?= base_url('images/69.gif')?>"/></div>
 					<div id="IODdiv" style="display:hidden;"><label id="IODval"></label></div>
-					</br></br>
+					<br/><br/>
 					<strong>Passing Rate</strong>
-					</br></br><?= $stat2['percentage']?>
+					<br/><br/><?= $stat2['percentage']?>
 				</div>
 				<form method="post" action="<?= base_url('coursestatistics/generate_csv')?>">
 				<input type="hidden" name="csv_classid" value="<?= $classid?>">
