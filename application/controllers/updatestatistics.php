@@ -188,10 +188,12 @@ class Updatestatistics extends CI_Controller {
 		}
 		else if (!empty($cookie))
 			$this->performBackup($cookie);
-		else {
+		else if (substr(php_uname(), 0, 7) == "Windows") {
 			$data['dest'] = 'updatestatistics/backup';
 			$this->displayView('postgres_bin', $data);
 		}
+		else
+			$this->performBackup('/usr/bin');
 	}
 	
 	private function performBackup($pg_bin_dir) {
@@ -230,10 +232,12 @@ class Updatestatistics extends CI_Controller {
 		}
 		else if (!empty($cookie))
 			$this->showRestoreDialog($cookie);
-		else {
+		else if (substr(php_uname(), 0, 7) == "Windows") {
 			$data['dest'] = 'updatestatistics/restore';
 			$this->displayView('postgres_bin', $data);
 		}
+		else
+			$this->showRestoreDialog('/usr/bin');
 	}
 			
 	private function showRestoreDialog($pg_bin_dir) {
@@ -264,8 +268,6 @@ class Updatestatistics extends CI_Controller {
 			if ($success) { // save cookie
 				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'1000000');
 				$this->input->set_cookie($cookie);
-				$this->load->model('eligibilitytesting_model');
-				$this->eligibilitytesting_model->postprocessing();
 			}
 			$data['output'] = $output;
 			$data['restore_success'] = $success;

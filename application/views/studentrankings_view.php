@@ -41,7 +41,7 @@ $(function() {
 
     // widget code contained in the jquery.tablesorter.widgets.js file
     // use the zebra stripe widget if you plan on hiding any rows (filter widget)
-    widgets : [ "uitheme", "zebra" , <?if(!empty($name)) echo '"filter"';?>],
+    widgets : [ "uitheme", "zebra" , "filter"],
 
     widgetOptions : {
       // using the default zebra striping class name, so it actually isn't included in the theme variable above
@@ -138,7 +138,7 @@ $(function() {
 		</div>
 	</div>
 	<div class="span9">
-		<div><b><a class="showNotes" style="cursor: pointer; color:red">*Notes about filtering</a></b></div>
+		<div><b><a class="showNotes" style="cursor: pointer; text-decoration:none; color:red">*Notes about filtering</a></b></div>
 		
 		<div id="notes" style="padding:10px; display:none; background-color:#FFD073;">
 		Filtering is done through case-insensitive perfect matching. Operators can also be used for filtering. For example, inputting "<1.25" in the GWA filter will only show students that have GWAs that are <b><i>numerically</i></b> less than 1.25
@@ -177,7 +177,7 @@ $(function() {
 		 else {
 		 ?>
 		 <tr>
-			<th colspan="6" style="text-decoration:none"><center>No Students Found</center></th>
+			<th colspan="5" style="text-decoration:none"><center>No Students Found</center></th>
 		</tr>
 		 <?php
 		 }
