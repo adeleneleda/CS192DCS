@@ -53,8 +53,6 @@ class Updatestatistics extends CI_Controller {
 			$field = $this->field_factory->createFieldByName('Grade');
 			$field->parse($grade, '', ''); //will throw an exception if grade format is wrong
 			
-			$this->load->model('grades_model', 'grades_model', true);
-			$this->grades_model->changeGrade($grade, $studentclassid);
 			echo "true";
 		} catch (Exception $e) {
 			echo $e->getMessage();
