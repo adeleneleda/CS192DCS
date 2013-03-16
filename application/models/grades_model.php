@@ -88,7 +88,6 @@
 			
 			if ($this->db->affected_rows() > 0) {
 				$this->recomputeStanding($studentclassid);
-				// $this->recomputeEligibility();
 				return true;
 			}
 			else

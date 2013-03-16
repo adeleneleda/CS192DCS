@@ -1,6 +1,52 @@
 $(document).ready(function(){
+	$("#grades_submit").click( function() {
+	
+		$changed_cells = new Array();
+		$data = "";
+	
+		/*$(".changedcell").each(function() {
+			$changed_cells.push({studentclassid: $(this).attr('id'), grade: $(this).val()});
+		});*/
+		
+		$(".gradecell").each(function() {
+			if($(this).val() != $(this).prop("defaultValue")){
+				$changed_cells.push({studentclassid: $(this).attr('id'), grade: $(this).val()});
+			}
+		});
+		
+		$data = $changed_cells.toString();
+
+		$('#content').hide();
+		$('#loading').show();		
+		
+		var callback = site_url + 'updatestatistics/saveChanges';
+		
+		$.ajax({
+			type: 'post',
+			url: callback,
+			data: {changed_grades: $changed_cells
+			},
+			dataType: 'html',
+			success: function (retVal) {
+				if (retVal == 'true') {
+					$('#loading').hide();
+					//$('#content').html($data).show();
+					$('#content').show();
+					scrollToPageHeader();
+				} else {
+					$('#loading').hide();
+					$('#content').html(retVal + " fail").show();
+					scrollToPageHeader();
+				}
+			},
+			error: function(){
+				alert("Call to database failed.");
+			}
+		});
+    });
+	
 	$(".gradecell").change(function() {
-		var callback = site_url + 'updatestatistics/updateGrade';
+		var callback = site_url + 'updatestatistics/validateGrade';
 		var changed_cell = $(this);
 		
 		$.ajax({

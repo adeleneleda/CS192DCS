@@ -44,7 +44,7 @@ class Updatestatistics extends CI_Controller {
 		$this->displayView('edit_grades', $data);
 	}
 	
-	public function updateGrade() {
+	public function validateGrade() {
 		$studentclassid = $_POST['studentclassid'];
 		$grade = $_POST['grade'];
 		
@@ -60,6 +60,35 @@ class Updatestatistics extends CI_Controller {
 			echo $e->getMessage();
 		}
 	}
+	
+	public function saveChanges(){
+		try {
+			$this->load->model('grades_model', 'grades_model', true);
+			if(isset($_POST['changed_grades'])){
+				$changed = $_POST['changed_grades'];
+				foreach($changed as $changed_grade){
+					$studentclassid = $changed_grade['studentclassid'];
+					$grade = $changed_grade['grade'];
+					
+					try{					
+						$this->load->model('Field_factory', 'field_factory');
+						$field = $this->field_factory->createFieldByName('Grade');
+						$field->parse($grade, '', ''); //will throw an exception if grade format is wrong
+					}catch (Exception $e) {
+						//echo $e->getMessage();
+						break;
+					}	
+					
+					$this->grades_model->changeGrade($grade, $studentclassid);
+				}
+			}
+			//$this->grades_model->recomputeEligibility();
+			echo "true";
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}	
+	}
+	
 	
 	/*-----------------------------------------------------end edit functions-----------------------------------------------------*/
 	

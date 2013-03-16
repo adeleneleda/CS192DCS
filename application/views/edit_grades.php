@@ -20,6 +20,8 @@ function printGrades($term_grades){
 		printGradeTable($termname, $rows);
 		echo "</br>";
 	}
+	
+	echo "<div class=\"form-actions\"><center><input type=\"submit\" value=\"Save Changes\"class=\"btn btn-primary\" name=\"grades_submit\" id=\"grades_submit\" /></div>";
  }
  
 function printGradeTable($termname, $rows){ ?>
