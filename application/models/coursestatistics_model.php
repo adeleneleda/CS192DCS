@@ -94,6 +94,21 @@ class Coursestatistics_model extends Base_Model {
 	return false;
   }
   
+  public function get_classlist($classid) {
+  
+	  $query = "SELECT studentno, 
+	  lastname || ',' || firstname || ' ' || middlename as name, 
+	  gradevalue from students join persons using (personid) join studentterms
+	  using (studentid) join studentclasses  using (studenttermid) 
+	  join grades using (gradeid) where classid = ". $classid .';';
+		$results = $this->db->query($query);
+		if($results->num_rows() > 0){
+			$temp = $results->result_array();
+			return $temp;
+		}
+		return false;  	  
+  }
+  
   public function results_graph($classid, $courseid) {
   
 	$query = 'SELECT gradename, count(*) from studentclasses
