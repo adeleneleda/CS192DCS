@@ -28,10 +28,8 @@
 		
 		<?php if (isset($update_statistics)) { // include Team C headers ?>
 			<link href="<?= base_url('assets/css/update_statistics.css') ?>" rel="stylesheet" type="text/css" />
-			<link href="<?= base_url('assets/css/jquery-ui.css') ?>" rel="stylesheet" />
 			<script type="text/javascript" src="<?= base_url('assets/js/update_statistics_sidebar.js') ?>"></script>
 			<script type="text/javascript" src="<?= base_url('assets/js/jquery.form.js') ?>"></script>
-			<!--<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>-->
 			<script type="text/javascript">
 				var base_url = "<?= base_url(''); ?>";
 				var site_url = "<?= site_url(''); ?>";

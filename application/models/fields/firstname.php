@@ -3,6 +3,7 @@ require_once 'field.php';
 
 class Firstname extends Field {
 	public function parse(&$firstname, $a = null, $b = null) {
+		$firstname = trim($firstname);
 		if (empty($firstname))
 			throw new Exception("First name is empty");
 		else if (preg_match('/[^\-a-zA-Z\. ]/u', $firstname))

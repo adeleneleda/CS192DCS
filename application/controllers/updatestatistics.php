@@ -80,7 +80,7 @@ class Updatestatistics extends CI_Controller {
 					$this->grades_model->changeGrade($grade, $studentclassid);
 				}
 			}
-			//$this->grades_model->recomputeEligibility();
+			$this->grades_model->recomputeEligibility();
 			echo "true";
 		} catch (Exception $e) {
 			echo $e->getMessage();
@@ -113,8 +113,10 @@ class Updatestatistics extends CI_Controller {
 		// maintain a table to store uploaded gradessheets?
 		try {
 			$file = $this->getUploadedFile();
-			$estimated_rows = $file['size'] / 75;
-			$estimated_rate = (1000 / 60000)*(200); // number of rows parsed in 200 ms
+			$estimated_rows = $file['size'] / 75; // number of rows
+			$rate = 3/10; // 300 200ms / 1000 rows
+			$estimated_progress = ($estimated_rows * $rate)/100; // progress for each 200 ms
+			echo $estimated_progress;
 			$data['upload_success'] = true;
 			$parse_data = $this->parse($file['name']);
 			$data = array_merge($data, $parse_data);

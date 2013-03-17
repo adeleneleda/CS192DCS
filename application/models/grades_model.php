@@ -72,7 +72,7 @@
 			$this->studentrankings_model->recomputeStanding($studenttermid);
 		}
 		
-		private function recomputeEligibility() {
+		public function recomputeEligibility() {
 			$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
 			$this->eligibilitytesting_model->postprocessing();
 		}

@@ -3,6 +3,7 @@ require_once 'field.php';
 
 class Middlename extends Field {
 	public function parse(&$middlename, $a = null, $b = null) {
+		$middlename = trim($middlename);
 		if (preg_match('/[^\-a-zA-Z\. ]/u', $middlename))
 			throw new Exception("Middle name contains non-alphabetic characters");
 		else if (strlen($middlename) > 45)

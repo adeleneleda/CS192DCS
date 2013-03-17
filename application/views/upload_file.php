@@ -1,37 +1,42 @@
+<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>
+<link href="<?= base_url('assets/css/jquery-ui.css') ?>" rel="stylesheet" />
 <script type = "text/javascript">
 $(document).ready(function(){
 	$('#upload_form').ajaxForm({ 
-        target: '#content',   // target element to be updated with server response 
-        beforeSubmit: showLoading,  // pre-submit callback 
-        success: showResponse, // post-submit callback
+        target: '#content', // target element to be updated with server response 
+        beforeSubmit: showLoading,
+        success: showResponse,
 		url: "<?=$dest ?>"
-	});
-	$('#upload_formz').submit(function() {
-		<?php if($upload_filetype == "Grade File") { ?>
-			$("#progressbar").show();
-			$("#progressbar").progressbar({ value: 0 });
-			var percentComplete = 0; //Update this in your other script
-			var timer = setInterval(function() {
-				percentComplete++;
-				if (percentComplete > 100) {
-					clearInterval(timer);
-				}
-				$("#progressbar").progressbar( { value: percentComplete } );
-			}, 200);
-		<?php } else { ?>
-			$('#loading').show();
-		<?php } ?>
-		$('#content').hide();
 	});
 });
 function showLoading() {
-	$('#loading').show();
+	<?php if($upload_filetype == "Grade File") { ?>
+		showProgressBar();
+	<?php } else { ?>
+		showLoadingGif();
+	<?php } ?>
 	$('#content').hide();
-};
+}
+function showLoadingGif() {
+	$('#loading').show();
+}
+function showProgressBar() {
+	$("#progressbar").show();
+	$("#progressbar").progressbar({ value: 0 });
+	var percentComplete = 0;
+	var timer = setInterval(function() {
+		percentComplete += 5;
+		if (percentComplete > 100) {
+			clearInterval(timer);
+		}
+		$("#progressbar").progressbar( { value: percentComplete } );
+	}, 200);
+}
 function showResponse() {
 	$('#loading').hide();
+	$("#progressbar").hide();
 	$('#content').show();
-};
+}
 </script>
 
 <span class="page-header">
