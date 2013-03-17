@@ -1,4 +1,8 @@
 $(document).ready(function(){
+
+	$("#save-success").hide();
+	$("#save-error").hide();
+
 	$("#grades_submit").click( function() {
 		$changed_cells = new Array();
 		$data = "";
@@ -26,6 +30,22 @@ $(document).ready(function(){
 			success: function (retVal) {
 				$('#loading').hide();
 				$('#content').show();
+				if(retVal == 'true'){
+					$("#save-success").show();
+					var fade_out = function() {
+					  $("#save-success").fadeOut();
+					}
+
+					setTimeout(fade_out, 1000);
+				}
+				else{
+					$("#save-error").show();
+					var fade_out = function() {
+					  $("#save-error").fadeOut();
+					}
+
+					setTimeout(fade_out, 1000);
+				}
 				scrollToPageHeader();
 			},
 			error: function(){

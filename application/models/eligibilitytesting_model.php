@@ -74,7 +74,7 @@ class EligibilityTesting_Model extends Base_Model {
 		$this->db->query('INSERT INTO eligtwicefail SELECT DISTINCT * FROM f_getall_eligtwicefail_student(' . $studentid . ') ORDER BY studentid, courseid, termid');
 		$this->db->query('INSERT INTO eligpasshalf SELECT DISTINCT * FROM f_getall_eligpasshalf_student(' . $studentid . ') ORDER BY studentid, studenttermid, termid, failpercentage');
 		$this->db->query('INSERT INTO eligpasshalfmathcs SELECT DISTINCT * FROM f_getall_eligpasshalfmathcs_student(' . $studentid . ') ORDER BY studentid, studenttermid, termid, failpercentage');
-		$this->db->query('INSERT INTO elig24unitspassing SELECT DISTINCT * FROM f_getall_24unitspassed_student(' . $studentid . ') ORDER BY studentid, yearid, unitspassed');
+		//$this->db->query('INSERT INTO elig24unitspassing SELECT DISTINCT * FROM f_getall_24unitspassed_student(' . $studentid . ') ORDER BY studentid, yearid, unitspassed');
 	}
 	
 	public function postprocessing() {

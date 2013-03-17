@@ -70,8 +70,8 @@ class Coursestatistics_model extends Base_Model {
 		$instructorid = "select instructorid from instructors";
 	}
   
-	$query = "SELECT classid, courseid, coursename, terms.name as ayterm, section
-			FROM courses JOIN classes USING (courseid) 
+	$query = "SELECT classid, (select count(*) from studentclasses in_sc where in_sc.classid = out_c.classid) as studentsize, courseid, coursename, terms.name as ayterm, section
+			FROM courses JOIN classes out_c USING (courseid) 
 			JOIN terms USING (termid)  
 			WHERE courseid = ".$courseid." 
 			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
@@ -81,10 +81,14 @@ class Coursestatistics_model extends Base_Model {
 	//JOIN instructors USING (instructorid) 
 	//JOIN persons using (personid)
 	//instructorid in (".$instructorid.") and
+	//echo $query;
+	//die();
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
-			$temp = $results->result_array();
+			$temp = $results->result_array();		
+			echo "Hi elijah! Ito ung nirereturn nung search function: <br/> May additional index: [studentsize] for # of students :'D<br/>Thanks! Go us!<br/><br/>";
+			print_r($temp);
 			return $temp;
 		}
 	return false;
