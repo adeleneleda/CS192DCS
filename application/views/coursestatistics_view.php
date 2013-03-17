@@ -7,20 +7,55 @@
 		$('#ab').removeClass('active');
 		document.location.href="#focus_here";
 	});
+
+	$(function() {
+
+  $.extend($.tablesorter.themes.bootstrap, {
+    // these classes are added to the table. To see other table classes available,
+    // look here: http://twitter.github.com/bootstrap/base-css.html#tables
+    table      : 'table table-bordered',
+    header     : 'bootstrap-header', // give the header a gradient background
+    footerRow  : '',
+    footerCells: '',
+    icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
+    sortNone   : 'bootstrap-icon-unsorted',
+    sortAsc    : 'icon-chevron-up',
+    sortDesc   : 'icon-chevron-down',
+    active     : '', // applied when column is sorted
+    hover      : '', // use custom css here - bootstrap class may not override it
+    filterRow  : '', // filter row class
+    even       : '', // odd row zebra striping
+    odd        : ''  // even row zebra striping
+  });
+
+  // call the tablesorter plugin and apply the uitheme widget
+  $(".tablesorter").tablesorter({
+    theme : "bootstrap", // this will 
+
+    widthFixed: true,
+
+    headerTemplate : '{content} {icon}', // new in v2.7. Needed to add the bootstrap icon!
+
+    // widget code contained in the jquery.tablesorter.widgets.js file
+    // use the zebra stripe widget if you plan on hiding any rows (filter widget)
+    widgets : [ "uitheme", "zebra"],
+
+    widgetOptions : {
+      // using the default zebra striping class name, so it actually isn't included in the theme variable above
+      // this is ONLY needed for bootstrap theming if you are using the filter widget, because rows are hidden
+      zebra : ["even", "odd"],
+
+      // reset filters button
+      filter_reset : ".reset",
+
+      // set the uitheme widget to use the bootstrap theme class names
+      uitheme : "bootstrap"
+
+    }
+  });
+});
 </script>
 
-<style type="text/css">
-	table thead tr .header {
-        background-color:#008500;
-		background-image:-moz-linear-gradient(top, #4D9900, #008500);
-		background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#4D9900), to(#008500));
-		background-image:-webkit-linear-gradient(top, #4D9900, #008500);
-		background-image:-o-linear-gradient(top, #4D9900, #008500);
-		background-image:linear-gradient(to bottom, #4D9900, #008500);
-		background-repeat:repeat-x;
-		color:white;
-	}
-</style>
 <div class="page-header">
 	<h1><img src="<?= base_url('assets/img/glyphicons_041_charts.png')?>"></img> Course Statistics</h1>
 </div>
@@ -48,10 +83,13 @@
 			<div class="control-group">
 				<label class="control-label" for="select01"><b>Start Academic Term</b></label>
 				<table width="100%">
+				<thead>
 				<tr>
 					<td width="50%">Semester</td>
 					<td width="50%">Year</td>
 				</tr>
+				</thead>
+				<tbody>
 				<tr>
 					<td>
 						<div class="controls">
@@ -78,15 +116,19 @@
 						</div>
 					</td>
 				</tr>
+				</tbody>
 				</table>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="select01"><b>End Academic Term</b></label>
 				<table width="100%">
+				<thead>
 				<tr>
 					<td width="50%">Semester</td>
 					<td width="50%">Year</td>
 				</tr>
+				</thead>
+				<tbody>
 				<tr>
 					<td>
 						<div class="controls">
@@ -113,6 +155,7 @@
 						</div>
 					</td>
 				</tr>
+				</tbody>
 			</table>
 			</div>
 			<div class="control-group">
@@ -156,6 +199,8 @@
 		
 	<div class="span9">
 		<table style="width:100%">
+		<thead></thead>
+		<tbody>
 		<tr>
 			<td>
 			<div class="well" style="padding:13px">
@@ -167,8 +212,11 @@
 			</div>
 			</td>
 		</tr>
+		</tbody>
 		</table>
 		<table style="width:100%">
+		<thead></thead>
+		<tbody>
 		<tr>
 			<td style="width:40%"><h3><?= $default_coursename?></h3></td>
 			<td align="right">
@@ -187,47 +235,48 @@
 			</td>
 		</tr>
 		<tr>
-			
 			<td colspan = "2" align="right"><i class="icon-tags"></i> 
 			<span class="label" style="background-color:#A60800"><?= $default_startterm?></span>
 			<span class="label" style="background-color:#FFAA00"><?= $default_endterm?></span>
 			<span class="label" style="background-color:#8805AB"><?= $default_instructor?></span>
 			<span class="label" style="background-color:#009999"><?= $default_section?></span>
+			</td>
 		</tr>
-		</table>
-		<br>
-		<br>
-		<?if(!empty($search_results)){?>
-		<table id="students" class="table table-bordered table-striped table-hover"> 
-		<thead>
-			<tr>
-				<th class="header">Course</th>
-				<th class="header">Section</th>
-				<th class="header">Instructor</th>
-				<th class="header">AY Term</th>
-				<th class="header" style="width:10%">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-			<?foreach($search_results as $index=>$subject){?>
-			<td><?= $subject['coursename']?></td>
-			<td><?= $subject['section']?></td>
-			<td><?//= $subject['instructorname']?></td>
-			<td><?= $subject['ayterm']?></td>
-			
-			<form method="post" action="<?= base_url('coursestatistics/stat/1')?>">
-				<input type="hidden" name="course" value="<?= $subject['coursename']?>">
-				<input type="hidden" name="section" value="<?= $subject['section']?>">
-				<input type="hidden" name="ayterm" value="<?= $subject['ayterm']?>">
-				<input type="hidden" name="classid" value="<?= $subject['classid']?>">
-				<input type="hidden" name="courseid" value="<?= $subject['courseid']?>">
-				<td><input type="submit" value="View Statistics"></input></td>
-			</form>
-			</tr>
-			<?}?>
 		</tbody>
 		</table>
+		<br/>
+		<br/>
+		<?if(!empty($search_results)){?>
+			<table id="students" class="tablesorter"> 
+			<thead>
+				<tr>
+					<th>Course</th>
+					<th>Section</th>
+					<th>Instructor</th>
+					<th>AY Term</th>
+					<th style="width:10%">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+				<?foreach($search_results as $index=>$subject){?>
+				<td><?= $subject['coursename']?></td>
+				<td><?= $subject['section']?></td>
+				<td><?//= $subject['instructorname']?></td>
+				<td><?= $subject['ayterm']?></td>
+				
+				<form method="post" action="<?= base_url('coursestatistics/stat/1')?>">
+					<input type="hidden" name="course" value="<?= $subject['coursename']?>">
+					<input type="hidden" name="section" value="<?= $subject['section']?>">
+					<input type="hidden" name="ayterm" value="<?= $subject['ayterm']?>">
+					<input type="hidden" name="classid" value="<?= $subject['classid']?>">
+					<input type="hidden" name="courseid" value="<?= $subject['courseid']?>">
+					<td><input type="submit" value="View Statistics"></input></td>
+				</form>
+				</tr>
+				<?}?>
+			</tbody>
+			</table>
 		<?}else{?>
 			No results available.
 		<?}?>
