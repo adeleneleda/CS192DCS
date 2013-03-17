@@ -108,8 +108,8 @@ class Coursestatistics_model extends Base_Model {
 	if($results->num_rows() > 0)
 		{
 			$temp = $results->result_array();		
-			echo "Hi elijah! Ito ung nirereturn nung search function: <br/> May additional index: [studentsize] for # of students :'D<br/>Thanks! Go us!<br/><br/>";
-			print_r($temp);
+			//echo "Hi elijah! Ito ung nirereturn nung search function: <br/> May additional index: [studentsize] for # of students :'D<br/>Thanks! Go us!<br/><br/>";
+			//print_r($temp);
 			return $temp;
 		}
 	return false;

@@ -1,20 +1,20 @@
 <script type="text/javascript">
+	$.ajax({
+	  type: "POST",
+	  url: "<?= ($tag == 0) ? base_url("coursestatistics/getIOD/0") : base_url("coursestatistics/getIOD/1")?>",
+	  data: { classid: "<?= $classid?>", courseid: "<?= $courseid?>"},
+	  dataType: "json",
+	  success: function(msg){
+		$('#loading').hide();
+		$('#IODdiv').show();
+		$('#IODval').text(msg);
+		$('#csv_iod').val(msg);
+		$('#download').removeClass("disabled");
+		$('#download').removeAttr("disabled");
+	  }
+	});
 	$(document).ready(function() {
 		$('#download').attr("disabled","disabled");
-		$.ajax({
-		  type: "POST",
-		  url: "<?= ($tag == 0) ? base_url("coursestatistics/getIOD/0") : base_url("coursestatistics/getIOD/1")?>",
-		  data: { classid: "<?= $classid?>", courseid: "<?= $courseid?>"},
-		  dataType: "json",
-		  success: function(msg){
-			$('#loading').hide();
-			$('#IODdiv').show();
-			$('#IODval').text(msg);
-			$('#csv_iod').val(msg);
-			$('#download').removeClass("disabled");
-			$('#download').removeAttr("disabled");
-		  }
-		});
 		$('#sr').removeClass('active');
 		$('#cs').addClass('active');
 		$('#et').removeClass('active');
@@ -208,6 +208,30 @@
 						<?}?>
 					</tbody>
 				</table>
+				<hr>
+				<?if($classlist != null){?>
+				<strong>Class List</strong>
+				<br/>
+				<br/>
+				<table class="table table-bordered table-striped table-hover">
+				<thead>
+					<tr>
+						<th class="header">Student #</th>
+						<th class="header">Name</th>
+						<th class="header">Grade</th>
+					</tr>
+				</thead>
+					<tbody>
+						<?foreach($classlist as $student){?>
+						<tr>
+						<td><?= $student['studentno']?></td>
+						<td><?= $student['name']?></td>
+						<td><?= $student['gradevalue']?></td>
+						</tr>
+						<?}?>
+					</tbody>
+				</table>
+				<?}?>
 			</div>
 			
 			<div class="span3">

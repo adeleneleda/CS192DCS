@@ -78,13 +78,14 @@ class Coursestatistics extends Main_Controller {
 		$course = $_POST['course'];
 		$section1 = ($_POST['section'] == "") ? "Overall" : $_POST['section'];
 		
-		echo "Classlist format:<br/>";
-		$try = $this->Model->get_classlist(9687);
-		print_r($try);
+		//echo "Classlist format:<br/>";
+		if($classid != null) $classlist = $this->Model->get_classlist($classid);
+		else $classlist = null;
+		//print_r($try);
 		//die();
 		
 		$ayterm = $_POST['ayterm'];
-		$this->load_view('stat_view', compact('tag','course', 'section1', 'ayterm', 'classid','courseid','stat', 'stat2', 'selected', 'dropdown','section_info', 'year_info', 'instructor_info'));
+		$this->load_view('stat_view', compact('classlist','tag','course', 'section1', 'ayterm', 'classid','courseid','stat', 'stat2', 'selected', 'dropdown','section_info', 'year_info', 'instructor_info'));
 	}
 
 	public function generate_csv() {
