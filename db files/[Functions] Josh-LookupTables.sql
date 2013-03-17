@@ -55,6 +55,30 @@ $$
 $$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION f_getall_eligtwicefail() 
+RETURNS SETOF t_elig_twicefailsubjects AS 
+$$
+	DECLARE
+		tempTermid integer;
+		tempdata record;
+	BEGIN
+		
+		FOR tempTermid IN
+			SELECT termid
+			FROM terms
+			ORDER BY termid
+		LOOP
+			FOR tempdata IN 
+				SELECT * FROM f_elig_twicefailsubjects(tempTermid)
+			LOOP
+				RETURN NEXT tempdata;
+			END LOOP;
+		END LOOP;
+		RETURN;
+	END;
+$$
+LANGUAGE plpgsql;
+
 --SELECT DISTINCT * FROM f_getall_eligtwicefail() ORDER BY studentid, courseid, termid;
 
 DELETE FROM eligtwicefail;
@@ -159,7 +183,16 @@ SELECT DISTINCT * FROM f_getall_24unitspassed() ORDER BY studentid, yearid, unit
 
 
 
+DELETE FROM eligtwicefail;
+INSERT INTO eligtwicefail
+SELECT DISTINCT * FROM f_getall_eligtwicefail() ORDER BY studentid, courseid, termid;
 
+DELETE FROM eligpasshalf;
+INSERT INTO eligpasshalf
+SELECT DISTINCT * FROM f_getall_eligpasshalf() ORDER BY studentid, studenttermid, termid, failpercentage;
 
+INSERT INTO eligpasshalfmathcs
+SELECT DISTINCT * FROM f_getall_eligpasshalfmathcs() ORDER BY studentid, studenttermid, termid, failpercentage;
 
-
+INSERT INTO elig24unitspassing
+SELECT DISTINCT * FROM f_getall_24unitspassed() ORDER BY studentid, yearid, unitspassed;

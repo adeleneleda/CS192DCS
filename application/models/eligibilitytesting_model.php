@@ -65,6 +65,18 @@ class EligibilityTesting_Model extends Base_Model {
 		return $final[0];
 	}
 	
+	public function postprocessing_bystudent($studentid) {
+		$this->db->query('DELETE FROM eligtwicefail WHERE studentid = ' . $studentid);
+		$this->db->query('DELETE FROM eligpasshalf WHERE studentid = ' . $studentid);
+		$this->db->query('DELETE FROM eligpasshalfmathcs WHERE studentid = ' . $studentid);
+		$this->db->query('DELETE FROM elig24unitspassing WHERE studentid = ' . $studentid);
+		
+		$this->db->query('INSERT INTO eligtwicefail SELECT DISTINCT * FROM f_getall_eligtwicefail_student(' . $studentid . ') ORDER BY studentid, courseid, termid');
+		$this->db->query('INSERT INTO eligpasshalf SELECT DISTINCT * FROM f_getall_eligpasshalf_student(' . $studentid . ') ORDER BY studentid, studenttermid, termid, failpercentage');
+		$this->db->query('INSERT INTO eligpasshalfmathcs SELECT DISTINCT * FROM f_getall_eligpasshalfmathcs_student(' . $studentid . ') ORDER BY studentid, studenttermid, termid, failpercentage');
+		$this->db->query('INSERT INTO elig24unitspassing SELECT DISTINCT * FROM f_getall_24unitspassed_student(' . $studentid . ') ORDER BY studentid, yearid, unitspassed');
+	}
+	
 	public function postprocessing() {
 		$this->db->query('TRUNCATE eligtwicefail, eligpasshalf, eligpasshalfmathcs, elig24unitspassing;');
 		$this->db->query('INSERT INTO eligtwicefail SELECT DISTINCT * FROM f_getall_eligtwicefail() ORDER BY studentid, courseid, termid');

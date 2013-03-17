@@ -72,9 +72,14 @@
 			$this->studentrankings_model->recomputeStanding($studenttermid);
 		}
 		
-		private function recomputeEligibility() {
+		public function recomputeEligibility($studentclassid) {
+			$query = "SELECT studentid FROM studentterms JOIN studentclasses USING (studenttermid) WHERE studentclassid = '$studentclassid'";
+			$result = $this->db->query($query);
+			$row = $result->row();
+			$studentid = $row->studentid;
+		
 			$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
-			$this->eligibilitytesting_model->postprocessing();
+			$this->eligibilitytesting_model->postprocessing_bystudent($studentid);
 		}
 		
 		public function changeGrade($grade, $studentclassid){

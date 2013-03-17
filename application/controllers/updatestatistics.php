@@ -79,8 +79,8 @@ class Updatestatistics extends CI_Controller {
 					
 					$this->grades_model->changeGrade($grade, $studentclassid);
 				}
+				$this->grades_model->recomputeEligibility($studentclassid);
 			}
-			//$this->grades_model->recomputeEligibility();
 			echo "true";
 		} catch (Exception $e) {
 			echo $e->getMessage();
