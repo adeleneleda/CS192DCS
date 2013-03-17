@@ -34,17 +34,17 @@ $(document).ready(function(){
 					$("#save-success").show();
 					var fade_out = function() {
 					  $("#save-success").fadeOut();
-					}
+					};
 
-					setTimeout(fade_out, 1000);
+					setTimeout(fade_out, 2000);
 				}
 				else{
 					$("#save-error").show();
 					var fade_out = function() {
 					  $("#save-error").fadeOut();
-					}
+					};
 
-					setTimeout(fade_out, 1000);
+					setTimeout(fade_out, 2000);
 				}
 				scrollToPageHeader();
 			},
