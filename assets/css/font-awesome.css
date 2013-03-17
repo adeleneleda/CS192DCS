@@ -113,7 +113,7 @@ li[class^="icon-"].icon-large:before, li[class*=" icon-"].icon-large:before {
 .icon-file:before                 { content: "\f016"; }
 .icon-time:before                 { content: "\f017"; }
 .icon-road:before                 { content: "\f018"; }
-.icon-download-alt:before         { content: "\f019"; }
+.icon-download-alt2:before         { content: "\f019"; }
 .icon-download:before             { content: "\f01a"; }
 .icon-upload:before               { content: "\f01b"; }
 .icon-inbox:before                { content: "\f01c"; }
