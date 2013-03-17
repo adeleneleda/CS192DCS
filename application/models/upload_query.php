@@ -138,19 +138,20 @@ class Upload_query extends CI_Model {
 	
 	public function execute() {
 		if ($this->shouldExecute) {
+			$ids = array();
 			$student_personid = $this->get_personid($this->lastname, $this->firstname, $this->middlename, $this->pedigree);
 			$curriculumid = $this->get_curriculumid();
-			$studentid = $this->get_studentid($student_personid, $curriculumid);
+			$ids['studentid'] = $studentid = $this->get_studentid($student_personid, $curriculumid);
 			$termid = $this->get_termid();
 			$courseid = $this->get_courseid();
 			$classid = $this->get_classid($termid, $courseid);
-			$studenttermid = $this->get_studenttermid($studentid, $termid);
+			$ids['studenttermid'] = $studenttermid = $this->get_studenttermid($studentid, $termid);
 			$gradeid = $this->get_gradeid();
 			$studentclassid = $this->get_studentclassid($studenttermid, $classid, $gradeid);
 			$this->insertToInstructorClasses($classid);
-			return $studenttermid;
+			return $ids;
 		}
-		else return -1;
+		else return null;
 	}
 	
 	// Groupmates, you don't need to understand everything else below, just leave it as is.

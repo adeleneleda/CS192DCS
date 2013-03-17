@@ -2,10 +2,6 @@ $(document).ready(function(){
 	$("#grades_submit").click( function() {
 		$changed_cells = new Array();
 		$data = "";
-	
-		/*$(".changedcell").each(function() {
-			$changed_cells.push({studentclassid: $(this).attr('id'), grade: $(this).val()});
-		});*/
 		
 		$(".gradecell").each(function() {
 			if($(this).val() != $(this).prop("defaultValue")){
@@ -28,16 +24,9 @@ $(document).ready(function(){
 			},
 			dataType: 'html',
 			success: function (retVal) {
-				if (retVal == 'true') {
-					$('#loading').hide();
-					//$('#content').html($data).show();
-					$('#content').show();
-					scrollToPageHeader();
-				} else {
-					$('#loading').hide();
-					$('#content').html(retVal + " fail").show();
-					scrollToPageHeader();
-				}
+				$('#loading').hide();
+				$('#content').show();
+				scrollToPageHeader();
 			},
 			error: function(){
 				alert("Call to database failed.");

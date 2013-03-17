@@ -10,7 +10,7 @@ class Gradefile_Parser extends CI_Model {
 	protected $successcount = 0;
 	protected $errorcount = 0;
 	protected $row_no;
-	protected $affected_studentTerms;
+	protected $affected;
 		
 	function __construct() {
         parent::__construct();
@@ -25,7 +25,7 @@ class Gradefile_Parser extends CI_Model {
 	}
 	
 	public function initialize() {
-		$this->affected_studentTerms = array();
+		$this->affected = array();
 		$this->query = new Upload_query;
 		$this->load->model("Field_factory", "field_factory");
 		for ($i = 0; $i < self::COLS; $i++)
@@ -49,19 +49,21 @@ class Gradefile_Parser extends CI_Model {
 		while ($row = $this->nextRow()) {
 			$this->query->toBeExecuted();
 			$output .= $this->parseRow($row);
-			$studenttermid = $this->query->execute();
-			if($studenttermid > -1)
-				$this->affected_studentTerms[] = $studenttermid;
+			$affected_ids = $this->query->execute();
+			if($affected_ids != null) {
+				$this->affected['studenttermid'][] = $affected_ids['studenttermid'];
+				$this->affected['studentid'][] = $affected_ids['studentid'];
+			}
 		}
-		$this->load->model('studentrankings_model', 'studentrankings_model', true);	
-		$this->affected_studentTerms = array_unique($this->affected_studentTerms);
-		foreach($this->affected_studentTerms as $studenttermid)
+		$this->load->model('studentrankings_model', 'studentrankings_model', true);		
+		$this->affected['studenttermid'] = array_unique($this->affected['studenttermid']);
+		foreach($this->affected['studenttermid'] as $studenttermid)
 			$this->studentrankings_model->recomputeStanding($studenttermid);
 			
-		// [Josh] Post Processing of Data
-		// $this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
-		// $this->eligibilitytesting_model->postprocessing();
-		// [Josh] End Post Processing
+		$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
+		$this->affected['studentid'] = array_unique($this->affected['studentid']);
+		foreach($this->affected['studentid'] as $studenttermid)
+			$this->eligibilitytesting_model->postprocessing_bystudent($studenttermid);
 		
 		$output .= "</table>";
 		return $output;
@@ -75,9 +77,6 @@ class Gradefile_Parser extends CI_Model {
 			$diff = self::COLS - count($row);
 			for ($i = 0; $i < $diff; $i++)
 				$row[] = ''; // blank out the rest
-			// $this->query->doNotExecute();
-			// $success = false;
-			// $output .= "<td colspan='".(self::COLS - 2)."' title='Invalid number of fields' class='databasecell upload_error'><center>Invalid column count</center></td>";
 		}
 		for ($col = 0; $col < self::COLS; $col++) {
 			$value = $row[$col];

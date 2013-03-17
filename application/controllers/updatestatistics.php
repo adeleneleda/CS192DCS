@@ -51,7 +51,7 @@ class Updatestatistics extends CI_Controller {
 		try {
 			$this->load->model('Field_factory', 'field_factory');
 			$field = $this->field_factory->createFieldByName('Grade');
-			$field->parse($grade, '', ''); //will throw an exception if grade format is wrong
+			$field->parse($grade); //will throw an exception if grade format is wrong
 			
 			echo "true";
 		} catch (Exception $e) {
@@ -60,32 +60,23 @@ class Updatestatistics extends CI_Controller {
 	}
 	
 	public function saveChanges(){
-		try {
-			$this->load->model('grades_model', 'grades_model', true);
-			if(isset($_POST['changed_grades'])){
-				$changed = $_POST['changed_grades'];
-				foreach($changed as $changed_grade){
-					$studentclassid = $changed_grade['studentclassid'];
-					$grade = $changed_grade['grade'];
-					
-					try{					
-						$this->load->model('Field_factory', 'field_factory');
-						$field = $this->field_factory->createFieldByName('Grade');
-						$field->parse($grade, '', ''); //will throw an exception if grade format is wrong
-					}catch (Exception $e) {
-						//echo $e->getMessage();
-						break;
-					}	
-					
+		$this->load->model('grades_model', 'grades_model', true);
+		$this->load->model('Field_factory', 'field_factory');
+		if(isset($_POST['changed_grades'])){
+			$changed_grades = $_POST['changed_grades'];
+			$field = $this->field_factory->createFieldByName('Grade');
+			foreach($changed_grades as $changed_grade){
+				$studentclassid = $changed_grade['studentclassid'];
+				$grade = $changed_grade['grade'];
+				
+				try {
+					$field->parse($grade); // will throw an exception if grade format is wrong
 					$this->grades_model->changeGrade($grade, $studentclassid);
+				} catch (Exception $e) {
 				}
-				$this->grades_model->recomputeEligibility($studentclassid);
 			}
-			// $this->grades_model->recomputeEligibility();
-			echo "true";
-		} catch (Exception $e) {
-			echo $e->getMessage();
-		}	
+			$this->grades_model->recomputeEligibility($studentclassid);
+		}
 	}
 	
 	
@@ -304,6 +295,9 @@ class Updatestatistics extends CI_Controller {
 			if ($success) { // save cookie
 				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'100000000');
 				$this->input->set_cookie($cookie);
+				
+				$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
+				$this->eligibilitytesting_model->postprocessing();
 			}
 			$data['output'] = $output;
 			$data['restore_success'] = $success;
