@@ -254,6 +254,7 @@
 					<th>Section</th>
 					<th>Instructor</th>
 					<th>AY Term</th>
+					<th># of CS</th>
 					<th style="width:10%">Actions</th>
 				</tr>
 			</thead>
@@ -264,6 +265,7 @@
 				<td><?= $subject['section']?></td>
 				<td><?//= $subject['instructorname']?></td>
 				<td><?= $subject['ayterm']?></td>
+				<td><?= $subject['studentsize']?></td>
 				
 				<form method="post" action="<?= base_url('coursestatistics/stat/1')?>">
 					<input type="hidden" name="course" value="<?= $subject['coursename']?>">
