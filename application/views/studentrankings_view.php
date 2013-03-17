@@ -184,10 +184,12 @@ $(function() {
 		 ?>
 			</tbody>
 		</table>
+		<div align="right">
 		<form method="post" action="<?= base_url('studentrankings/generate_csv')?>">
 				<input type="hidden" name="csv_year" value="<?= $this->input->post("year")?>">
 				<input type="hidden" name="csv_sem" value="<?= $this->input->post('semester')?>">
-				<input class="btn btn-primary" type="submit" value="Download CSV"/>
+				<input class="btn btn-custom" type="submit" value="Download CSV"/>
 		</form>
+		</div>
 	</div>
 </div>

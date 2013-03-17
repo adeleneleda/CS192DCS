@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#download').attr("disabled","diasbled");
+		$('#download').attr("disabled","disabled");
 		$.ajax({
 		  type: "POST",
 		  url: "<?= ($tag == 0) ? base_url("coursestatistics/getIOD/0") : base_url("coursestatistics/getIOD/1")?>",
@@ -225,7 +225,7 @@
 				<input type="hidden" name="csv_courseid" value="<?= $courseid?>">
 				<input type="hidden" name="csv_passingrate" value="<?= $stat2['percentage']?>">
 				<input id="csv_iod" type="hidden" name="csv_iod" value="">
-				<input id="download" class="btn btn-primary disabled" type="submit" value="Download CSV"/>
+				<input id="download" class="btn btn-custom disabled" type="submit" value="Download CSV"/>
 				</form>
 			</div>
 		</div>

@@ -856,3 +856,20 @@ a.label:hover,a.badge:hover{color:#ffffff;text-decoration:none;cursor:pointer;}
 .show{display:block;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}
+
+.btn-custom {
+  background-color: hsl(0, 100%, 73%) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff9e9e", endColorstr="#ff7575");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#ff9e9e), to(#ff7575));
+  background-image: -moz-linear-gradient(top, #ff9e9e, #ff7575);
+  background-image: -ms-linear-gradient(top, #ff9e9e, #ff7575);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff9e9e), color-stop(100%, #ff7575));
+  background-image: -webkit-linear-gradient(top, #ff9e9e, #ff7575);
+  background-image: -o-linear-gradient(top, #ff9e9e, #ff7575);
+  background-image: linear-gradient(#ff9e9e, #ff7575);
+  border-color: #ff7575 #ff7575 hsl(0, 100%, 71%);
+  color: white !important;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.13);
+  -webkit-font-smoothing: antialiased;
+}
