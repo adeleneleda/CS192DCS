@@ -23,14 +23,20 @@ function showLoadingGif() {
 function showProgressBar() {
 	$("#progressbar").show();
 	$("#progressbar").progressbar({ value: 0 });
-	var percentComplete = 0;
-	var timer = setInterval(function() {
-		percentComplete += 5;
-		if (percentComplete > 100) {
-			clearInterval(timer);
+	$('#upload_form').ajaxSubmit({ 
+		url: "<?=site_url('updatestatistics/computeEstimatedProgress') ?>",
+        success: function(retVal) {
+			var progressRate = parseFloat(retVal);
+			var percentComplete = 0;
+			var timer = setInterval(function() {
+				percentComplete += progressRate;
+				if (percentComplete > 100) {
+					clearInterval(timer);
+				}
+				$("#progressbar").progressbar( { value: percentComplete } );
+			}, 200);
 		}
-		$("#progressbar").progressbar( { value: percentComplete } );
-	}, 200);
+	});
 }
 function showResponse() {
 	$('#loading').hide();
