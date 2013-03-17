@@ -66,16 +66,24 @@ class Coursestatistics_model extends Base_Model {
 
   public function search($courseid, $startyear, $endyear, $startsem, $endsem,  $instructorid, $section) {
   
-	if($instructorid == "") {
-		$instructorid = "select instructorid from instructors";
-	}
-  
-	$query = "SELECT classid, (select count(*) from studentclasses in_sc where in_sc.classid = out_c.classid) as studentsize, courseid, coursename, terms.name as ayterm, section
+	if($instructorid == "" || $instructorid == 'select instructorid from instructors') {
+		$instructorid = "select instructorid from instructors";  
+	/*$query = "SELECT classid, (select count(*) from studentclasses in_sc where in_sc.classid = out_c.classid) as studentsize, courseid, coursename, terms.name as ayterm, section
 			FROM courses JOIN classes out_c USING (courseid) 
 			JOIN terms USING (termid)  
 			WHERE courseid = ".$courseid." 
 			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
-			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND section ilike '%".$section."%';";
+			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND section ilike '%".$section."%';";*/
+			 
+	$query = "SELECT out_c.classid, lastname || ', ' || firstname as instructorname, (select count(*) from studentclasses in_sc where in_sc.classid = out_c.classid) as studentsize, courseid, coursename, terms.name as ayterm, section
+			FROM courses JOIN classes out_c USING (courseid) 
+			JOIN terms USING (termid)  
+			LEFT JOIN instructorclasses on out_c.classid = instructorclasses.classid 
+			LEFT JOIN instructors on instructorclasses.instructorid = instructors.instructorid
+			LEFT JOIN persons on instructors.personid = persons.personid
+			WHERE courseid = ".$courseid." 
+			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
+			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND section ilike '%".$section."%';";		 	 
 	//, lastname || ', ' || firstname as instructorname
 	//JOIN instructorclasses USING (classid) 
 	//JOIN instructors USING (instructorid) 
@@ -83,6 +91,19 @@ class Coursestatistics_model extends Base_Model {
 	//instructorid in (".$instructorid.") and
 	//echo $query;
 	//die();
+	} else {
+	
+	$query = "SELECT classid, lastname || ', ' || firstname as instructorname, (select count(*) from studentclasses in_sc where in_sc.classid = out_c.classid) as studentsize, courseid, coursename, terms.name as ayterm, section
+			FROM courses JOIN classes out_c USING (courseid) 
+			JOIN terms USING (termid)  
+			JOIN instructorclasses USING (classid) 
+			JOIN instructors USING (instructorid) 
+			JOIN persons using (personid)
+			WHERE courseid = ".$courseid." AND instructorid in (".$instructorid.")
+			AND termid <= (select termid from terms where year ilike '%".$endyear."%' and sem ilike '%".$endsem."%') 
+			 AND termid >= (select termid from terms where year ilike '%".$startyear."%' and sem ilike '%".$startsem."%') AND section ilike '%".$section."%';";
+	
+	}
 	$results = $this->db->query($query);
 	if($results->num_rows() > 0)
 		{
