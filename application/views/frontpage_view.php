@@ -19,7 +19,7 @@
 </script>
 
 <div class="row">
-	<div class="well">
+	<div class="well">			
 	<h2> Overview </h2>
 	In line with the Department of Computer Science's goal to 
 	effectively monitor their students and help them in 
@@ -33,7 +33,7 @@
 <div class="row">
 	<div style="margin-left:0px; margin-right:1%" class="span6">
 		<div style="width:95%" class="well">
-			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_328_podium.png')?>"></img> Student Rankings</h3>
+			<a style = "text-decoration: none" href="<?= base_url('studentrankings')?>" style="height:23px;"><h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_328_podium.png')?>"></img> Student Rankings</h3></a>
 			<hr/>
 			<strong>Description</strong> <br/><br/>
 			This module allows the user to see the student rankings per year level with the option to view past semester's rankings.
@@ -46,7 +46,7 @@
 	</div>
 	<div style="margin-right:1%" class="span6">
 		<div style="width:95%;" class="well">
-			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_041_charts.png')?>"></img> Course Statistics</h3>
+			<a style = "text-decoration: none" href="<?= base_url('coursestatistics')?>" style="height:23px;"><h3 style="color:#045c08"><h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_041_charts.png')?>"></img> Course Statistics</h3></a>
 			<hr/>
 			<strong>Description</strong> <br/><br/>
 			This module allows the user to see the course statistics. It comes with a Search and and an Advanced Search function which allows user to filter the results more.
@@ -62,7 +62,7 @@
 <div class="row">
 	<div style="margin:0px; margin-right:1%" class="span6">
 		<div style="width:95%" class="well">
-			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_152_check.png')?>"></img> Eligibility Checking</h3>
+			<a style = "text-decoration: none" href="<?= base_url('eligibilitytesting')?>" style="height:23px;"><h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_152_check.png')?>"></img> Eligibility Checking</h3></a>
 			<hr/>
 			<strong>Description</strong> <br/><br/>
 			The eligibility testing module shows the students who are eligible or ineligible to enroll for the 
@@ -72,7 +72,7 @@
 	</div>
 	<div style="margin-right:1%" class="span6">
 		<div style="width:95%" class="well">
-			<h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_081_refresh.png')?>"></img> Update Statistics</h3>
+			<a style = "text-decoration: none" href="<?= base_url('updatestatistics')?>" style="height:23px;"><h3 style="color:#045c08"><img src="<?= base_url('assets/img/green-glyphicons_081_refresh.png')?>"></img> Update Statistics</h3></a>
 			<hr/>
 			<strong>Description</strong>
 			<br/>
