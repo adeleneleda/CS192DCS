@@ -249,7 +249,7 @@
 				<input type="hidden" name="csv_courseid" value="<?= $courseid?>">
 				<input type="hidden" name="csv_passingrate" value="<?= $stat2['percentage']?>">
 				<input id="csv_iod" type="hidden" name="csv_iod" value="">
-				<input id="download" class="btn btn-custom disabled" type="submit" value="Download CSV"/>
+				<button id="download" class="btn btn-custom disabled" type="submit"><i class="icon-download-alt2"></i> Download CSV</button>
 				</form>
 			</div>
 		</div>

@@ -128,7 +128,7 @@ $(function() {
 			<form id="csv" method="post" action="<?= base_url('eligibilitytesting/generate_csv')?>">
 			<input type="hidden" name="activetermid" value="<?= $activetermid?>">
 			<input type="hidden" name="activeyear" value="<?= $activeyear?>">
-			<button style="flush-right" type="submit" class="btn-custom btn">Download CSV</button>
+			<button style="flush-right" type="submit" class="btn-custom btn"><i class="icon-download-alt2"></i> Download CSV</button>
 			</form>
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#A" data-toggle="tab">All</a></li>
