@@ -422,4 +422,84 @@ class Coursestatistics_model extends Base_Model {
 			return $result[0]['coursename'];
 		
 	 }
+	 
+	 public function change_course_ajax($courseid) {		
+		$query = 'select section from classes where courseid ='. $courseid .';';
+		$sections = $this->db->query($query);
+		$sections = $sections->result_array();
+		
+		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where courseid = '.$courseid.';';
+		$instructors = $this->db->query($query);
+		$instructors = $instructors->result_array();
+		
+		$query = 'select distinct year from terms join classes using (termid) where courseid = '.$courseid.';';
+		$years = $this->db->query($query);
+		$years = $years->result_array();
+		
+		$results = array();
+		$results['sections'] = $sections;
+		$results['instructors'] = $instructors;
+		$results['years'] = $years;
+		
+		return $results;
+		
+	 }
+	 
+	 public function change_acadtermrange_ajax($courseid, $startsem, $startyear, $endsem, $endyear) {
+	 //change sections and instructors.
+	 
+		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$starttermid = $this->db->query($query);
+		$starttermid = $starttermid->result_array();
+		$starttermid = $starttermid[0]['termid'];
+		
+		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$endtermid = $this->db->query($query);
+		$endtermid = $endtermid->result_array();
+		$endtermid = $endtermid[0]['termid'];
+		
+		$query = 'select section from classes where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .';';
+		$sections = $this->db->query($query);
+		$sections = $sections->result_array();
+		
+		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid = '.$courseid.';';
+		$instructors = $this->db->query($query);
+		$instructors = $instructors->result_array();
+		
+		$results = array();
+		$results['sections'] = $sections;
+		$results['instructors'] = $instructors;
+		
+		return $results;
+	 }
+	 
+	 public function change_instructor_ajax($courseid, $startsem, $startyear, $endsem, $endyear, $instructorid) {
+	 //change sections
+	 
+		if($instructorid == "") {
+		$instructorid = "select instructorid from instructors";
+		}
+	 
+		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$starttermid = $this->db->query($query);
+		$starttermid = $starttermid->result_array();
+		$starttermid = $starttermid[0]['termid'];
+		
+		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$endtermid = $this->db->query($query);
+		$endtermid = $endtermid->result_array();
+		$endtermid = $endtermid[0]['termid'];
+	 
+		$query = 'select section from classes join instructorclasses using (classid) where instructorid in ('.$instructorid.') and termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .';';
+		$sections = $this->db->query($query);
+		$sections = $sections->result_array();
+		
+		$results = array();
+		$results['sections'] = $sections;
+			
+		return $results;
+	 }
+	 //no change fuc for section kasi mas important ang instructor than section
+	 //what if you want to change instructor pero you have chosen a section na, so wala na ung instructor na gusto mo <//3
+	 // u have to reselect the course again.
 }
