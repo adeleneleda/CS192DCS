@@ -81,6 +81,7 @@ class Updatestatistics extends CI_Controller {
 				}
 				$this->grades_model->recomputeEligibility($studentclassid);
 			}
+			// $this->grades_model->recomputeEligibility();
 			echo "true";
 		} catch (Exception $e) {
 			echo $e->getMessage();
@@ -112,11 +113,9 @@ class Updatestatistics extends CI_Controller {
 		$data['reset_success'] = $this->resetIfChecked();
 		// maintain a table to store uploaded gradessheets?
 		try {
-			$file = $this->getUploadedFile();
-			$estimated_rows = $file['size'] / 75;
-			$estimated_rate = (1000 / 60000)*(200); // number of rows parsed in 200 ms
+			$filename = $this->getUploadedFile();
 			$data['upload_success'] = true;
-			$parse_data = $this->parse($file['name']);
+			$parse_data = $this->parse($filename);
 			$data = array_merge($data, $parse_data);
 		} catch (Exception $e) {
 			$data['error_message'] = $e->getMessage();
@@ -124,16 +123,29 @@ class Updatestatistics extends CI_Controller {
 		$this->displayView('upload_response', $data);
 	}
 	
+	public function computeEstimatedProgress() {
+		$filesize = $this->getUploadedFileSize();
+		$estimated_rows = $filesize / 75; // number of rows
+		$rate = 3/10; // 200 200ms / 1000 rows
+		$estimated_time = $estimated_rows * $rate;
+		$estimated_progress = 100/$estimated_time; // progress for each 200 ms
+		echo $estimated_progress;
+	}
+	
 	private function getUploadedFile() {
-		$file = array();
 		if (!isset($_FILES['upload_file']))
 			throw new Exception("No file was provided.");
-		$file['size'] = $_FILES['upload_file']['size'];
-		$file['name'] = $this->getUploadsFolder().'/'.$_FILES['upload_file']['name'];
-		if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $file['name'])) {
-			return $file;
+		$filename = $this->getUploadsFolder().'/'.$_FILES['upload_file']['name'];
+		if (move_uploaded_file($_FILES['upload_file']['tmp_name'], $filename)) {
+			return $filename;
 		} else
-			throw new Exception("Error: ".$file['name']." could not be uploaded.");
+			throw new Exception("Error: ".$filename." could not be uploaded.");
+	}
+	
+	private function getUploadedFileSize() {
+		if (!isset($_FILES['upload_file']))
+			throw new Exception("No file was provided.");
+		return $_FILES['upload_file']['size'];
 	}
 	
 	private function parse($filename) {
@@ -278,8 +290,8 @@ class Updatestatistics extends CI_Controller {
 		$data['pg_bin_dir'] = $pg_bin_dir;
 		
 		try {
-			$backup_file = $this->getUploadedFile();
-			$backup_filename = $this->getAbsoluteBasePath().$backup_file['name'];
+			$backup_filename = $this->getUploadedFile();
+			$backup_filename = $this->getAbsoluteBasePath().$backup_filename;
 			$backup_filename = escapeshellarg($backup_filename);
 			if (substr(php_uname(), 0, 7) == "Windows")
 				$psql_location = $pg_bin_dir."/psql.exe";

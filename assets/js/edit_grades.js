@@ -1,6 +1,5 @@
 $(document).ready(function(){
 	$("#grades_submit").click( function() {
-	
 		$changed_cells = new Array();
 		$data = "";
 	
@@ -11,6 +10,7 @@ $(document).ready(function(){
 		$(".gradecell").each(function() {
 			if($(this).val() != $(this).prop("defaultValue")){
 				$changed_cells.push({studentclassid: $(this).attr('id'), grade: $(this).val()});
+				$(this).css("background-color","white").css("color","#555555");
 			}
 		});
 		
@@ -59,12 +59,11 @@ $(document).ready(function(){
 			dataType: 'html',
 			success: function (retVal) {
 				if (retVal == 'true') {
-					$(changed_cell).css('background-color','#AAFFCC').css("color","#555555");
-					setTimeout(function() {
-						$(changed_cell).css("background-color","white");
-						// $("#grades").trigger('update'); // re-sort table
-						// $(changed_cell).focus();
-					}, 250);
+					if($(changed_cell).val() == $(changed_cell).prop("defaultValue")){
+						$(changed_cell).css("background-color","white").css("color","#555555");
+					} else {
+						$(changed_cell).css('background-color','#CCFFAA').css("color","#555555");
+					}
 					$(changed_cell).qtip('hide');
 					$(changed_cell).qtip('disable');
 				} else {
