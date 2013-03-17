@@ -10,7 +10,7 @@ class Lastname extends Field {
 			throw new Exception("Last name contains non-alphabetic characters");
 		else if (strlen($lastname) > 45)
 			throw new Exception("Last name is greater than 45 characters");
-		$this->values['lastname'] = $lastname;
+		$this->values['lastname'] = strtoupper($lastname);
 	}
 }
 ?>

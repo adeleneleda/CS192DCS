@@ -5,7 +5,7 @@ class Instructor extends Field {
 	public function parse(&$fullname, $a = null, $b = null) {
 		$sep_name = explode(',', $fullname.',,');
 		for ($i = 0; $i < 2; $i++) {
-			$name = trim($sep_name[$i]);
+			$name = strtoupper(trim($sep_name[$i]));
 			$fieldname = ($i == 0) ? 'lastname' : 'firstname';
 			if (empty($name))
 				$name = '';
