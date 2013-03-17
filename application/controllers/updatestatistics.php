@@ -62,20 +62,39 @@ class Updatestatistics extends CI_Controller {
 	public function saveChanges(){
 		$this->load->model('grades_model', 'grades_model', true);
 		$this->load->model('Field_factory', 'field_factory');
+		$parse_success = true;
 		if(isset($_POST['changed_grades'])){
 			$changed_grades = $_POST['changed_grades'];
 			$field = $this->field_factory->createFieldByName('Grade');
 			foreach($changed_grades as $changed_grade){
-				$studentclassid = $changed_grade['studentclassid'];
 				$grade = $changed_grade['grade'];
 				
 				try {
 					$field->parse($grade); // will throw an exception if grade format is wrong
-					$this->grades_model->changeGrade($grade, $studentclassid);
 				} catch (Exception $e) {
+					$parse_success = false;
 				}
 			}
-			$this->grades_model->recomputeEligibility($studentclassid);
+			
+			//if no errors, continue to saving process
+			if($parse_success){
+			
+				foreach($changed_grades as $changed_grade){
+					$studentclassid = $changed_grade['studentclassid'];
+					$grade = $changed_grade['grade'];
+					
+					try {
+						$this->grades_model->changeGrade($grade, $studentclassid);
+					} catch (Exception $e) {
+					}
+				}
+			
+				$this->grades_model->recomputeEligibility($studentclassid);
+				echo "true";
+			}else{
+				echo "false";
+			}
+			
 		}
 	}
 	

@@ -11,6 +11,8 @@
 </span>
  
 <?php
+	echo "<div class=\"alert alert-success\" id=\"save-success\">Hooray! The changes you made were saved!</div>";
+	echo "<div class=\"alert alert-error\" id=\"save-error\">Oops. Something seems to have gone wrong. Please check your input.</div>";
 	printGrades($term_grades);
  
 function printGrades($term_grades){
@@ -22,6 +24,7 @@ function printGrades($term_grades){
 	}
 	
 	echo "<div class=\"form-actions\"><center><input type=\"submit\" value=\"Save Changes\"class=\"btn btn-primary\" name=\"grades_submit\" id=\"grades_submit\" /></div>";
+ 
  }
  
 function printGradeTable($termname, $rows){ ?>
