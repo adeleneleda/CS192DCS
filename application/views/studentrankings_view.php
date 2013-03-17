@@ -140,7 +140,7 @@ $(function() {
 	<div class="span9">
 		<div><b><a class="showNotes" style="cursor: pointer; text-decoration:none; color:#53c0ff"><img src="<?= base_url('assets/img/info-small.gif')?>"></img> Notes about filtering</a></b></div>
 		
-		<div id="notes" style="padding:10px; display:none; background-color:#FFD073;">
+		<div id="notes" style="border:5px solid white; padding:10px; display:none; background-color:#53c0ff;">
 		Filtering is done through case-insensitive perfect matching. Operators can also be used for filtering. For example, inputting "<1.25" in the GWA filter will only show students that have GWAs that are <b><i>numerically</i></b> less than 1.25
 		</div>
 		<br/>
