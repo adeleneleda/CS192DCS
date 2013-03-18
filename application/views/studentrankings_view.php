@@ -84,7 +84,7 @@ $(function() {
                                 selected = "selected"
                                 <?php
                                 }?>>
-                      <?php echo $year[$ctr]['yearid']?></option>
+                      <?php echo $year[$ctr]['yearid'] . '-xxxxx'?></option>
                       <?php $ctr++; }?>
 					</select>
 				</div>
