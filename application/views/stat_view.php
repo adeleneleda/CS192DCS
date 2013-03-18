@@ -253,6 +253,18 @@
 });
 </script>
 
+<style type="text/css">
+	table thead tr .header {
+        background-color:#008500;
+		background-image:-moz-linear-gradient(top, #4D9900, #008500);
+		background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#4D9900), to(#008500));
+		background-image:-webkit-linear-gradient(top, #4D9900, #008500);
+		background-image:-o-linear-gradient(top, #4D9900, #008500);
+		background-image:linear-gradient(to bottom, #4D9900, #008500);
+		background-repeat:repeat-x;
+		color:white;
+</style>
+
 <div class="page-header">
 	<h1><img src="<?= base_url('assets/img/glyphicons_041_charts.png')?>"></img> Course Statistics</h1>
 </div>
