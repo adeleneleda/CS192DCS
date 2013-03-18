@@ -32,7 +32,7 @@ $(function() {
   });
 
   // call the tablesorter plugin and apply the uitheme widget
-  $("table").tablesorter({
+  $(".tablesorter").tablesorter({
     theme : "bootstrap", // this will 
 
     widthFixed: true,
@@ -138,9 +138,27 @@ $(function() {
 		</div>
 	</div>
 	<div class="span9">
-		<div><b><a class="showNotes" style="cursor: pointer; text-decoration:none; color:#53c0ff"><img src="<?= base_url('assets/img/info-small.gif')?>"></img> Notes about filtering</a></b></div>
 		
-		<div id="notes" style="border:5px solid white; padding:10px; display:none; background-color:#53c0ff;">
+		<table style="width:100%; padding:0px">
+		<thead></thead>
+		<tbody>
+		<tr>
+		<td>
+		<b><a class="showNotes" style="cursor: pointer; text-decoration:none; color:#53c0ff"><img src="<?= base_url('assets/img/info-small.gif')?>"></img> Notes about filtering</a></b>
+		</td>
+		<td align="right">
+		<form method="post" action="<?= base_url('studentrankings/generate_csv')?>">
+				<input type="hidden" name="csv_year" value="<?= $this->input->post("year")?>">
+				<input type="hidden" name="csv_sem" value="<?= $this->input->post('semester')?>">
+				<button class="btn btn-custom" type="submit"><i class="icon-download-alt2"></i> Download CSV</button>
+		</form>
+		</td>
+		</tr>
+		</tbody>
+		</table>
+		
+		
+		<div id="notes" style="border:5px solid #53c0f0; padding:10px; display:none; background-color:#53c0ff;">
 		Filtering is done through case-insensitive perfect matching. Operators can also be used for filtering. For example, inputting "<1.25" in the GWA filter will only show students that have GWAs that are <b><i>numerically</i></b> less than 1.25
 		</div>
 		<br/>
@@ -184,12 +202,5 @@ $(function() {
 		 ?>
 			</tbody>
 		</table>
-		<div align="right">
-		<form method="post" action="<?= base_url('studentrankings/generate_csv')?>">
-				<input type="hidden" name="csv_year" value="<?= $this->input->post("year")?>">
-				<input type="hidden" name="csv_sem" value="<?= $this->input->post('semester')?>">
-				<button class="btn btn-custom" type="submit"><i class="icon-download-alt2"></i> Download CSV</button>
-		</form>
-		</div>
 	</div>
 </div>

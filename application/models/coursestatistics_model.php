@@ -469,12 +469,12 @@ class Coursestatistics_model extends Base_Model {
 	 public function change_acadtermrange_ajax($courseid, $startsem, $startyear, $endsem, $endyear) {
 	 //change sections and instructors.
 	 
-		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$query = "select termid from terms where sem ilike '%".$startsem."%' and year = '".$startyear."';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$query = "select termid from terms where sem ilike '%".$endsem."%' and year = '".$endyear."';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
@@ -501,12 +501,12 @@ class Coursestatistics_model extends Base_Model {
 		$instructorid = "select instructorid from instructors";
 		}
 	 
-		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$query = "select termid from terms where sem ilike '%".$startsem."%' and year = '".$startyear."';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$query = "select termid from terms where sem ilike '%".$endsem."%' and year = '".$endyear."';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];

@@ -6,8 +6,133 @@
 		$('#us').removeClass('active');
 		$('#ab').removeClass('active');
 		document.location.href="#focus_here";
+		$('#course_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/course_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateInstructorDropDown(obj.instructors);
+				populateYearDropDown(obj.years);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#startsem_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/acadterm_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val(), startsem: $('#startsem_dropdown').val(), startyear: $('#startterm_dropdown').val(), endsem: $('#endsem_dropdown').val(), endyear: $('#endterm_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateInstructorDropDown(obj.instructors);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#startterm_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/acadterm_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val(), startsem: $('#startsem_dropdown').val(), startyear: $('#startterm_dropdown').val(), endsem: $('#endsem_dropdown').val(), endyear: $('#endterm_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateInstructorDropDown(obj.instructors);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#endsem_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/acadterm_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val(), startsem: $('#startsem_dropdown').val(), startyear: $('#startterm_dropdown').val(), endsem: $('#endsem_dropdown').val(), endyear: $('#endterm_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateInstructorDropDown(obj.instructors);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#endterm_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/acadterm_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val(), startsem: $('#startsem_dropdown').val(), startyear: $('#startterm_dropdown').val(), endsem: $('#endsem_dropdown').val(), endyear: $('#endterm_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateInstructorDropDown(obj.instructors);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#instructor_dropdown').change(function(){
+			$.ajax({
+			  type: "POST",
+			  url: "<?= base_url("coursestatistics/instructor_ajax") ?>",
+			  data: { courseid: $('#course_dropdown').val(), startsem: $('#startsem_dropdown').val(), startyear: $('#startterm_dropdown').val(), endsem: $('#endsem_dropdown').val(), endyear: $('#endterm_dropdown').val(), instructorid: $('#instructor_dropdown').val()},
+			  beforeSend: function(){
+				$('.dropdown').attr("disabled","disabled");
+			  },
+			  success: function(msg){
+				var obj = jQuery.parseJSON(msg);
+				populateSectionDropDown(obj.sections);
+				populateYearDropDown(obj.years);
+				$('.dropdown').removeAttr("disabled");
+			  }
+			});
+		});
+		$('#section_dropdown').change(function(){
+			
+		});
 	});
 
+	function populateSectionDropDown(sections) {
+		var optionstr = '<option selected="selected" value="">Any</option>';
+		for(i=0; i<sections.length; i++) {
+			optionstr += '<option value="'+sections[i].section+'">'+sections[i].section+'</option>';
+		}
+		$('#section_dropdown').html(optionstr);
+	}
+	
+	function populateInstructorDropDown(instructors) {
+		var optionstr = '<option selected="selected" value="-1">Any</option>';
+		for(i=0; i<instructors.length; i++) {
+			optionstr += '<option value="'+instructors[i].instructor+'">'+instructors[i].instructor+'</option>';
+		}
+		$('#instructor_dropdown').html(optionstr);
+	}
+	
+	function populateYearDropDown(years) {
+		var optionstr = '';
+		for(i=0; i<years.length; i++) {
+			optionstr += '<option value="'+years[i].year+'">'+years[i].year+'</option>';
+		}
+		$('#startterm_dropdown').html(optionstr);
+		$('#endterm_dropdown').html(optionstr);
+	}
+	
 	$(function() {
 
   $.extend($.tablesorter.themes.bootstrap, {
@@ -38,7 +163,7 @@
 
     // widget code contained in the jquery.tablesorter.widgets.js file
     // use the zebra stripe widget if you plan on hiding any rows (filter widget)
-    widgets : [ "uitheme", "zebra"],
+    widgets : [ "uitheme", "zebra", "filter"],
 
     widgetOptions : {
       // using the default zebra striping class name, so it actually isn't included in the theme variable above
@@ -65,7 +190,7 @@
 		<form id="search_dropdown" method="post" action="<?= base_url('coursestatistics/index')?>">
 		
 		<div class="well form-search">
-			<select name='courseid' id="selectError">
+			<select name='courseid' id="course_dropdown" class="dropdown">
 				<?	$default_coursename = "CS 11";
 					foreach ($dropdown as $indiv_drop) {
 					if($selected['courseid'] == $indiv_drop['courseid']){
@@ -93,7 +218,7 @@
 				<tr>
 					<td>
 						<div class="controls">
-							<select style="width:90%" name = 'startsem' id="select01">
+							<select style="width:90%" name = 'startsem' id="startsem_dropdown" class="dropdown">
 							<option <? if($selected['startsem'] == '1st')  echo 'selected="selected"';?> value="1st">1st</option>
 							<option <? if($selected['startsem'] == '2nd')  echo 'selected="selected"';?> value="2nd">2nd</option>
 							<option <? if($selected['startsem'] == 'sum')  echo 'selected="selected"';?> value="sum">Summer</option>
@@ -102,7 +227,7 @@
 					</td>
 					<td>
 						<div class="controls">
-							<select style="width:100%" name = 'starttermid' id="select01">
+							<select style="width:100%" name = 'starttermid' id="startterm_dropdown" class="dropdown">
 							<? 	$default_startterm = "Beginning of time";
 								foreach ($year_info as $term) {
 								if($selected['starttermid'] == $term['year']){
@@ -132,7 +257,7 @@
 				<tr>
 					<td>
 						<div class="controls">
-							<select style="width:90%" name = 'endsem' id="select01">
+							<select style="width:90%" name = 'endsem' id="endsem_dropdown" class="dropdown">
 							<option <? if($selected['endsem'] == '1st')  echo 'selected="selected"';?> value="1st">1st</option>
 							<option <? if($selected['endsem'] == '2nd')  echo 'selected="selected"';?> value="2nd">2nd</option>
 							<option <? if($selected['endsem'] == 'sum')  echo 'selected="selected"';?> value="sum">Summer</option>
@@ -141,7 +266,7 @@
 					</td>
 					<td>
 						<div class="controls">
-							<select style="width:100%" name = 'endtermid' id="select01">
+							<select style="width:100%" name = 'endtermid' id="endterm_dropdown" class="dropdown">
 							<?	$default_endterm = "Current";
 								foreach ($year_info as $term) {
 								if($selected['endtermid'] == $term['year']){
@@ -161,7 +286,7 @@
 			<div class="control-group">
 				<label class="control-label" for="select01"><b>Instructor</b></label>
 				<div class="controls">
-					<select name = 'instructor' id="select01">
+					<select name = 'instructor' id="instructor_dropdown" class="dropdown">
 					<option value="-1">Any</option>
 					<?	$default_instructor = "Any";
 						foreach ($instructor_info as $instructor) {
@@ -178,7 +303,7 @@
 			<div class="control-group">
 				<label class="control-label" for="select01"><b>Section</b></label>
 				<div class="controls">
-					<select name = 'section'>
+					<select name = 'section' id="section_dropdown" class="dropdown">
 					<option value="">Any</option>
 					 <?	$default_section = "Any";
 						foreach ($section_info as $section) {

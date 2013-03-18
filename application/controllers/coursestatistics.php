@@ -34,7 +34,6 @@ class Coursestatistics extends Main_Controller {
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'], $selected['startsem'], $selected['endsem'], $selected['instructorid'], $selected['sectionid']);
-			
 		}else{
 			$temp = $this->session->userdata('coursestat');
 			if(empty($temp)){
@@ -62,6 +61,20 @@ class Coursestatistics extends Main_Controller {
 			$iod = $this->Model->whole_index_of_discrimination("", $_POST['courseid']);
 		}
 		echo json_encode($iod);
+	}
+	
+	public function course_ajax(){
+		//$elijah = array('a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5);
+		echo json_encode($this->Model->change_course_ajax($_POST['courseid']));
+		//echo json_encode($elijah);
+	}
+	
+	public function acadterm_ajax(){
+		echo json_encode($this->Model->change_acadtermrange_ajax($_POST['courseid'], $_POST['startsem'], $_POST['startyear'], $_POST['endsem'], $_POST['endyear']));
+	}
+	
+	public function instructor_ajax(){
+		echo json_encode($this->Model->change_instructor_ajax($_POST['courseid'], $_POST['startsem'], $_POST['startyear'], $_POST['endsem'], $_POST['endyear'], $_POST['instructorid']));
 	}
 	
 	public function stat($tag = null) {
