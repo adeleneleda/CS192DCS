@@ -259,7 +259,7 @@ SELECT DISTINCT * FROM f_getall_eligpasshalfmathcs() ORDER BY studentid, student
 
 
 ----- 24 Unit Rule -----
-CREATE OR REPLACE FUNCTION f_getall_24unitspassed(p_studentid integer) 
+CREATE OR REPLACE FUNCTION f_getall_24unitspassed_student(p_studentid integer) 
 RETURNS SETOF t_elig_24unitspassed AS 
 $$
 	DECLARE

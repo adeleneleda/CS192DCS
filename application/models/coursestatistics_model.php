@@ -449,11 +449,11 @@ class Coursestatistics_model extends Base_Model {
 		$sections = $this->db->query($query);
 		$sections = $sections->result_array();
 		
-		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where courseid = '.$courseid.';';
+		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where courseid = '.$courseid.'order by lastname;';
 		$instructors = $this->db->query($query);
 		$instructors = $instructors->result_array();
 		
-		$query = 'select distinct year from terms join classes using (termid) where courseid = '.$courseid.';';
+		$query = 'select distinct year from terms join classes using (termid) where courseid = '.$courseid.' order by year;';
 		$years = $this->db->query($query);
 		$years = $years->result_array();
 		
@@ -469,21 +469,21 @@ class Coursestatistics_model extends Base_Model {
 	 public function change_acadtermrange_ajax($courseid, $startsem, $startyear, $endsem, $endyear) {
 	 //change sections and instructors.
 	 
-		$query = "select termid from terms where sem ilike '%".$startsem."%' and year = '".$startyear."';";
+		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem ilike '%".$endsem."%' and year = '".$endyear."';";
+		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
 		
-		$query = 'select section from classes where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .';';
+		$query = 'select section from classes where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .' order by section;';
 		$sections = $this->db->query($query);
 		$sections = $sections->result_array();
 		
-		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid = '.$courseid.';';
+		$query = 'select firstname, lastname, instructorid from persons join instructors using (personid) join instructorclasses using (instructorid) join classes using (classid) where termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid = '.$courseid.' order by lastname;';
 		$instructors = $this->db->query($query);
 		$instructors = $instructors->result_array();
 		
@@ -501,17 +501,17 @@ class Coursestatistics_model extends Base_Model {
 		$instructorid = "select instructorid from instructors";
 		}
 	 
-		$query = "select termid from terms where sem ilike '%".$startsem."%' and year = '".$startyear."';";
+		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem ilike '%".$endsem."%' and year = '".$endyear."';";
+		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
 	 
-		$query = 'select section from classes join instructorclasses using (classid) where instructorid in ('.$instructorid.') and termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .';';
+		$query = 'select section from classes join instructorclasses using (classid) where instructorid in ('.$instructorid.') and termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .' order by section;';
 		$sections = $this->db->query($query);
 		$sections = $sections->result_array();
 		
