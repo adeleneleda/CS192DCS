@@ -21,6 +21,8 @@ class Coursestatistics extends Main_Controller {
 		$default_instructor = "select instructorid from instructors";
 		$default_section = "";
 		
+		
+		
 		if(!empty($_POST)){
 			$selected['courseid'] = $_POST['courseid'];
 			$selected['startsem']= $_POST['startsem'];
@@ -33,6 +35,11 @@ class Coursestatistics extends Main_Controller {
 			}
 			$selected['sectionid'] = $_POST['section'];
 			$this->session->set_userdata('coursestat', $selected);
+			
+			$init_dropvalues = $this->Model->change_course_ajax($selected['courseid']);
+			$section_info = $init_dropvalues['sections'];
+			$year_info = $init_dropvalues['years'];
+			$year_info = $init_dropvalues['instructors'];
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'], $selected['endtermid'], $selected['startsem'], $selected['endsem'], $selected['instructorid'], $selected['sectionid']);
 		}else{
 			$temp = $this->session->userdata('coursestat');
@@ -45,8 +52,18 @@ class Coursestatistics extends Main_Controller {
 				$selected['instructorid'] = $default_instructor;
 				$selected['sectionid'] = $default_section;
 				$this->session->set_userdata('coursestat', $selected);
+				
+				$init_dropvalues = $this->Model->change_course_ajax($selected['courseid']);
+				$section_info = $init_dropvalues['sections'];
+				$year_info = $init_dropvalues['years'];
+				$year_info = $init_dropvalues['instructors'];
 			}else{
 				$selected = $this->session->userdata('coursestat');
+				
+				$init_dropvalues = $this->Model->change_course_ajax($selected['courseid']);
+				$section_info = $init_dropvalues['sections'];
+				$year_info = $init_dropvalues['years'];
+				$year_info = $init_dropvalues['instructors'];
 			}
 			$search_results = $this->Model->search($selected['courseid'],$selected['starttermid'],$selected['endtermid'],$selected['startsem'],$selected['endsem'],$selected['instructorid'],$selected['sectionid']);
 		}
