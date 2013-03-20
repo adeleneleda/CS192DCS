@@ -12,6 +12,12 @@ class EligibilityTesting_Model extends Base_Model {
 	public function __construct() {
 		parent::__construct();
 	}
+	
+	public function get_studentyears() {
+		$results = $this->db->query('select year as yearid, year || \'-xxxxx\' as year from (select distinct substr(studentno, 1, 4) as year from students ORDER BY year) as temp');
+		$final = $results->result_array();
+		return $final;
+	}
 
 	public function get_studentsofterm($termid, $year) {
 		$query = 'SELECT * FROM f_loadstudents_andineligible_nosum(' . $termid . ', \'' . $year . '%\')';
