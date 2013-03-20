@@ -22,7 +22,8 @@ function showLoadingGif() {
 }
 function showProgressBar() {
 	$("#progressbar").show();
-	$("#progressbar").progressbar({ value: 0 });
+	var max_width = $("#progressbar").width();
+	$("#pbar").width(0);
 	$('#upload_form').ajaxSubmit({ 
 		url: "<?=site_url('updatestatistics/computeEstimatedProgress') ?>",
         success: function(retVal) {
@@ -33,7 +34,7 @@ function showProgressBar() {
 				if (percentComplete > 100) {
 					clearInterval(timer);
 				}
-				$("#progressbar").progressbar( { value: percentComplete } );
+				$("#pbar").width(percentComplete * max_width);
 			}, 200);
 		}
 	});
