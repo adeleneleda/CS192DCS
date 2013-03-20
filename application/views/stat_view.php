@@ -198,6 +198,8 @@
 	
 	function populateYearDropDown(years) {
 		var optionstr = '';
+		$('#search_button').removeAttr("disabled");
+		if(years.length < 1) $('#search_button').attr("disabled","disabled");
 		for(i=0; i<years.length; i++) {
 			optionstr += '<option value="'+years[i].year+'">'+years[i].year+'</option>';
 		}
@@ -401,7 +403,7 @@
 					</select>
 				</div>
 			</div>
-			<button type="submit" class="btn-primary btn">Search</button>
+			<button id="search_button" type="submit" class="btn-primary btn">Search</button>
 		</div>
 		</form>
 	</div>
