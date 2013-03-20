@@ -199,200 +199,31 @@ class Coursestatistics_model extends Base_Model {
   }
 	
 	public function whole_index_of_discrimination($sem, $courseid) {  
-		$pass1 = 0;
-		$pass2 = 0;
-        $currentsem = $this->db->query('select termid from terms order by termid desc limit 1;');
-        $currentsem = $currentsem->result_array();
-        $thissem = $currentsem[0]['termid'];
-		$semester = $thissem%10;
-		$prevsem = ($thissem/10) - $semester/10;
-	
-		if($semester == 1)
-		{
-			$prevsem = $prevsem - 1;
-			$prevsem = $prevsem*10;
-			$prevsem = $prevsem + 3;
-		}
-		else if($semester == 2)
-		{
-			$prevsem = $thissem-1;
-		}
-        else if($semester == 3)
-        {
-            $prevsem = $thissem-1;
-        }
-			$results = $this->db->query('SELECT grades.gradevalue
-				FROM students s
-				JOIN persons USING (personid)
-				JOIN studentterms USING (studentid)
-				JOIN studentclasses USING (studenttermid)
-				JOIN terms USING (termid)
-				JOIN grades USING (gradeid)
-				JOIN classes USING (classid)
-				JOIN courses USING (courseid)
-				WHERE courses.courseid = ' . $courseid . '
-				ORDER BY xcwa69(s.studentid, 99999) ASC;');
-			
-			
-			//JOIN instructorclasses using (classid)
-			//JOIN instructors using (instructorid)
-			$results = $results->result_array();
-            $ctr = 0;
-            //print_r($results);
-			//die();
-			if(sizeof($results) < 10) {
-				$iod = "N/A";
-			}
-			else {
-                for($ctr = 0; $ctr < 10; $ctr++)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass1++;
-                    }
-                }
-                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass2++;
-                    }
-                }
-				$iod = ($pass1 - $pass2)/10;
-			}
-			
-            return $iod;
-			
-  
-  
+		$results = $this->db->query('SELECT AVG(zzz) FROM
+(SELECT x_iod_perclass2(classid) as zzz FROM
+	(SELECT classid 
+	FROM classes JOIN courses USING (courseid)
+	WHERE courseid = '.$courseid.') as z) as y
+WHERE zzz != 100;');
+        $results = $results->result_array();
+		
+        return $results[0]['avg'];
   }
-  
-	public function index_of_discrimination($sem, $courseid, $instructorname){
-		$pass1 = 0;
-		$pass2 = 0;
-        $instructor = $this->db->query('SELECT instructorid FROM instructors JOIN persons using (personid) WHERE lastname || \', \' || firstname = \''.$instructorname.'\';');
-        $instructor = $instructor->result_array();
-        $instructorid = $instructor[0]['instructorid'];
-        $currentsem = $this->db->query('SELECT termid FROM terms WHERE name = \'' . $sem . '\';');
-        $currentsem = $currentsem->result_array();
-        $thissem = $currentsem[0]['termid'];
-		$semester = $thissem%10;
-		$prevsem = ($thissem/10) - $semester/10;
-	
-		if($semester == 1)
-		{
-			$prevsem = $prevsem - 1;
-			$prevsem = $prevsem*10;
-			$prevsem = $prevsem + 3;
-		}
-		else if($semester == 2)
-		{
-			$prevsem = $thissem-1;
-		}
-        else if($semester == 3)
-        {
-            $prevsem = $thissem-1;
-        }
-			$results = $this->db->query('SELECT grades.gradevalue
-				FROM students s
-				JOIN persons USING (personid)
-				JOIN studentterms USING (studentid)
-				JOIN studentclasses USING (studenttermid)
-				JOIN terms USING (termid)
-				JOIN grades USING (gradeid)
-				JOIN classes USING (classid)
-				JOIN courses USING (courseid)
-				JOIN instructorclasses using (classid)
-				JOIN instructors using (instructorid)
-				WHERE courses.courseid = ' . $courseid . ' AND terms.termid = ' . $thissem . ' AND instructors.instructorid = ' . $instructorid. '
-				ORDER BY xcwa69(s.studentid, ' . $prevsem . ') ASC;');
-			$results = $results->result_array();				
-            $ctr = 0;
-            
-			if(sizeof($results) < 10) {
-				$iod = "N/A";
-			}
-			else {
-                for($ctr = 0; $ctr < 10; $ctr++)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass1++;
-                    }
-                }
-                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass2++;
-                    }
-                }
-				 $iod = ($pass1 - $pass2)/10;
-			}
-            return $iod;
-	}
+
 	
 	public function index_of_discrimination_perclass($classid){
-		$pass1 = 0;
-		$pass2 = 0;
-        $currentsem = $this->db->query('SELECT termid FROM classes WHERE classid = ' . $classid .';');
-        $currentsem = $currentsem->result_array();
-        $thissem = $currentsem[0]['termid'];
-		$semester = $thissem%10;
-		$prevsem = ($thissem/10) - $semester/10;
-	
-		if($semester == 1)
-		{
-			$prevsem = $prevsem - 1;
-			$prevsem = $prevsem*10;
-			$prevsem = $prevsem + 3;
-		}
-		else if($semester == 2)
-		{
-			$prevsem = $thissem-1;
-		}
-        else if($semester == 3)
+		$results = $this->db->query('SELECT * FROM x_iod_perclass2(' . $classid . ');');
+        $results = $results->result_array();	
+        if($results[0]['x_iod_perclass2'] == 100)
         {
-            $prevsem = $thissem-1;
+            $iod = "N/A";
+			return $iod;
         }
-			$results = $this->db->query('SELECT a.gradevalue FROM
-				(SELECT students.studentid, grades.gradevalue FROM students 
-				JOIN studentterms USING (studentid)
-				JOIN studentclasses USING (studenttermid)
-				JOIN terms USING (termid)
-				JOIN grades USING (gradeid)
-				JOIN classes USING (classid)
-				WHERE classes.classid = '. $classid .') as a
-				JOIN studentterms USING (studentid)
-				WHERE studentterms.termid=' . $prevsem . '
-				ORDER BY cwa ASC;');
-			$results = $results->result_array();	
-			//echo $classid;
-			//echo $prevsem;
-			//print_r($results);
-            $ctr = 0;
-            
-			if(sizeof($results) < 10) {
-				$iod = "N/A";
-			}
-			else {
-                for($ctr = 0; $ctr < 10; $ctr++)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass1++;
-                    }
-                }
-                for($ctr = sizeof($results)-1; $ctr > sizeof($results)-11; $ctr--)
-                {
-                    if($results[$ctr]['gradevalue'] != '5.00')
-                    {
-                        $pass2++;
-                    }
-                }
-				 $iod = ($pass1 - $pass2)/10;
-			}
-            return $iod;
+        else
+        {
+            $iod = $results;
+			return $iod[0]['x_iod_perclass2'];
+        }
 	}
 	
 	
@@ -469,12 +300,12 @@ class Coursestatistics_model extends Base_Model {
 	 public function change_acadtermrange_ajax($courseid, $startsem, $startyear, $endsem, $endyear) {
 	 //change sections and instructors.
 	 
-		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$query = "select termid from terms where sem ilike '%".$startsem."%' and year ilike '%".$startyear."%';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$query = "select termid from terms where sem ilike '%".$endsem."%' and year ilike '%".$endyear."%';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
@@ -501,12 +332,12 @@ class Coursestatistics_model extends Base_Model {
 		$instructorid = "select instructorid from instructors";
 		}
 	 
-		$query = "select termid from terms where sem = '".$startsem."' and year = '".$startyear."';";
+		$query = "select termid from terms where sem ilike '%".$startsem."%' and year ilike '%".$startyear."%';";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem = '".$endsem."' and year = '".$endyear."';";
+		$query = "select termid from terms where sem ilike '%".$endsem."%' and year ilike '%".$endyear."%';";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
