@@ -13,15 +13,15 @@ $$
 		JOIN courses USING (courseid)
 		JOIN 
 			(SELECT * FROM 
-				(SELECT students.studentid as jstudentid, eligtwicefailcourses.courseid
+				(SELECT students.studentid as jstudentid, courseid
 					FROM students JOIN studentterms USING (studentid)
 						JOIN studentclasses USING (studenttermid)
 						JOIN classes USING (classid)
 						JOIN grades USING (gradeid)
-						JOIN eligtwicefailcourses USING (courseid)
 					WHERE grades.gradevalue = 5
 						AND students.studentid = $2
-					GROUP BY studentid, eligtwicefailcourses.courseid
+						AND courseid IN (SELECT courseid FROM eligtwicefailcourses)
+					GROUP BY studentid, courseid
 					HAVING count(*) > 1) AS studentlist
 			WHERE 
 				(SELECT count(*) 
