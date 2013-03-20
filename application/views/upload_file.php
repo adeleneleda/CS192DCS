@@ -19,6 +19,14 @@ function showLoadingGif() {
 	$('#loading').show();
 }
 function showProgressBar() {
+	var messages = ["Precomputing metrics...", "A few bits tried to escape, but we caught them...", "Why don't you try making cofee?",
+	"Go ahead -- hold your breath", "The bits are still doing the harlem shake.", "The sprites are still working with the abacus", 
+	"Hava a break, have a Kitkat.", "Call someone, maybe?", "Counting backwards from infinity", "Trying to look into your future",
+	"Don't stop believing...*hums*", "The bits are flowing slowly today", "Still dreaming of faster computers..", "Would you like fries with that?"];
+	var num_msgs = messages.length;
+	var cur_msg = 0;
+	var waiting_time = 0;
+	$('#prog-msgs').show();
 	$("#progressbar").show();
 	var max_width = $("#progressbar").width();
 	$("#pbar").width(0);
@@ -32,12 +40,19 @@ function showProgressBar() {
 				if (percentComplete > 1) {
 					clearInterval(timer);
 				}
+				else if(waiting_time % 150 == 0){
+					var msg = messages[cur_msg];
+					$('#prog-msgs').html(msg);
+					cur_msg = (cur_msg + 1) % num_msgs ;
+				}
 				$("#pbar").width(percentComplete * max_width);
+				waiting_time += 1;
 			}, 400);
 		}
 	});
 }
 function showResponse() {
+	$('#prog-msgs').hide();
 	$('#loading').hide();
 	$("#progressbar").hide();
 	$('#content').show();
