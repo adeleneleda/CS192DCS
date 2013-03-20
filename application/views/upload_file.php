@@ -19,7 +19,7 @@ function showLoadingGif() {
 	$('#loading').show();
 }
 function showProgressBar() {
-	var messages = ["Precomputing metrics...", "A few bits tried to escape, but we caught them...", "Why don't you try making cofee?",
+	var messages = ["Precomputing metrics...", "A few bits tried to escape, but we caught them...", "Why don't you try making coffee?",
 	"Go ahead -- hold your breath", "The bits are still doing the harlem shake.", "The sprites are still working with the abacus", 
 	"Hava a break, have a Kitkat.", "Call someone, maybe?", "Counting backwards from infinity", "Trying to look into your future",
 	"Don't stop believing...*hums*", "The bits are flowing slowly today", "Still dreaming of faster computers..", "Would you like fries with that?"];

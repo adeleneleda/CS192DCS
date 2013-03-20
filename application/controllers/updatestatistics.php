@@ -133,7 +133,7 @@ class Updatestatistics extends CI_Controller {
 	public function computeEstimatedProgress() {
 		$filesize = $this->getUploadedFileSize();
 		$estimated_rows = $filesize / 75; // number of rows
-		$rate = 3/10; // 300 400ms / 1000 rows
+		$rate = 4/10; // 400 400ms / 1000 rows
 		$estimated_time = $estimated_rows * $rate;
 		$estimated_progress = 1/$estimated_time; // progress for each 400 ms
 		echo $estimated_progress;
