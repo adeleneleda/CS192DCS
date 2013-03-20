@@ -1,5 +1,3 @@
-<script type="text/javascript" src="<?= base_url('assets/js/jquery-ui.js') ?>"></script>
-<link href="<?= base_url('assets/css/jquery-ui.css') ?>" rel="stylesheet" />
 <script type = "text/javascript">
 $(document).ready(function(){
 	$('#upload_form').ajaxForm({ 
