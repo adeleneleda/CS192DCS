@@ -75,7 +75,7 @@ DROP FUNCTION f_loadelig_twicefailsubjects(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_loadelig_twicefailsubjects(p_termid integer) 
 RETURNS SETOF t_elig_twicefailsubjects AS 
 $$
-	SELECT eligtwicefail.*
+	SELECT DISTINCT eligtwicefail.*
 	FROM eligtwicefail
 		JOIN 
 			(SELECT studentid, courseid, MAX(termid) AS maxtermid
@@ -101,33 +101,67 @@ DROP FUNCTION f_elig_passhalfpersem(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_elig_passhalfpersem(p_termid integer)
 RETURNS SETOF t_elig_passhalfpersem AS 
 $$
-	SELECT studentid, studenttermid, 
-		(CASE WHEN $1 % 10 = 1 THEN $1
-			WHEN $1 % 10 = 2 THEN $1
-			WHEN $1 % 10 = 3 THEN $1 - 1 END) as termid, failpercentage
+	SELECT *
 	FROM
-		(SELECT outerterms.studentid, outerterms.studenttermid, outerterms.termid,
+		(SELECT outerStudents.studentid,
+			-- Studenttermid
+			(SELECT studenttermid 
+			FROM studentterms 
+			WHERE studentid = outerStudents.studentid 
+				AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+				OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+				OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))
+			LIMIT 1
+			) AS studenttermid,	-- Summer (+2nd Semester)
+			-- Termid
+			(CASE WHEN $1 % 10 = 1 THEN $1
+				WHEN $1 % 10 = 2 THEN $1
+				WHEN $1 % 10 = 3 THEN $1 - 1 END) as termid, 
+			-- Fail Percentage
 			(SELECT COALESCE(SUM(courses.credits), 0)
-			FROM studentclasses 
+			FROM studentterms
+				JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
 			WHERE grades.gradevalue = 5
-				AND studentclasses.studenttermid = outerTerms.studenttermid)
-				/
+				AND studenttermid IN 
+					(SELECT studenttermid 
+					FROM studentterms 
+					WHERE 
+						studentterms.studentid = outerStudents.studentid
+						AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+						OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+						OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+					)
+			)
+			/
 			(SELECT COALESCE(SUM(courses.credits), 1)
-			FROM studentclasses 
+			FROM studentterms
+				JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
-			WHERE studentclasses.studenttermid = outerTerms.studenttermid)
-			AS failpercentage
-		FROM studentterms AS outerterms
-		WHERE ($1 % 10 = 1 AND termid = $1)	-- 1st Semester
-			OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
-			OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
-			AS temp
-	WHERE failpercentage > 0.5;
+			WHERE studenttermid IN 
+					(SELECT studenttermid 
+					FROM studentterms 
+					WHERE 
+						studentterms.studentid = outerStudents.studentid
+						AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+						OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+						OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+					)
+			) AS failpercentage
+		FROM 
+			(SELECT DISTINCT studentid
+			FROM studentterms 
+			WHERE 
+				(($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+				OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+				OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+			) AS outerStudents
+		) AS foo
+	WHERE failpercentage > 0.5
 $$
 LANGUAGE SQL;
 
@@ -144,35 +178,69 @@ DROP FUNCTION f_elig_passhalf_mathcs_persem(integer) CASCADE;
 CREATE OR REPLACE FUNCTION f_elig_passhalf_mathcs_persem(p_termid integer) 
 RETURNS SETOF t_elig_passhalf_mathcs_persem AS 
 $$
-	SELECT studentid, studenttermid, 
-		(CASE WHEN $1 % 10 = 1 THEN $1
-			WHEN $1 % 10 = 2 THEN $1
-			WHEN $1 % 10 = 3 THEN $1 - 1 END) as termid, failpercentage
+	SELECT *
 	FROM
-		(SELECT outerterms.studentid, outerterms.studenttermid, outerterms.termid, 
+		(SELECT outerStudents.studentid,
+			-- Studenttermid
+			(SELECT studenttermid 
+			FROM studentterms 
+			WHERE studentid = outerStudents.studentid 
+				AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+				OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+				OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))
+			LIMIT 1
+			) AS studenttermid,	-- Summer (+2nd Semester)
+			-- Termid
+			(CASE WHEN $1 % 10 = 1 THEN $1
+				WHEN $1 % 10 = 2 THEN $1
+				WHEN $1 % 10 = 3 THEN $1 - 1 END) as termid, 
+			-- Fail Percentage
 			(SELECT COALESCE(SUM(courses.credits), 0)
-			FROM studentclasses 
+			FROM studentterms
+				JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
 			WHERE grades.gradevalue = 5
-				AND studentclasses.studenttermid = outerTerms.studenttermid
-				AND (courses.coursename ilike 'Math %' OR courses.coursename ilike 'CS %'))
-				/
+				AND studenttermid IN 
+					(SELECT studenttermid 
+					FROM studentterms 
+					WHERE 
+						studentterms.studentid = outerStudents.studentid
+						AND (courses.coursename ilike 'Math %' OR courses.coursename ilike 'CS %')
+						AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+						OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+						OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+					)
+			)
+			/
 			(SELECT COALESCE(SUM(courses.credits), 1)
-			FROM studentclasses 
+			FROM studentterms
+				JOIN studentclasses USING (studenttermid)
 				JOIN classes USING (classid)
 				JOIN grades USING (gradeid)
 				JOIN courses USING (courseid)
-			WHERE studentclasses.studenttermid = outerTerms.studenttermid
-				AND (courses.coursename ilike 'Math %' OR courses.coursename ilike 'CS %'))
-			AS failpercentage
-		FROM studentterms AS outerterms
-		WHERE ($1 % 10 = 1 AND termid = $1)	-- 1st Semester
-			OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
-			OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
-			AS temp
-	WHERE failpercentage > 0.5;
+			WHERE studenttermid IN 
+					(SELECT studenttermid 
+					FROM studentterms 
+					WHERE 
+						studentterms.studentid = outerStudents.studentid
+						AND (courses.coursename ilike 'Math %' OR courses.coursename ilike 'CS %')
+						AND (($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+						OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+						OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+					)
+			) AS failpercentage
+		FROM 
+			(SELECT DISTINCT studentid
+			FROM studentterms 
+			WHERE 
+				(($1 % 10 = 1 AND termid = $1)				-- 1st Semester
+				OR ($1 % 10 = 2 AND termid in ($1, $1 + 1))	-- 2nd Semester (+Summer)
+				OR ($1 % 10 = 3 AND termid in ($1, $1 - 1)))	-- Summer (+2nd Semester)
+			) AS outerStudents
+		) AS foo
+	WHERE failpercentage > 0.5
 $$
 LANGUAGE SQL;
 
