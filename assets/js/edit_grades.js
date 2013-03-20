@@ -10,7 +10,6 @@ $(document).ready(function(){
 		$(".gradecell").each(function() {
 			if($(this).val() != $(this).prop("defaultValue")){
 				$changed_cells.push({studentclassid: $(this).attr('id'), grade: $(this).val()});
-				$(this).css("background-color","white").css("color","#555555");
 			}
 		});
 		
@@ -35,7 +34,7 @@ $(document).ready(function(){
 					var fade_out = function() {
 					  $("#save-success").fadeOut();
 					};
-
+					$(".gradecell").each(function() {$(this).css("background-color","white").css("color","#555555");});
 					setTimeout(fade_out, 2000);
 				}
 				else{

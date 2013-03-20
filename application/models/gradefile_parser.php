@@ -62,8 +62,8 @@ class Gradefile_Parser extends CI_Model {
 			
 		$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
 		$this->affected['studentid'] = array_unique($this->affected['studentid']);
-		foreach($this->affected['studentid'] as $studenttermid)
-			$this->eligibilitytesting_model->postprocessing_bystudent($studenttermid);
+		foreach($this->affected['studentid'] as $studentid)
+			$this->eligibilitytesting_model->postprocessing_bystudent($studentid);
 		
 		$output .= "</table>";
 		return $output;

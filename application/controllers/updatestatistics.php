@@ -119,7 +119,6 @@ class Updatestatistics extends CI_Controller {
 		set_time_limit(3600);
 		$data = array('upload_success' => false);
 		$data['reset_success'] = $this->resetIfChecked();
-		// maintain a table to store uploaded gradessheets?
 		try {
 			$filename = $this->getUploadedFile();
 			$data['upload_success'] = true;
@@ -134,9 +133,9 @@ class Updatestatistics extends CI_Controller {
 	public function computeEstimatedProgress() {
 		$filesize = $this->getUploadedFileSize();
 		$estimated_rows = $filesize / 75; // number of rows
-		$rate = 6/10; // 600 200ms / 1000 rows
+		$rate = 3/10; // 300 400ms / 1000 rows
 		$estimated_time = $estimated_rows * $rate;
-		$estimated_progress = 1/$estimated_time; // progress for each 200 ms
+		$estimated_progress = 1/$estimated_time; // progress for each 400 ms
 		echo $estimated_progress;
 	}
 	
@@ -247,12 +246,12 @@ class Updatestatistics extends CI_Controller {
 		$backup_dir = $this->getDumpsFolder();
 		ini_set('date.timezone', 'Asia/Manila');
 		$backup_name = $backup_dir.$this->db->database.'--'.date("Y-m-d--H-i-s").".sql";
-		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean --inserts -i -f $backup_name ".$this->db->database." 2>&1";
+		$cmd = escapeshellarg($pg_dump)." -U ".$this->db->username." --clean -i -f $backup_name ".$this->db->database." 2>&1";
 		putenv("PGPASSWORD=".$this->db->password);
 		exec($cmd, $output, $status);
 		$success = ($status == 0);
 		if ($success) { // save cookie
-			$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'100000000');
+			$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'10000000000');
 			$this->input->set_cookie($cookie);
 		}
 		$data['backup_location'] = $backup_name;
@@ -310,11 +309,8 @@ class Updatestatistics extends CI_Controller {
 			exec($cmd, $output, $status);
 			$success = ($status == 0);
 			if ($success) { // save cookie
-				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'100000000');
+				$cookie = array('name'=>'pg_bin_dir', 'value'=>$pg_bin_dir, 'expire'=>'10000000000');
 				$this->input->set_cookie($cookie);
-				
-				$this->load->model('eligibilitytesting_model', 'eligibilitytesting_model', true);
-				$this->eligibilitytesting_model->postprocessing();
 			}
 			$data['output'] = $output;
 			$data['restore_success'] = $success;

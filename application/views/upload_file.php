@@ -33,7 +33,7 @@ function showProgressBar() {
 					clearInterval(timer);
 				}
 				$("#pbar").width(percentComplete * max_width);
-			}, 200);
+			}, 400);
 		}
 	});
 }
