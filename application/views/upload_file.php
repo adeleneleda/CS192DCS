@@ -31,7 +31,7 @@ function showProgressBar() {
 			var percentComplete = 0;
 			var timer = setInterval(function() {
 				percentComplete += progressRate;
-				if (percentComplete > 100) {
+				if (percentComplete > 1) {
 					clearInterval(timer);
 				}
 				$("#pbar").width(percentComplete * max_width);

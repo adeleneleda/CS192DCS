@@ -136,7 +136,7 @@ class Updatestatistics extends CI_Controller {
 		$estimated_rows = $filesize / 75; // number of rows
 		$rate = 6/10; // 600 200ms / 1000 rows
 		$estimated_time = $estimated_rows * $rate;
-		$estimated_progress = 100/$estimated_time; // progress for each 200 ms
+		$estimated_progress = 1/$estimated_time; // progress for each 200 ms
 		echo $estimated_progress;
 	}
 	
