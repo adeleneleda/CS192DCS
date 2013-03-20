@@ -5,17 +5,7 @@
 		$('#et').removeClass('active');
 		$('#us').removeClass('active');
 		$('#ab').removeClass('active');
-		$('#focus_here').goTo();
 	}); 
-	
-	(function($) {
-		$.fn.goTo = function() {
-			$('html, body').animate({
-				scrollTop: $(this).offset().top + 'px'
-			}, 'slow');
-			return this; // for chaining...
-		}
-	})(jQuery);
 </script>
 
 <div class="row">
