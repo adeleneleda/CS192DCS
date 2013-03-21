@@ -91,7 +91,7 @@ $(function() {
 			</div>
 			</br>
             <div class="control-group">
-				<label class="control-label" for="select02">Year</label>
+				<label class="control-label" for="select02">Academic Year</label>
 				<div class="controls">
 					<select id = "focus_here" name="cyear">
                     <?php $ctr = 0;
