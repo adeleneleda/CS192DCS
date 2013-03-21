@@ -300,12 +300,12 @@ WHERE zzz != 100;');
 	 public function change_acadtermrange_ajax($courseid, $startsem, $startyear, $endsem, $endyear) {
 	 //change sections and instructors.
 	 
-		$query = "select termid from terms where sem ilike '%".$startsem."%' and year ilike '%".$startyear."%';";
+		$query = "select termid from terms where year ilike '%".$startyear."%' order by termid asc limit 1;";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
 		$starttermid = $starttermid[0]['termid'];
 		
-		$query = "select termid from terms where sem ilike '%".$endsem."%' and year ilike '%".$endyear."%';";
+		$query = "select termid from terms where year ilike '%".$endyear."%' order by termid desc limit 1;";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
@@ -331,17 +331,17 @@ WHERE zzz != 100;');
 		if($instructorid == "") {
 		$instructorid = "select instructorid from instructors";
 		}
-	 
-		$query = "select termid from terms where sem ilike '%".$startsem."%' and year ilike '%".$startyear."%';";
+		
+		$query = "select termid from terms where year ilike '%".$startyear."%' order by termid asc limit 1;";
 		$starttermid = $this->db->query($query);
 		$starttermid = $starttermid->result_array();
-		$starttermid = $starttermid[0]['termid'];
+		$starttermid = $starttermid[0]['termid'];		
 		
-		$query = "select termid from terms where sem ilike '%".$endsem."%' and year ilike '%".$endyear."%';";
+		$query = "select termid from terms where year ilike '%".$endyear."%' order by termid desc limit 1;";
 		$endtermid = $this->db->query($query);
 		$endtermid = $endtermid->result_array();
 		$endtermid = $endtermid[0]['termid'];
-	 
+		
 		$query = 'select section from classes join instructorclasses using (classid) where instructorid in ('.$instructorid.') and termid >= '.$starttermid.' and termid <= '.$endtermid.' and courseid ='. $courseid .' order by section;';
 		$sections = $this->db->query($query);
 		$sections = $sections->result_array();
